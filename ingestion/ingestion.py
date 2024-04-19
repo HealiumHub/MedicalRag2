@@ -7,7 +7,7 @@ from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.schema import BaseNode, Document
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.vector_stores.chroma import ChromaVectorStore
-from sympy import true
+from llama_parse import LlamaParse
 
 from embedding import get_ollama_embedding
 
@@ -16,10 +16,23 @@ class Ingestion:
     DATA_PATH = "./ingestion/pdf"
     CHROMA_PATH = "chroma"
 
-    def load_documents(self):
-        document_loader = SimpleDirectoryReader(self.DATA_PATH, num_files_limit=10)
-        documents = document_loader.load_data(true)
-        print(len(documents))
+    def load_documents(self, useLLamaParse=False, removeReference=False):
+        if useLLamaParse:
+            parser = LlamaParse(result_type="markdown")
+            file_extractor = {".pdf": parser}
+        reader = SimpleDirectoryReader(
+            self.DATA_PATH,
+            num_files_limit=2,
+            file_extractor=file_extractor if useLLamaParse else None,
+        )
+        documents = reader.load_data(True)
+        res_documents = []
+
+        # Iterate documents in reverse
+        for document in documents:
+            print("=====================================")
+            print(document.text)
+            print("=====================================")
         return documents
 
     def split_documents(self, documents: list[Document]):
@@ -77,5 +90,5 @@ if __name__ == "__main__":
     ingestion = Ingestion()
     # ingestion.clear_database()
     documents = ingestion.load_documents()
-    nodes = ingestion.split_documents(documents)
-    ingestion.add_to_chroma(nodes)
+    # nodes = ingestion.split_documents(documents)
+    # ingestion.add_to_chroma(nodes)
