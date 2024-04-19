@@ -75,6 +75,7 @@ class Ingestion:
 
 if __name__ == "__main__":
     ingestion = Ingestion()
+    # ingestion.clear_database()
     documents = ingestion.load_documents()
     nodes = ingestion.split_documents(documents)
     ingestion.add_to_chroma(nodes)
