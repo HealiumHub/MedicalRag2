@@ -17,7 +17,7 @@ class Ingestion:
     CHROMA_PATH = "chroma"
 
     def load_documents(self):
-        document_loader = SimpleDirectoryReader(self.DATA_PATH)
+        document_loader = SimpleDirectoryReader(self.DATA_PATH, num_files_limit=10)
         documents = document_loader.load_data(true)
         print(len(documents))
         return documents
