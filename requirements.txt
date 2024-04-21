@@ -9,4 +9,3 @@ langchain
 streamlit
 graphviz
 pypdf
-mypy-extensions
