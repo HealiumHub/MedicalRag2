@@ -1,4 +1,6 @@
 import glob
+from importlib import metadata
+import keyword
 import math
 import os
 import shutil
@@ -31,7 +33,12 @@ class Ingestion:
             doc = pdf_reader.read_pdf(file)
             block: Block
             for block in doc.chunks():
-                document = Document(text=block.to_context_text())
+                metadata = {
+                    "page": block.page_idx,
+                    "source": os.path.basename(file),
+                    "tag": block.tag,
+                }
+                document = Document(text=block.to_text(), metadata=metadata)
                 documents.append(document)
         # self.print_documents(documents)
         return documents
@@ -42,6 +49,20 @@ class Ingestion:
         nodes = node_parser.get_nodes_from_documents(documents)
         print(f"Split {len(documents)} documents into {len(nodes)} chunks")
         return nodes
+
+    def add_to_chroma(self, documents: list[Document]):
+        db = chromadb.PersistentClient(path=self.CHROMA_PATH)
+        chroma_collection = db.get_or_create_collection("quickstart")
+        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+        storage_context = StorageContext.from_defaults(vector_store=vector_store)
+        index = VectorStoreIndex(
+            nodes=[],
+            storage_context=storage_context,
+            embed_model=get_ollama_embedding(),
+        )
+        for document in documents:
+            index.insert(document)
+        return index
 
     def add_to_chroma(self, nodes: list[BaseNode]):
         db = chromadb.PersistentClient(path=self.CHROMA_PATH)
