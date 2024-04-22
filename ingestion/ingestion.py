@@ -1,25 +1,40 @@
 import glob
-from importlib import metadata
-import keyword
 import math
 import os
 import shutil
+from typing import Sequence
 import chromadb
 
+from llama_index.core import Settings
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.schema import BaseNode, Document
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.vector_stores.chroma import ChromaVectorStore
+
+from llama_index.core.ingestion import IngestionPipeline
+from llama_index.extractors.entity import EntityExtractor
+from llama_index.core.extractors import (
+    SummaryExtractor,
+    QuestionsAnsweredExtractor,
+    TitleExtractor,
+    KeywordExtractor,
+)
+
+from llama_index.llms.ollama import Ollama
+from llama_index.embeddings.ollama import OllamaEmbedding
+
 from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
-
-from embedding import get_ollama_embedding
 
 
 class Ingestion:
     DATA_PATH = "./ingestion/pdf"
     CHROMA_PATH = "chroma"
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
+
+    def __init__(self):
+        Settings.llm = Ollama(model="gemma:2b")
+        Settings.embed_model = OllamaEmbedding(model_name="snowflake-arctic-embed")
 
     def load_documents(self, k=math.inf):
         pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
@@ -38,10 +53,22 @@ class Ingestion:
                     "source": os.path.basename(file),
                     "tag": block.tag,
                 }
-                document = Document(text=block.to_text(), metadata=metadata)
+                document = Document(text=block.to_context_text(), metadata=metadata)
                 documents.append(document)
         # self.print_documents(documents)
         return documents
+
+    def extract_metadata(self, documents: list[Document]):
+        transformations = [
+            # TitleExtractor(),
+            # QuestionsAnsweredExtractor(),
+            # SummaryExtractor(summaries=["prev", "self"]),
+            KeywordExtractor(),
+            EntityExtractor(device="cpu"),
+        ]
+        pipeline = IngestionPipeline(transformations=transformations)
+        nodes = pipeline.run(show_progress=True, documents=documents)
+        return nodes
 
     def split_documents(self, documents: list[Document]):
         node_parser = SimpleNodeParser.from_defaults(chunk_size=1024)
@@ -50,58 +77,24 @@ class Ingestion:
         print(f"Split {len(documents)} documents into {len(nodes)} chunks")
         return nodes
 
-    def add_to_chroma(self, documents: list[Document]):
+    def add_to_chroma(
+        self,
+        db_name: str = "default_db",
+        nodes: Sequence[BaseNode] = [],
+        documents: list[Document] = [],
+    ):
         db = chromadb.PersistentClient(path=self.CHROMA_PATH)
-        chroma_collection = db.get_or_create_collection("quickstart")
-        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-        storage_context = StorageContext.from_defaults(vector_store=vector_store)
-        index = VectorStoreIndex(
-            nodes=[],
-            storage_context=storage_context,
-            embed_model=get_ollama_embedding(),
-        )
-        for document in documents:
-            index.insert(document)
-        return index
-
-    def add_to_chroma(self, nodes: list[BaseNode]):
-        db = chromadb.PersistentClient(path=self.CHROMA_PATH)
-        chroma_collection = db.get_or_create_collection("quickstart")
+        chroma_collection = db.get_or_create_collection(db_name)
         vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
         storage_context = StorageContext.from_defaults(vector_store=vector_store)
         index = VectorStoreIndex(
             nodes=nodes,
             storage_context=storage_context,
-            embed_model=get_ollama_embedding(),
+            show_progress=True,
         )
+        for document in documents:
+            index.insert(document)
         return index
-
-    def __calculate_chunk_ids(self, chunks):
-
-        # This will create IDs like "data/monopoly.pdf:6:2"
-        # Page Source : Page Number : Chunk Index
-
-        last_page_id = None
-        current_chunk_index = 0
-
-        for chunk in chunks:
-            source = chunk.metadata.get("source")
-            page = chunk.metadata.get("page")
-            current_page_id = f"{source}:{page}"
-
-            # If the page ID is the same as the last one, increment the index.
-            if current_page_id == last_page_id:
-                current_chunk_index += 1
-            else:
-                current_chunk_index = 0
-
-            # Calculate the chunk ID.
-            chunk_id = f"{current_page_id}:{current_chunk_index}"
-            last_page_id = current_page_id
-
-            # Add it to the page meta-data.
-            chunk.metadata["id"] = chunk_id
-        return chunks
 
     def clear_database(self):
         if os.path.exists(self.CHROMA_PATH):
@@ -117,6 +110,7 @@ class Ingestion:
 if __name__ == "__main__":
     ingestion = Ingestion()
     # ingestion.clear_database()
-    documents = ingestion.load_documents(k=1)
+    documents = ingestion.load_documents(k=2)  # smart chunking
     # nodes = ingestion.split_documents(documents)
-    # ingestion.add_to_chroma(nodes)
+    # nodes = ingestion.extract_metadata(documents=documents)
+    ingestion.add_to_chroma(documents=documents)

@@ -1,8 +1,12 @@
 llama-index
-llama-index-embeddings-ollama
 llama-index-llms-ollama
+llama-index-llms-huggingface
+llama-index-embeddings-ollama
 llama-index-embeddings-langchain
+llama-index-embeddings-huggingface
+llama-index-embeddings-instructor
 llama-index-vector-stores-chroma
+llama-index-extractors-entity
 llama-parse
 chromadb
 langchain
