@@ -1,0 +1,15 @@
+*/data
+*/db
+*env
+*.env
+*.venv
+*.log
+.vscode
+.DS_Store
+*.pdf
+*.pyc
+*.zip
+/.idea
+*/pdf
+/chroma
+/chroma

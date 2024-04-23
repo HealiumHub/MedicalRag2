@@ -1,0 +1,2564 @@
+[
+	{
+		"block_class": "cls_0",
+		"block_idx": 0,
+		"level": 0,
+		"page_idx": 0,
+		"sentences": ["Dental Research Journal"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_3",
+		"block_idx": 1,
+		"level": 0,
+		"page_idx": 0,
+		"sentences": ["Review Article"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_4",
+		"block_idx": 2,
+		"level": 0,
+		"page_idx": 0,
+		"sentences": [
+			"Clinical effects of Bifidobacterium as a probiotic on oral health: A systematic review"
+		],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_6",
+		"block_idx": 3,
+		"level": 1,
+		"page_idx": 0,
+		"sentences": [
+			"M.Y Jayachandra, R. Gayathiri, C.N.Aruna, Padma K. Bhat, P.M. Arumugam"
+		],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_7",
+		"block_idx": 4,
+		"level": 2,
+		"page_idx": 0,
+		"sentences": [
+			"Department of Public Health Dentistry, Rajarajeswari Dental College and Hospital, Bengaluru, Karnataka, India"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_8",
+		"block_idx": 5,
+		"level": 1,
+		"page_idx": 0,
+		"sentences": ["ABSTRACT"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_10",
+		"block_idx": 6,
+		"level": 2,
+		"page_idx": 0,
+		"sentences": [
+			"Background: The burden of oral diseases is increasing, which constitute a major public health problem.",
+			"The use of probiotics as an adjuvant, along with routine dental care practice by an individual, can produce additional benefits in the maintenance of one’s oral health.",
+			"The study aimed to investigate the effect of Bifidobacterium as a probiotic on oral health."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_14",
+		"block_idx": 7,
+		"level": 3,
+		"page_idx": 0,
+		"sentences": [
+			"Received: 05‑Apr‑2022 Revised: 15‑Jun‑2022 Accepted: 26‑Sep‑2022 Published: 28‑Mar‑2023"
+		],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_14",
+		"block_idx": 8,
+		"level": 3,
+		"page_idx": 0,
+		"sentences": ["Address for correspondence:"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_15",
+		"block_idx": 9,
+		"level": 4,
+		"page_idx": 0,
+		"sentences": [
+			"Dr. R. Gayathiri, Rajarajeswari Dental College and Hospital, No 14, Ramohalli Cross, Mysore Road, Kumbalgodu, Bengaluru ‑ 560 074, Karnataka, India.",
+			"E‑mail: gayuharin95@gmail.",
+			"com"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_10",
+		"block_idx": 10,
+		"level": 2,
+		"page_idx": 0,
+		"sentences": [
+			"Material and Methods: Six databases and registers were searched from the start of the database to December 2021 without any restrictions.",
+			"Randomized controlled trials (RCTs) evaluating the clinical effects of Bifidobacterium as a probiotic on oral health were included in the study.",
+			"The Preferred Reporting Items for Systematic Reviews and Meta‑analyses (PRISMA) guidelines were followed to conduct this systematic review.",
+			"The included studies were analyzed for the risk of bias using the Cochrane risk‑of‑bias tool for randomized trial (RoB 2) tool as well as quality of available evidence using GRADE criteria.",
+			"Results: From the 22 qualified studies, four studies showed non‑significant results.",
+			"There was a high risk of bias in 13 studies and some concerns of bias in nine studies.",
+			"No adverse effects were reported, and the quality of available evidence was moderate.",
+			"Conclusion: The effect of Bifidobacterium on oral health is questionable.",
+			"Further high‑quality RCTs are required on the clinical effects of bifidobacteria and also the optimum level of probiotic needed, and ideal mode of administration to provide oral health benefits.",
+			"Furthermore, synergistic effects of the combined use of various strains of probiotics need to be studied."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_10",
+		"block_idx": 11,
+		"level": 2,
+		"page_idx": 0,
+		"sentences": ["Keywords: Bifidobacterium, oral health, probiotics"],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 12,
+		"level": 1,
+		"page_idx": 0,
+		"sentences": ["INTRODUCTION"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 13,
+		"level": 2,
+		"page_idx": 0,
+		"sentences": [
+			"Recently, there is a growing interest in the use of probiotic products for restoring dysbiotic microbiota.",
+			"[1] The Food and Agriculture Organization FAO and the World Health Organization (WHO) in 2001 defined probiotics as “live microorganisms which when administered in adequate amounts confer a health benefit on the host.",
+			"”[2] Because of their potential health‑promoting attributes, probiotic supplements are usually directed towards Lactobacilli and/or bifidobacteria.",
+			"The beneficial effects may result from the suppression of harmful microorganisms or stimulation of organisms which contribute positively to the nutrition and health of human beings and animals.",
+			"The extent to which this may be achieved can be difficult to assess.",
+			"[3] Probiotic effects are strain specific; thus, each individual bacterial strain must be tested separately for the health This is an open access journal, and articles are distributed under the terms of the Creative Commons Attribution‑NonCommercial‑ShareAlike 4.0 License, which allows others to remix, tweak, and build upon the work non‑commercially, as long as appropriate credit is given and the new creations are licensed under the identical terms."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_14",
+		"block_idx": 14,
+		"level": 3,
+		"page_idx": 0,
+		"sentences": ["Access this article online"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_17",
+		"block_idx": 15,
+		"level": 4,
+		"page_idx": 0,
+		"sentences": [
+			"Website: www.drj.ir www.drjjournal.net www.ncbi.nlm.nih.gov/pmc/journals/1480 How to cite this article: Jayachandra MY, Gayathiri R, Aruna CN, For reprints contact: WKHLRPMedknow_reprints@wolterskluwer.com"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_17",
+		"block_idx": 16,
+		"level": 4,
+		"page_idx": 0,
+		"sentences": [
+			"Bhat PK, Arumugam PM.",
+			"Clinical effects of Bifidobacterium as a probiotic on oral health: A systematic review.",
+			"Dent Res J 2023;20:32."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_2",
+		"block_idx": 17,
+		"level": 5,
+		"page_idx": 0,
+		"sentences": [
+			"1© 2023 Dental Research Journal | Published by Wolters Kluwer - Medknow"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 18,
+		"level": 2,
+		"page_idx": 1,
+		"sentences": [
+			"benefit in question, and the effects described for one strain cannot be directly applied to others.",
+			"[4] Bifidobacteria occur naturally in the oral cavity and are among the most predominant anaerobic bacteria within the intestinal lumen.",
+			"[5] It is generally thought that bifidobacteria have combined local and systemic effects involving adhesion, co‑aggregation, competitive inhibition, production of organic acids and bacteriocin‑like compounds, and immune modulation.",
+			"[6] A body of evidence suggests that bifidobacteria play a critical role in maintaining the equilibrium of the normal gut flora, and a number of probiotic‑induced benefits on general health have been proposed, such as reduced susceptibility to infections, reduction of allergies and lactose intolerance, as well as lowered blood pressure and serum cholesterol values.",
+			"[7] In vitro studies using bifidobacteria have demonstrated beneficial effects against oral pathogens.",
+			"[8‑22] Although various experimental studies support the beneficial effect of Bifidobacterium on oral pathogens and oral diseases such as dental caries, gingivitis and periodontitis other clinical trials have failed to show similar results."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 19,
+		"level": 2,
+		"page_idx": 1,
+		"sentences": ["Objectives"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 20,
+		"level": 3,
+		"page_idx": 1,
+		"sentences": [
+			"The burden of oral diseases is increasing, which constitutes a major public health problem.",
+			"The use of probiotics as an adjuvant, along with routine dental care practice by an individual, can produce additional benefits in the maintenance of one’s oral health.",
+			"However, short‑term trials focusing on the clinical effects of probiotics on oral health have not been reviewed in an evidence‑based manner.",
+			"Our aim was to systematically assess the available evidence from the randomized controlled trials (RCTs) on the benefits Bifidobacterium on oral health."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 21,
+		"level": 1,
+		"page_idx": 1,
+		"sentences": ["MATERIALS AND METHODS"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 22,
+		"level": 2,
+		"page_idx": 1,
+		"sentences": ["Protocol development and registration"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 23,
+		"level": 3,
+		"page_idx": 1,
+		"sentences": [
+			"Before starting the systematic review, the study protocol was registered on the PROSPERO database (http://www.crd.york.ac.uk/PROSPERO, ID: CRD42022306243).",
+			"The preferred reporting items for systematic reviews and meta‑analyses (PRISMA 2020)[23,24] was used.",
+			"Since it is a systematic review, ethical approval was not taken."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 24,
+		"level": 2,
+		"page_idx": 1,
+		"sentences": ["Eligibility criteria"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 25,
+		"level": 3,
+		"page_idx": 1,
+		"sentences": [
+			"The criteria were established using PICOS (Participants, Interventions, Comparators, Outcomes, and Study design) approach.",
+			"Randomized clinical trials investigating the effect of Bifidobacterium as a probiotic on oral health conditions were included in the study.",
+			"No language and publication date restrictions were imposed.",
+			"Accepted manuscripts were also included.",
+			"Participants without any age restrictions were included.",
+			"Participants should receive probiotics containing Bifidobacterium in any form, such as milk, curd, yogurt, ice cream, or lozenges, in any dosage and should be compared with participants who received a placebo, control, or no interventions at all.",
+			"The outcome parameters included Streptococcus, Lactobacillus, and Porphyromonas gingivalis count in saliva and plaque, occurrence of dental caries in deciduous and permanent teeth, occurrence of periodontitis.",
+			"Studies without human participants, control or placebo groups, <1 week of intervention, and reviews were excluded from the study."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 26,
+		"level": 2,
+		"page_idx": 1,
+		"sentences": ["Information sources and search strategy"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 27,
+		"level": 3,
+		"page_idx": 1,
+		"sentences": [
+			"Clinical trials were identified and included in this study using various electronic databases and registers such as (MEDLINE, CENTRAL, Scopus, Web of Science, Cochrane library, and Clinical Trials Registry).",
+			"The search was from the beginning of each database and registers till December 2021. No restrictions were imposed on the publication dates and foreign languages.",
+			"Foreign language articles were translated into English.",
+			"The list of references which was included in each study was also cross‑verified so that all the relevant trials were included.",
+			"The various search terms used to identify the relevant clinical trials from each database were Bifidobacterium and oral health, Bifidobacterium and dentistry, Bifidobacterium and dental caries, Bifidobacterium as probiotic.",
+			"The search strategies were peer‑reviewed as a part of the systematic review process."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 28,
+		"level": 2,
+		"page_idx": 1,
+		"sentences": ["Study selection and data collection"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 29,
+		"level": 3,
+		"page_idx": 1,
+		"sentences": [
+			"The list of clinical trials gathered through electronic databases was assessed by two independent researchers in an unblinded, standardized manner.",
+			"Both the researches reviewed each included study and extracted the following details of the publication date, authors name, title, study design, randomization, study population, sample size, duration of intervention and follow‑up, number of dropouts, loss to follow‑up form, and dosage of Bifidobacterium administered, any adverse reactions and outcome of the study such as Streptococcus, Lactobacillus and P. gingivalis count in saliva and plaque, the occurrence of dental caries in deciduous and permanent teeth, the occurrence of periodontitis were included.",
+			"Disagreements were resolved by the third researcher."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 30,
+		"level": 1,
+		"page_idx": 2,
+		"sentences": ["DATA ITEMS"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 31,
+		"level": 2,
+		"page_idx": 2,
+		"sentences": ["Risk of bias in individual studies"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 32,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": [
+			"Two reviewers worked independently to assess the risk of bias for individual studies at the study as well as at the outcome level.",
+			"They determined the adequacy involved in the various stages of randomization such as random allocation sequence (selection bias), allocation concealment (selection bias), blinding of the investigator, participants or outcome assessors (performance bias), loss of follow‑up, incomplete outcome data (attrition bias), and selective reporting (reporting bias)"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 33,
+		"level": 2,
+		"page_idx": 2,
+		"sentences": ["Summary measures"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_20",
+		"block_idx": 34,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["Planned methods of analysis"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 35,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Two independent reviewers checked each of the trials for risk of bias and quality of available evidence.",
+			"The risk of bias in the selected studies was analyzed using the Cochrane risk‑of‑bias tool for randomized trial (RoB 2), which is the recommended tool for use in Cochrane Reviews, and the quality of available evidence was analyzed using GRADE criteria."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_20",
+		"block_idx": 36,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["Risk of bias across studies and additional analyses"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 37,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Overall, the quality of evidence from these trials was moderate."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 38,
+		"level": 1,
+		"page_idx": 2,
+		"sentences": ["RESULTS"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 39,
+		"level": 2,
+		"page_idx": 2,
+		"sentences": ["Study selection"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 40,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["The study selection is shown in Figure 1."],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 41,
+		"level": 2,
+		"page_idx": 2,
+		"sentences": ["Study characteristics"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_20",
+		"block_idx": 42,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["Methods"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 43,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["1) Ice cream"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 44,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Nagarajappa et al.",
+			"[7] and Caglar et al.",
+			"[25] assessed the effect on salivary Streptococcus mutans and lactobacilli for 18 days and 10 days, respectively.",
+			"Ashwin et al.",
+			"[26] assessed the effect on salivary S. mutans for 7 days, and Singh et al.",
+			"[27] assessed the effect of Bifidobacterium and Lactobacilli‑containing probiotic on S. mutans and lactobacilli for 10 days."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 45,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["2) Yogurt"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 46,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Caglar et al.,[28] Nozari et al.,[29] and Zare Javid et al.",
+			"[30] assessed the effect on salivary S. mutans and lactobacilli for 14 days.",
+			"Pinto et al.",
+			"[31] and Caglar[32] assessed the effect on the dental plaque for 14 days.",
+			"Kuru et al.",
+			"[33] assessed the effect on gingival health for 28 days.",
+			"Cildir et al.",
+			"[34] assessed the effect on S. mutans for 14 days.",
+			"Bafna et al.",
+			"[35] assessed the effect of Bifidobacterium and Lactobacilli containing"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 47,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": ["probiotic on S. mutans for 14 days"],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 48,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["3) Tablet"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 49,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Taipale et al.",
+			"[36] assessed the effect on oral colonization of S. mutans for 2 years."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 50,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["4) Lozenges"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 51,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Toiviainen et al.",
+			"[37] assessed the effect of on salivary S. mutans, amount of plaque, gingival inflammation, and oral microbiome.",
+			"Jäsberg et al.",
+			"[38] assessed the effect on the salivary levels of matrix metalloproteinase (MMP)‑9 and tissue inhibitors of metalloproteinases (TIMP)‑1.",
+			"Alanzi et al.",
+			"[39] assessed the effect on gingival health, dental plaque, and periodonto‑pathogens for 4 weeks.",
+			"Invernici et al.",
+			"[40] evaluated the effects on clinical periodontal parameters (plaque accumulation and gingival bleeding), on the immunocompetence of gingival tissues (expression of beta‑defensin‑3, toll‑like receptor 4, cluster of differentiation [CD]‑57 and CD‑4), and on immunological properties of saliva (immunoglobulin A [IgA] levels) in nonsurgical periodontal therapy in generalized chronic periodontitis patients"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 52,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["5) Chewing gum"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 53,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Gueimonde et al.",
+			"[41] assessed the effect on saliva flow rate, saliva IgA levels, and saliva pH."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 54,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["6) Capsule"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 55,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Ishikawa et al.",
+			"[42] assessed the effect on the colonization of candida species on dentures for 5 weeks."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 56,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["7) Probiotic drop"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 57,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Tehrani et al.",
+			"[43] assessed the effect on salivary S. mutans and Lactobacillus for 2 weeks."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 58,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["8) Freeze‑dried powder"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 59,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Jindal et al.",
+			"[44] assessed the effect on salivary S. mutans for 14 days, and Yousuf et al.",
+			"[45] assessed the effect on the gingival status and plaque inhibition for 21 days."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 60,
+		"level": 3,
+		"page_idx": 2,
+		"sentences": ["Participants"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 61,
+		"level": 4,
+		"page_idx": 2,
+		"sentences": [
+			"Twenty‑two included studies involved 1175 participants.",
+			"The inclusion criteria in these studies were orally and systemically healthy non‑medicating participants having good oral health with no untreated caries lesions and daily toothbrushing habits with fluoride toothpaste.",
+			"The exclusion criteria were habitual consumption of other forms of probiotics, systemic antibiotic medication within 6 weeks, topical 3Dental Research Journal fluoride treatments within 4 weeks, allergic to dairy products, receiving Xylitol‑containing products, use of antibiotics, antimicrobials, cavitated or active carious lesions, and lactose intolerance."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_23",
+		"block_idx": 62,
+		"level": 5,
+		"page_idx": 3,
+		"sentences": [
+			"Figure 1: Flow diagram of the record through the review process."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 63,
+		"level": 3,
+		"page_idx": 3,
+		"sentences": ["Intervention"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 64,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": [
+			"The participants received probiotic Bifidobacterium in any (ice cream, yogurt, lozenges, tablet, chewing gum, capsule, freeze‑dried powder, or probiotic drop) form or placebo minimum of once a day."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 65,
+		"level": 3,
+		"page_idx": 3,
+		"sentences": ["Outcomes"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 66,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": [
+			"The outcomes that were assessed include changes in oral microbiota, dental plaque, gingival health, levels of MMP‑9, and TIMP‑1 at baseline and after the intervention.",
+			"No study included mortality and costs as the outcome.",
+			"The timing of outcome measures varied between studies"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 67,
+		"level": 3,
+		"page_idx": 3,
+		"sentences": ["Risk of bias within studies:"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 68,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": ["(i) Bias arising from randomization process"],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 69,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": [
+			"(ii) Bias due to deviations from intended interventions"
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 70,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": ["(iii) Bias due to missing outcome"],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 71,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": ["(iv) Bias in the measurement of the outcome"],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 72,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": [
+			"(v) Bias in selection of the reported result [Table 1 and Table 2][46,47]"
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_20",
+		"block_idx": 73,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": ["Results of individual studies"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 74,
+		"level": 4,
+		"page_idx": 3,
+		"sentences": ["1) Ice cream"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 75,
+		"level": 5,
+		"page_idx": 3,
+		"sentences": [
+			"Postingestion (after 1 h) in the test group, a statistically significant reduction (P < 0.05) of salivary S. mutans was recorded, but a nonsignificant trend was seen for Lactobacilli.",
+			"Significant results were also observed between follow‑ups.",
+			"[7] A statistically significant (P < 0.05) reduction of salivary mutans streptococci was registered after the 10‑day consumption of probiotic ice‑cream.",
+			"A certain decline of high mutans streptococci counts (>105) was also evident after intake of the control ice cream, but the difference compared to baseline was not statistically significant.",
+			"During the period of test product consumption, the number of subjects with high mutans streptococci counts (105 colony‑forming unit) decreased from 56% to 0.",
+			"[25] There was reduction of MS in the children who consumed probiotic ice‑cream when compared to baseline which was statistically significant (P < 0.001).",
+			"The effect of which reduced over the washout period and throughout the study period, there was constant increase of MS count in the control group who consumed normal ice cream.",
+			"There was no synergistic effect of probiotic organisms for as long as 6 months.",
+			"[26] Probiotic ice cream brought about a statistically significant reduction (P 0.003)"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_26",
+		"block_idx": 76,
+		"level": 6,
+		"page_idx": 4,
+		"sentences": ["Table 1: Risk of bias within studies ‑ Parallel trials"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_27",
+		"block_idx": 77,
+		"left": 53.88,
+		"level": 7,
+		"name": "Table 1: Risk of bias within studies ‑ Parallel trials",
+		"page_idx": 4,
+		"table_rows": [
+			{
+				"block_idx": 77,
+				"cells": [
+					{ "cell_value": "Trials", "col_span": 1 },
+					{ "cell_value": "Bias arising from", "col_span": 1 }
+				],
+				"type": "table_header"
+			},
+			{
+				"block_idx": 78,
+				"cell_value": "Parallel group trials",
+				"col_span": 7,
+				"type": "full_row"
+			},
+			{
+				"block_idx": 79,
+				"cells": [
+					{ "cell_value": "" },
+					{ "cell_value": "randomization process" },
+					{
+						"cell_value": "Bias due to deviations from intended interventions"
+					},
+					{ "cell_value": "Bias due to missing outcome" },
+					{ "cell_value": "Bias in the measurement of the outcome" },
+					{
+						"cell_value": "Bias in selection of the reported result"
+					},
+					{ "cell_value": "Overall risk of bias judgement" }
+				],
+				"type": "table_header"
+			},
+			{
+				"block_idx": 80,
+				"cells": [
+					{ "cell_value": "Nagarajappa et al., 2015[7]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 81,
+				"cells": [
+					{ "cell_value": "Ashwin et al., 2015[26]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 82,
+				"cells": [
+					{ "cell_value": "Nozari et al., 2021[29]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 83,
+				"cells": [
+					{ "cell_value": "Kuru et al., 2017[33]" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 84,
+				"cells": [
+					{ "cell_value": "Bafna et al., 2018[35]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 85,
+				"cells": [
+					{ "cell_value": "Javid et al., 2019[30]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 86,
+				"cells": [
+					{ "cell_value": "Taipale et al., 2012[36]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 87,
+				"cells": [
+					{ "cell_value": "Toiviainen et al., 2014[37]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 88,
+				"cells": [
+					{ "cell_value": "Jasberg et al., 2017[38]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 89,
+				"cells": [
+					{ "cell_value": "Alanzi et al., 2018[39]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 90,
+				"cells": [
+					{ "cell_value": "Invernici et al., 2020[40]" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 91,
+				"cells": [
+					{ "cell_value": "Gueimonde et al., 2016[41]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 92,
+				"cells": [
+					{ "cell_value": "Ishikawa et al., 2014[42]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 93,
+				"cells": [
+					{ "cell_value": "Tehrani et al., 2021[43]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 94,
+				"cells": [
+					{ "cell_value": "Jindal et al., 2011[44]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 95,
+				"cells": [
+					{ "cell_value": "Yousuf et al., 2017[45]" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Some concerns" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "High risk of bias" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 96,
+				"cell_value": "Table 2: Risk of bias within studies ‑ Crossover trials",
+				"col_span": 7,
+				"type": "full_row"
+			},
+			{
+				"block_idx": 97,
+				"cells": [
+					{ "cell_value": "Trials Bias arising from" },
+					{
+						"cell_value": "Bias arising from period and carryover effects"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "Bias in the measurement of the outcome" },
+					{
+						"cell_value": "Bias in selection of the reported result"
+					},
+					{ "cell_value": "Overall risk of bias judgement" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 98,
+				"cell_value": "Crossover trials",
+				"col_span": 7,
+				"type": "full_row"
+			},
+			{
+				"block_idx": 99,
+				"cells": [
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{
+						"cell_value": "Bias due to deviations from intended interventions"
+					},
+					{ "cell_value": "Bias due to missing outcome" },
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 100,
+				"cell_value": "randomization process",
+				"col_span": 7,
+				"type": "full_row"
+			},
+			{
+				"block_idx": 101,
+				"cells": [
+					{
+						"cell_value": "Caglar et al., 2009[25] Some concerns Some concerns Low risk of bias"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{
+						"cell_value": "Low risk of bias Some concerns Low risk of bias High risk of bias"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 102,
+				"cells": [
+					{ "cell_value": "Singh et al., 2011[27] Low risk of bias" },
+					{ "cell_value": "Some concerns Low risk of bias" },
+					{ "cell_value": "" },
+					{
+						"cell_value": "Low risk of bias Some concerns Low risk of bias Some concerns"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 103,
+				"cells": [
+					{
+						"cell_value": "Caglar et al., 2005[28] Some concerns Some concerns Low risk of bias"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{
+						"cell_value": "Low risk of bias Some concerns Low risk of bias High risk of bias"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 104,
+				"cells": [
+					{ "cell_value": "Pinto et al., 2014[31] Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{ "cell_value": "Low risk of bias" },
+					{
+						"cell_value": "Low risk of bias Some concerns Low risk of bias Some concerns"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 105,
+				"cells": [
+					{
+						"cell_value": "Caglar et al., 2014[32] Some concerns Some concerns Some concerns Low risk of bias Some concerns Low risk of bias High risk of bias Cildir et al., 2009[34] Some concerns Some concerns Low risk of bias"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{
+						"cell_value": "Low risk of bias Some concerns Low risk of bias High risk of bias"
+					},
+					{ "cell_value": "" },
+					{ "cell_value": "" },
+					{ "cell_value": "" }
+				],
+				"type": "table_data_row"
+			}
+		],
+		"tag": "table",
+		"top": 90.12
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 106,
+		"level": 5,
+		"page_idx": 4,
+		"sentences": [
+			"in salivary mutans streptococci levels with no significant effect on lactobacilli levels.",
+			"[27]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 107,
+		"level": 4,
+		"page_idx": 4,
+		"sentences": ["2) Yogurt"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 108,
+		"level": 5,
+		"page_idx": 4,
+		"sentences": [
+			"A statistically significant reduction (P < 0.05) of salivary mutans streptococci was recorded after the probiotic yogurt consumption, which was in contrast to the controls.",
+			"[28] In the case group, neither the S. mutans count nor the Lactobacilli count was significantly reduced.",
+			"However, there was a reduction in S. mutans and Lactobacillus counts in the control group.",
+			"[29] Similarly, there was no difference between the yogurt containing probiotics and the control yogurt for any of the studied variables (all P > 0.05).",
+			"A reduction in counts of total cultivable microorganisms was observed in dental plaque samples after ingestion of either yogurts (both P 0.05 vs. baseline) but not in saliva (P < 0.05).",
+			"[31] In addition, there were no statistically differences between transition scores of test and placebo groups regarding different dental plaque sampling sites (P > 0.05).",
+			"[32] No intergroup differences could be detected before and after the intake of the study products.",
+			"However, after plaque accumulation, significantly better results for all parameters could be seen in the probiotic group compared to the control group (P < 0.001): lower plaque and gingivitis scores, less bleeding on probing, less increase in GCF volume, and lower total interleukin‑1 β amount/concentration."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 109,
+		"level": 5,
+		"page_idx": 4,
+		"sentences": [
+			"[33] Daily consumption of probiotic yogurt for 2 weeks decreased the mutans streptococci counts in saliva (P < 0.05), which was in contrast to the control yogurt.",
+			"No significant alterations in the salivary lactobacilli counts were observed.",
+			"[34] A statistically 5Dental Research Journal significant reduction (P < 0.05) of salivary S. mutans was recorded after probiotic yogurt consumption with minimal residual effect in case group, which was in contrast to the controls.",
+			"[35] A significant reduction in salivary S. mutans (P = 0.001) and Lactobacillus counts (P = 0.001) was observed in the intervention group as compared to their baseline and compared to the control group.",
+			"While the reduction in S. mutans (P = 0.594) and lactobacilli (P = 0.071) was not significant in the control group after the intervention.",
+			"[30]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 110,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["3) Tablet"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 111,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"In the Bifidobacterium animalis subsp.",
+			"lactis BB‑12 (BB‑12) group, only 6.3% of the children harbored mutans streptococci at the age of 2 years.",
+			"This percentage was lower as compared to the xylitol control group (31.4%; P = 0.009) but did not differ from the sorbitol control group (10.3%; P = 0.56).",
+			"[36]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 112,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["4) Lozenges"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 113,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"The probiotic lozenge decreased both PI and GI (P < 0.05), while no changes were observed in the control group.",
+			"However, no probiotic‑induced changes were found in the microbial compositions of saliva in either group.",
+			"No study‑induced changes in the MS counts were detected either in the probiotic or the control group.",
+			"[37] In the probiotic group (n = 29), salivary MMP‑9 levels increased (P < 0.01) and TIMP‑1 levels decreased (P < 0.01) significantly during the intervention.",
+			"Furthermore, MMP‑9/ TIMP‑1 ratio differed significantly from the baseline level (P < 0.01).",
+			"Probiotic consumption did not affect the saliva flow rate.",
+			"Probiotic intervention did not affect the salivary levels of MMP‑8.",
+			"[38] A reduction in plaque index was found for both groups, with no difference observed between the groups after intervention (P = 0.819).",
+			"Probiotic lozenges significantly reduced the levels of Aggregatibacter actinomycetemcomitans and Fusobacterium nucleatum in saliva and plaque (P < 0.05) and levels of P. gingivalis in plaque (P < 0.05), while no significant changes were found in the control group.",
+			"A significant reduction (P < 0.001) was also noted in the total salivary bacterial counts of the test group.",
+			"The short‑term daily consumption of LGG and BB‑12 probiotic lozenges improved the gingival health in adolescents and decreased the microbial counts of"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 114,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"A. actinomycetemcomitans and P. gingivalis.",
+			"[39] The test group presented a decrease in probing pocket depth and a clinical attachment gain significantly higher than those of the control group at 90 days."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 115,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"The test group also demonstrated significantly fewer periodontal pathogens of red and orange complexes, as well as lower proinflammatory cytokine levels when compared to the control group.",
+			"Only the test group showed an increase in the number of Bifidobacterium animalis subsp.",
+			"lactis HN019 DNA copies on subgingival biofilm at 30 and 90 days.",
+			"The control group presented higher levels of IL‑1 β (30 and 90 days) and of IL‑8 (30 days) when compared with the test group.",
+			"[40]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 116,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["5) Chewing gum"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 117,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"However, no statistically significant differences were found between probiotic and placebo groups for any of the parameters analyzed.",
+			"[41]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 118,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["6) Capsule"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 119,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"The detection rate of Candida spp.",
+			"was 92.0% in the placebo group after the experimental period, whereas it was reduced to 16.7% in the probiotic group.",
+			"[42]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 120,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["7) Probiotic drop"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 121,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"S. mutans level decreased significantly in the probiotic group after intervention (P = 0.045), and there were significant differences in salivary SM counts after intervention between the two groups (P = 0.04).",
+			"In the probiotic group, LB counts decreased significantly after intervention (P = 0.048); however, there were no significant differences between the two groups (P = 0.216).",
+			"[43]"
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_21",
+		"block_idx": 122,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["8) Freeze dried powder"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 123,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"A statistically significant postintervention change was observed in the study groups (P < 0.001).",
+			"A significant reduction in MS counts was observed after the administration of probiotics (Group B and Group C) for 14 days.",
+			"[44] For both the probiotic groups, a statistically significant reduction (P < 0.05) in gingival status and plaque inhibition was recorded up to the 2nd week of probiotic ingestion.",
+			"However, no significant difference was observed in the placebo group.",
+			"[45]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_20",
+		"block_idx": 124,
+		"level": 4,
+		"page_idx": 5,
+		"sentences": ["Risk of bias across studies and additional analyses"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 125,
+		"level": 5,
+		"page_idx": 5,
+		"sentences": [
+			"The confidence obtained from the trials included in this study is moderate [Table 3].",
+			"[48]"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 126,
+		"level": 1,
+		"page_idx": 5,
+		"sentences": ["DISCUSSION"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 127,
+		"level": 2,
+		"page_idx": 5,
+		"sentences": ["Summary of evidence"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 128,
+		"level": 3,
+		"page_idx": 5,
+		"sentences": [
+			"Probiotic technology represents a breakthrough approach to maintaining oral health by utilizing natural beneficial bacteria commonly found in healthy mouths to provide a natural defense against those bacteria thought to be harmful to teeth and gums.",
+			"[7] Bifidobacteria have a wide commercial use and are Generally Regarded As Safe (GRAS) for use as ingredients in milk‑based infant formulas."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 129,
+		"level": 3,
+		"page_idx": 6,
+		"sentences": [
+			"[25] Bifidobacteria are the predominant anaerobic bacteria naturally occurring within the intestinal lumen and play a critical role in maintaining the equilibrium among normal intestinal flora.",
+			"[28] Acidogenic and aciduric species of dairy products can inhibit other competing organisms and make their local environment, for example, the dental plaque, even more acidic.",
+			"However, some species of Bifidobacterium may also have a role in maintaining health by promoting a microbiological balance in the oral cavity and oral defense factors, such as the peroxidase system, which may inhibit the acidogenicity of bacteria.",
+			"[33] Various clinical trials have been performed on the different forms of probiotics to check its effectiveness and substantivity in the oral cavity so that it can be used as an adjuvant in oral care measures as well as a preventive aid in the occurrence of various dental diseases.",
+			"To the best of our knowledge, studies solely focusing on the clinical effects of Bifidobacterium have not been previously summarized in an evidence‑based manner."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 130,
+		"level": 3,
+		"page_idx": 6,
+		"sentences": [
+			"Studies investigating the effect of probiotics on various microbiological parameters during the consumption of probiotics have been conflicting.",
+			"Apart from specific strains of Bifidobacterium or the mode/duration of administration, patients’ compliance could also affect the results.",
+			"Although compliance was found to be good, they were self‑reported by the participants which cannot be completely relied on.",
+			"Other factors that could have affected the reported results were dietary habits, use of antibacterial agents, cleansing the mouth after consumption of probiotic, thus washing‑out the probiotic from the mouth."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 131,
+		"level": 3,
+		"page_idx": 6,
+		"sentences": [
+			"Probiotic icecream‑containing Bifidobacterium reduced the levels of salivary mutans streptococci and a non‑significant trend was observed for Lactobacillus count.",
+			"[7,27] However, the study conducted by Caglar et al.",
+			"[25] showed the high risk of bias due to selection and performance bias.",
+			"Hence the results from that study are not reliable.",
+			"All the studies using ice cream as a vehicle of probiotic delivery showed the moderate quality of evidence.",
+			"[7‑27] In yogurt containing Bifidobacterium, there was a significant reduction of salivary mutans streptococci.",
+			"However, there was selection and performance bias.",
+			"[28] On contrary, S. mutans and Lactobacillus count did not reduce in the case group; however, there was a significant reduction in the control group.",
+			"This study had inadequate information regarding randomization process and blinding, leading to selection bias.",
+			"Performance bias was also encountered.",
+			"[29] Both the studies showed high risk of bias.",
+			"Furthermore, the study conducted by Pinto et al.",
+			"[31] showed a reduction in the counts of total cultivable microorganisms in the dental plaque in both the control and the case groups, which implied that daily ingestion of yogurt with or without Bifidobacterium reduced the total microbial count, and this study showed some concerns of bias.",
+			"Similar study conducted by Caglar.",
+			"[32] showed no statistical significance in the reduction of salivary mutans streptococci in the dental plaque sample.",
+			"This study also had inadequate information regarding the"
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_26",
+		"block_idx": 132,
+		"level": 4,
+		"page_idx": 6,
+		"sentences": ["Table 3: Quality of available evidence"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_27",
+		"block_idx": 133,
+		"left": 53.88,
+		"level": 5,
+		"name": "Table 3: Quality of available evidence",
+		"page_idx": 6,
+		"table_rows": [
+			{
+				"block_idx": 133,
+				"cells": [
+					{ "cell_value": "Study", "col_span": 1 },
+					{ "cell_value": "Risk of bias", "col_span": 1 },
+					{
+						"cell_value": "Inconsistency Indirectness",
+						"col_span": 2
+					},
+					{ "cell_value": "Imprecision Others", "col_span": 2 },
+					{
+						"cell_value": "No of patients Probiotic control",
+						"col_span": 2
+					},
+					{ "cell_value": "Effect", "col_span": 1 },
+					{ "cell_value": "Quality", "col_span": 0 }
+				],
+				"type": "table_header"
+			},
+			{
+				"block_idx": 134,
+				"cells": [
+					{ "cell_value": "Ice cream" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "107 107" },
+					{ "cell_value": "No difference" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_header"
+			},
+			{
+				"block_idx": 135,
+				"cells": [
+					{ "cell_value": "Yogurt" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "241 238" },
+					{ "cell_value": "Difference present" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 136,
+				"cells": [
+					{ "cell_value": "Tablet" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "No serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "32 64" },
+					{ "cell_value": "No difference" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 137,
+				"cells": [
+					{ "cell_value": "Lozenges" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "127 111" },
+					{ "cell_value": "No difference" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 138,
+				"cells": [
+					{ "cell_value": "Chewing gum" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "17 19" },
+					{ "cell_value": "No difference" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 139,
+				"cells": [
+					{ "cell_value": "Capsule" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "30 29" },
+					{ "cell_value": "No difference" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_data_row"
+			},
+			{
+				"block_idx": 140,
+				"cells": [
+					{ "cell_value": "Drop" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Not serious" },
+					{ "cell_value": "Serious" },
+					{ "cell_value": "None" },
+					{ "cell_value": "30" },
+					{ "cell_value": "No difference" },
+					{ "cell_value": "Moderate" }
+				],
+				"type": "table_data_row"
+			}
+		],
+		"tag": "table",
+		"top": 556.65
+	},
+	{
+		"block_class": "cls_2",
+		"block_idx": 141,
+		"level": 5,
+		"page_idx": 6,
+		"sentences": ["7Dental Research Journal"],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 142,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"randomization process and blinding.",
+			"Performance bias was encountered giving rise to a high risk of bias.",
+			"A study conducted by Kuru et al.",
+			"[33] showed lower plaque and gingivitis scores, less bleeding on probing, less increase in GCF volume and lower total interleukin‑1B amount/concentration with some concerns of bias.",
+			"Similar to ice cream‑containing probiotic, a study conducted by Cildir et al.",
+			"[34] showed a reduction in the levels of salivary mutans streptocooci and not Lactobacillus.",
+			"However, there was the selection and performance bias giving rise to a high risk of bias in this study.",
+			"A study conducted by Bafna et al.",
+			"[35] showed a reduction in mutans streptococci with minimal residual effect and the result had some concerns of bias.",
+			"A study conducted by Zare Javid et al.",
+			"[30] showed a significant reduction in both S. mutans and Lactobacillus count.",
+			"However, participants were aware of their assigned intervention during the trial, and hence, high risk of bias is anticipated.",
+			"All the studies using yogurt as a vehicle of probiotic delivery showed either high risk or some concerns of bias and hence the results obtained from these studies are either not reliable or questionable."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 143,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"A study conducted by Taipale et al.",
+			"[36] concluded that when Bifidobacterium administered in the form of a tablet in newborns, it did not result in permanent colonization of this probiotic or significantly affect the levels of mutans streptococci colonization.",
+			"Only one study was conducted using probiotic tablet.",
+			"This study had inadequate information regarding the blinding of the participants and outcome assessors, and thus, the result obtained is questionable, giving rise to high risk of bias and moderate quality of available evidence."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 144,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"The use of probiotic lozenge by Toiviainen et al.",
+			"[37] showed improved periodontal status without affecting the oral microbiota and adhesion properties of plaque.",
+			"Another study conducted by Jäsberg et al.",
+			"[38] showed increased MMP‑9 and decreased TIMP‑1 levels in saliva, suggesting immunomodulatory effects in the oral cavity.",
+			"However, both the studies had some concerns of bias arising from the randomization process as well has inadequate information on blinding of the study participants and outcome assessors, giving rise to a high risk of bias.",
+			"Hence, the results are questionable.",
+			"Alanzi et al.",
+			"[39] suggested the use of lozenges as a simple adjunct to standard oral care, but the results had some concerns of bias.",
+			"The overall quality of available evidence is moderate.",
+			"Invernici et al.",
+			"[40] suggested the use of B. lactis HN019 as an adjunct to SRP for promoting additional clinical, microbiological, and immunological benefits in the treatment of chronic periodontitis Only one study was conducted using probiotic chewing gums by Gueimonde et al.",
+			"[41] which concluded a positive impact on the salivary flow rate, salivary pH, and IgA levels with or without the use of Bifidobacterium probiotic.",
+			"This result is questionable because of inadequate information regarding the blinding of the participants and outcome assessors.",
+			"Hence, this study had a high risk of bias as well as the moderate quality of available evidence."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 145,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"A study conducted by Ishikawa et al.",
+			"[42] using probiotic capsules, concluded that there was the reduction in the colonization of Candida species, suggesting the use of probiotics as an alternative treatment in elderly denture wearers.",
+			"This result is also questionable because of the high risk of bias due to inadequate information on the awareness of participants and outcome assessors of their assigned intervention during the trial and moderate quality of available evidence."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 146,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"A study conducted by Tehrani et al.",
+			"[43] on probiotic drop decreased salivary counts of mutans streptococci and Lactobacillus in children with higher salivary counts.",
+			"There were some concerns of bias and moderate quality of available evidence in this study, so the results obtained are questionable."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 147,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"Studies done by Jindal et al.",
+			"[44] and Yousuf et al.",
+			"[45] showed that freeze‑dried probiotic powder reduced Mutans streptococci count and improved gingival status and plaque inhibition, respectively.",
+			"Both the studies have not mentioned whether the participants, as well as carers and people delivering the interventions, were aware of the assigned intervention during the trial or not, giving rise to high risk of bias and moderate quality of available evidence.",
+			"Hence, the reliability of these studies is questionable."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 148,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"Overall, the risk of bias for all the studies included in this review ranged from some concerns to high risk and the quality of available evidence was also moderate."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 149,
+		"level": 2,
+		"page_idx": 7,
+		"sentences": ["Strengths and limitations"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 150,
+		"level": 3,
+		"page_idx": 7,
+		"sentences": [
+			"RCTs represent the highest level of evidence in health care interventions, and we adhered to the well‑established guidelines in this review.",
+			"As to our knowledge, there has been no systematic review done so far to evaluate the clinical effectiveness of Bifidobacterium as a probiotic in oral health care.",
+			"The search did not have any restrictions on languages or publication date and was extensive.",
+			"The studies that were included in this review did pose some limitations.",
+			"The strains of Bifidobacterium used, its dosage, duration, mode of administration differed among studies.",
+			"Majority of the studies had recruited less participants, which can pose a threat to the precision as well as reduce the generalizability of the results retrieved."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 151,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["Recommendations for future research"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 152,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"The proven effects of probiotics on general health have led to more research in the oral health field.",
+			"Its antimicrobial and immune‑modulating ability provides a new therapeutic approach for preventing infectious disease.",
+			"[40] Although there are various studies on probiotics done so far, further researches are needed to conclude the optimum level of probiotic required and the ideal mode of administration to maximize the use of probiotic in preventing oral diseases.",
+			"It is also essential to evaluate the effects of using a single strain as well as the synergistic effect of combining multiple species of probiotics into a single entity."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 153,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Future researches have to be carried out with a larger sample size so that it can be extrapolated, long duration of interventions assessing the long‑term effects of probiotic use, washout period extending more than 2 weeks in case of cross‑over trials, combinations of probiotic strains so that it provides additional benefits on oral health."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 154,
+		"level": 1,
+		"page_idx": 8,
+		"sentences": ["CONCLUSION"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 155,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"To conclude, from the evidences available from these trials, the effect of Bifidobacterium in oral health is questionable.",
+			"Further high‑quality RCTs are required on the clinical effects of Bifidobacteria and also the optimum level of probiotic needed, ideal mode of administration to provide oral health benefits.",
+			"Furthermore, synergistic effects of the combined use of various strains of probiotics need to be studied."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 156,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["Financial support and sponsorship"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 157,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": ["Nil."],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_19",
+		"block_idx": 158,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["Conflicts of interest"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_12",
+		"block_idx": 159,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"The authors of this manuscript declare that they have no conflicts of interest, real or perceived, financial or nonfinancial in this article."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_11",
+		"block_idx": 160,
+		"level": 1,
+		"page_idx": 8,
+		"sentences": ["REFERENCES"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 161,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["1. FAO/WHO"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 162,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Report of a Joint FAO/WHO Expert consultation on evaluation of Health and Nutritional Properties of Probiotics in Food including Powder Milk with Live Lactic Acid Bacteria."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 163,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Cordoba, Argentina.",
+			"2001.",
+			"October 1‑4.",
+			"Accessed from:http:// who.int/foodsafety/fs_management/ en/probiotic_guidelines.",
+			"pdf.",
+			"[Last accessed on 2022 Jan 01]."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 164,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["2. FAO/WHO"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 165,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Joint FAO/WHO Working Group Report on Drafting Guidelines for the Evaluation of Probiotics in Food.",
+			"London, Ontario, Canada.",
+			"2002.",
+			"April 30 and May 1.",
+			"Available from: http://www.who.int/foodsafety/publications/fs_management/ probiotics2/en/ [Last accessed on 2022 Jan 01]."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 166,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["3. Fuller R, Gibson GR"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 167,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Modification of the intestinal microflora using probiotics and prebiotics.",
+			"Scand J Gastroenterol Suppl 1997;222:28‑31."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 168,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": ["4. Haukioja A"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 169,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Probiotics and oral health.",
+			"Eur J Dent 2010;4:348‑55."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 170,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"5. Teughels W, Van Essche M, Sliepen I, Quirynen M. Probiotics and oral healthcare.",
+			"Periodontol 2000 2008;48:111‑47."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 171,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"6. Reid G, Jass J, Sebulsky MT, McCormick JK.",
+			"Potential uses of probiotics in clinical practice.",
+			"Clin Microbiol Rev 2003;16:658‑72."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 172,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"7. Nagarajappa R, Daryani H, Sharda AJ, Asawa K, Batra M, Sanadhya S, et al.",
+			"Effect of Chocobar ice cream containing Bifidobacterium on salivary Streptococcus mutans and lactobacilli: A randomised controlled trial.",
+			"Oral Health Prev Dent 2015;13:213‑8."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 173,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"8. Haukioja A, Loimaranta V, Tenovuo J. Probiotic bacteria affect the composition of salivary pellicle and streptococcal adhesion in vitro.",
+			"Oral Microbiol Immunol 2008;23:336‑43."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 174,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"9. Chen YT, Hsieh PS, Ho HH, Hsieh SH, Kuo YW, Yang SF, et al."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 175,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": [
+			"Antibacterial activity of viable and heat‑killed probiotic strains against oral pathogens.",
+			"Lett Appl Microbiol 2020;70:310‑7."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 176,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"10.",
+			"Wang L, Vuletic I, Deng D, Crielaard W, Xie Z, Zhou K, et al.",
+			"Bifidobacterium breve as a delivery vector of IL‑24 gene therapy for head and neck squamous cell carcinoma in vivo.",
+			"Gene Ther 2017;24:699‑705."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 177,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"11.",
+			"Shimabukuro N, Cataruci AC, Ishikawa KH, de Oliveira BE, Kawamoto D, Ando‑Suguimoto ES, et al.",
+			"Bifidobacterium strains present distinct effects on the control of alveolar bone loss in a periodontitis experimental model.",
+			"Front Pharmacol 2021;12:713595."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 178,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"12.",
+			"Silva GA, Moreira AL, Silva PH, Salvador SL, Casarin RC, Vicente RM, et al.",
+			"The use of probiotics can reduce the severity of experimental periodontitis in rats with metabolic syndrome: An immunoenzymatic and microtomographic study.",
+			"J Periodontol 2022;93:e1‑12."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 179,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"13.",
+			"Schwendicke F, Horb K, Kneist S, Dörfer C, Paris S. Effects of heat‑inactivated Bifidobacterium BB12 on cariogenicity of Streptococcus mutans in vitro.",
+			"Arch Oral Biol 2014;59:1384‑90."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 180,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"14.",
+			"Jäsberg H, Söderling E, Endo A, Beighton D, Haukioja A. Bifidobacteria inhibit the growth of Porphyromonas gingivalis but not of Streptococcus mutans in an in vitro biofilm model.",
+			"Eur J Oral Sci 2016;124:251‑8."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 181,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"15.",
+			"Ricoldi MS, Furlaneto FA, Oliveira LF, Teixeira GC, Pischiotini JP, Moreira AL, et al.",
+			"Effects of the probiotic Bifidobacterium animalis subsp.",
+			"lactis on the non‑surgical treatment of periodontitis.",
+			"A histomorphometric, microtomographic and immunohistochemical study in rats.",
+			"PLoS One 2017;12:e0179946."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 182,
+		"level": 2,
+		"page_idx": 8,
+		"sentences": [
+			"16.",
+			"Haukioja A, Yli‑Knuuttila H, Loimaranta V, Kari K, Ouwehand AC, Meurman JH, et al.",
+			"Oral adhesion and survival of probiotic and other lactobacilli and bifidobacteria in vitro."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_2",
+		"block_idx": 183,
+		"level": 3,
+		"page_idx": 8,
+		"sentences": ["9Dental Research Journal"],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 184,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": ["Oral Microbiol Immunol 2006;21:326‑32."],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 185,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"17.",
+			"Argandoña Valdez RM, Ximenez‑Fyvie LA, Caiaffa KS, Rodrigues Dos Santos V, Gonzales Cervantes RM, Almaguer‑Flores A, et al.",
+			"Antagonist effect of probiotic bifidobacteria on biofilms of pathogens associated with periodontal disease.",
+			"Microb Pathog 2021;150:104657."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 186,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"18.",
+			"Bohora AA, Kokate SR, Khedkar S, Vankudre A. Antimicrobial activity of probiotics against endodontic pathogens: A preliminary study.",
+			"Indian J Med Microbiol 2019;37:5‑11."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 187,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": ["19. Mendi A, Aslım B"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 188,
+		"level": 4,
+		"page_idx": 9,
+		"sentences": [
+			"Antioxidant lactobacilli could protect gingival fibroblasts against hydrogen peroxide: A preliminary in vitro study.",
+			"Probiotics Antimicrob Proteins 2014;6:157‑64."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 189,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"20.",
+			"Albuquerque‑Souza E, Balzarini D, Ando‑Suguimoto ES, Ishikawa KH, Simionato MR, Holzhausen M, et al.",
+			"Probiotics alter the immune response of gingival epithelial cells challenged by Porphyromonas gingivalis.",
+			"J Periodontal Res 2019;54:115‑27."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 190,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": ["21. Bohora A, Kokate S"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 191,
+		"level": 4,
+		"page_idx": 9,
+		"sentences": [
+			"Evaluation of the role of probiotics in endodontic treatment: A preliminary study.",
+			"J Int Soc Prev Community Dent 2017;7:46‑51."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 192,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"22.",
+			"Cardoso RS, Messora MR, Silva PH, Oliveira LF, Leite‑Panissi C, Salvador S, et al.",
+			"Effects of Bifidobacterium animalis subsp.",
+			"lactis HN019 on ligature‑induced periodontitis in rats with experimental rheumatoid arthritis.",
+			"Benef Microbes 2020;11:33‑46."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 193,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"23.",
+			"Moher D, Liberati A, Tetzlaff J, Altman DG, PRISMA Group.",
+			"Preferred reporting items for systematic reviews and meta‑analyses: The PRISMA statement.",
+			"J Clin Epidemiol 2009;62:1006‑12."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 194,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"24.",
+			"Liberati A, Altman DG, Tetzlaff J, Mulrow C, Gøtzsche PC, Ioannidis JP, et al.",
+			"The PRISMA statement for reporting systematic reviews and meta‑analyses of studies that evaluate health care interventions: Explanation and elaboration.",
+			"J Clin Epidemiol 2009;62:e1‑34."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 195,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"25.",
+			"Caglar E, Kuscu OO, Selvi Kuvvetli S, Kavaloglu Cildir S, Sandalli N, Twetman S. Short‑term effect of ice‑cream containing Bifidobacterium lactis Bb‑12 on the number of salivary mutans streptococci and lactobacilli.",
+			"Acta Odontol Scand 2008;66:154‑8."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 196,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"26.",
+			"Ashwin D, Ke V, Taranath M, Ramagoni NK, Nara A, Sarpangala M. Effect of probiotic containing ice‑cream on salivary mutans streptococci (SMS) levels in children of 6‑12 years of age: A randomized controlled double blind study with six‑months follow up.",
+			"J Clin Diagn Res 2015;9:ZC06‑9."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 197,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"27.",
+			"Singh RP, Damle SG, Chawla A. Salivary mutans streptococci and lactobacilli modulations in young children on consumption of probiotic ice‑cream containing Bifidobacterium lactis Bb12 and Lactobacillus acidophilus La5.",
+			"Acta Odontol Scand 2011;69:389‑94."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 198,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"28.",
+			"Caglar E, Sandalli N, Twetman S, Kavaloglu S, Ergeneli S, Selvi S. Effect of yogurt with Bifidobacterium DN‑173 010 on salivary mutans streptococci and lactobacilli in young adults.",
+			"Acta Odontol Scand 2005;63:317‑20."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 199,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"29.",
+			"Nozari A, Motamedifar M, Seifi N, Hatamizargaran Z, Ranjbar MA.",
+			"The effect of Iranian customary used probiotic yogurt on the children’s salivary cariogenic microflora.",
+			"J Dent (Shiraz) 2015;16:81‑6."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 200,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"30.",
+			"Zare Javid A, Amerian E, Basir L, Ekrami A, Haghighizadeh MH, Maghsoumi‑Norouzabad L. Effects of the consumption of"
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 201,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"probiotic yogurt containing Bifidobacterium lactis Bb12 on the levels of Streptococcus mutans and Lactobacilli in saliva of students with initial stages of dental caries: A double‑blind randomized controlled trial.",
+			"Caries Res 2020;54:68‑74."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 202,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"31.",
+			"Pinto GS, Cenci MS, Azevedo MS, Epifanio M, Jones MH.",
+			"Effect of yogurt containing Bifidobacterium animalis subsp.",
+			"lactis DN‑173010 probiotic on dental plaque and saliva in orthodontic patients.",
+			"Caries Res 2014;48:63‑8."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 203,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": ["32. Caglar E"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 204,
+		"level": 4,
+		"page_idx": 9,
+		"sentences": [
+			"Effect of Bifidobacterium bifidum containing yoghurt on dental plaque bacteria in children.",
+			"J Clin Pediatr Dent 2014;38:329‑32."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 205,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"33.",
+			"Kuru BE, Laleman I, Yalnızoğlu T, Kuru L, Teughels W. The influence of a Bifidobacterium animalis probiotic on gingival health: A randomized controlled clinical trial.",
+			"J Periodontol 2017;88:1115‑23."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 206,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"34.",
+			"Cildir SK, Germec D, Sandalli N, Ozdemir FI, Arun T, Twetman S, et al.",
+			"Reduction of salivary mutans streptococci in orthodontic patients during daily consumption of yoghurt containing probiotic bacteria.",
+			"Eur J Orthod 2009;31:407‑11."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 207,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"35.",
+			"Bafna HP, Ajithkrishnan CG, Kalantharakath T, Singh RP, Kalyan P, Vathar JB, et al.",
+			"Effect of short‑term consumption of amul probiotic yogurt containing Lactobacillus acidophilus La5 and Bifidobacterium lactis Bb12 on salivary Streptococcus mutans count in high caries risk individuals.",
+			"Int J Appl Basic Med Res 2018;8:111‑5."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 208,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"36.",
+			"Taipale T, Pienihäkkinen K, Salminen S, Jokela J, Söderling E. Bifidobacterium animalis subsp.",
+			"lactis BB‑12 administration in early childhood: A randomized clinical trial of effects on oral colonization by mutans streptococci and the probiotic.",
+			"Caries Res 2012;46:69‑77."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 209,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"37.",
+			"Toiviainen A, Jalasvuori H, Lahti E, Gursoy U, Salminen S, Fontana M, et al.",
+			"Impact of orally administered lozenges with Lactobacillus rhamnosus GG and Bifidobacterium animalis subsp.",
+			"lactis BB‑12 on the number of salivary mutans streptococci, amount of plaque, gingival inflammation and the oral microbiome in healthy adults.",
+			"Clin Oral Investig 2015;19:77‑83."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 210,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"38.",
+			"Jäsberg H, Tervahartiala T, Sorsa T, Söderling E, Haukioja A. Probiotic intervention influences the salivary levels of Matrix Metalloproteinase (MMP)‑9 and Tissue Inhibitor of metalloproteinases (TIMP)‑1 in healthy adults.",
+			"Arch Oral Biol 2018;85:58‑63."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 211,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"39.",
+			"Alanzi A, Honkala S, Honkala E, Varghese A, Tolvanen M, Söderling E. Effect of Lactobacillus rhamnosus and Bifidobacterium lactis on gingival health, dental plaque, and periodontopathogens in adolescents: A randomised placebo‑controlled clinical trial.",
+			"Benef Microbes 2018;9:593‑602."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 212,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"40.",
+			"Invernici MM, Furlaneto FA, Salvador SL, Ouwehand AC, Salminen S, Mantziari A, et al.",
+			"Bifidobacterium animalis subsp lactis HN019 presents antimicrobial potential against periodontopathogens and modulates the immunological response of oral mucosa in periodontitis patients.",
+			"PLoS One 2020;15:e0238425."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 213,
+		"level": 2,
+		"page_idx": 9,
+		"sentences": [
+			"41.",
+			"Gueimonde L, Vesterlund S, García‑Pola MJ, Gueimonde M, Söderling E, Salminen S. Supplementation of xylitol‑containing chewing gum with probiotics: A double blind, randomised pilot study focusing on saliva flow and saliva properties.",
+			"Food Funct 2016;7:1601‑9."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 214,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"42.",
+			"Ishikawa KH, Mayer MP, Miyazima TY, Matsubara VH, Silva EG, Paula CR, et al.",
+			"A multispecies probiotic reduces oral Candida colonization in denture wearers.",
+			"J Prosthodont 2015;24:194‑9."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 215,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"43.",
+			"Tehrani MH, Akhlaghi N, Talebian L, Emami J, Keyhani SE.",
+			"Effects of probiotic drop containing Lactobacillus rhamnosus, Bifidobacterium infantis, and Lactobacillus reuteri on salivary Streptococcus mutans and Lactobacillus levels.",
+			"Contemp Clin Dent 2016;7:469‑74."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 216,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"44.",
+			"Jindal G, Pandey RK, Agarwal J, Singh M. A comparative evaluation of probiotics on salivary mutans streptococci counts in Indian children.",
+			"Eur Arch Paediatr Dent 2011;12:211‑5."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 217,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"45.",
+			"Yousuf A, Sidiq M, Ganta S, Nagaraj A, Vishnani P, Jan I. Effect"
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_2",
+		"block_idx": 218,
+		"level": 4,
+		"page_idx": 10,
+		"sentences": ["11Dental Research Journal"],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 219,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"of freeze dried powdered probiotics on gingival status and plaque inhibition: A randomized, double‑blind, parallel study.",
+			"Contemp Clin Dent 2017;8:116‑21."
+		],
+		"tag": "para"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 220,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"46.",
+			"Higgins JPT, Thomas J, Chandler J, Cumpston M, Li T, Page MJ et al.",
+			"Cochrane handbook for systematic reviews of interventions.",
+			"wiley, 2019.",
+			"694 p. doi: 10.1002/9781119536604."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 221,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": [
+			"47.",
+			"Higgins JP, Altman DG, Gøtzsche PC, Jüni P, Moher D, Oxman AD, et al; Cochrane Bias Methods Group; Cochrane Statistical Methods Group.",
+			"The Cochrane Collaboration's tool for assessing risk of bias in randomised trials.",
+			"BMJ.",
+			"2011;343:d5928."
+		],
+		"tag": "list_item"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 222,
+		"level": 2,
+		"page_idx": 10,
+		"sentences": ["48. Ryan, R"],
+		"tag": "header"
+	},
+	{
+		"block_class": "cls_31",
+		"block_idx": 223,
+		"level": 4,
+		"page_idx": 10,
+		"sentences": [
+			"and Hill, S. How to GRADE the Quality of the Evidence.",
+			"Cochrane Consumers and Communication Group.",
+			"2016.",
+			"Available from: http://cccrg.cochrane.org/author‑resources.",
+			"Version 3.0.",
+			"[Last accessed on 2022 Jan 02]."
+		],
+		"tag": "para"
+	}
+]

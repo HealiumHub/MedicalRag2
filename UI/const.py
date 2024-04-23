@@ -1,0 +1,34 @@
+MODELS = [
+    "gpt-3.5-turbo-0125",
+    "gemma:2b",
+    "gemma:2b-instruct",
+    "gemma:7b-instruct",
+    "gemma:latest",
+    "gpt-4-0125-preview",
+    # 'claude-3-opus-20240229',
+    # 'claude-3-sonnet-20240229',
+    # 'claude-3-haiku-20240307',
+    # 'gemini-1.0-pro',
+    # 'gemini-1.5-pro (Not Supported)',
+    # 'mixtral-8x7b-32768',
+    # 'llama2-70b-4096'
+]
+
+MAX_OUTPUT = 1200
+
+MODEL_CONTEXT_LENGTH = {
+    "gemma:2b": 8192,
+    "gemma:2b-instruct": 8192,
+    "gemma:7b-instruct": 8192,
+    "gemma:latest": 8192,
+    "gpt-3.5-turbo-0125": 16385,
+    "gpt-4-0125-preview": 128000,
+    "claude-3-opus-20240229": 200000,
+    "claude-3-sonnet-20240229": 200000,
+    "claude-3-haiku-20240307": 200000,
+    "gemini-1.0-pro": 30720,
+    "gemini-1.5-pro (Not Supported)": 1000000,
+    "gemma-7b-it": 8192,
+    "mixtral-8x7b-32768": 32768,
+    "llama2-70b-4096": 4096,
+}
