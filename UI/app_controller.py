@@ -1,4 +1,7 @@
+from ast import arg
+from concurrent.futures import thread
 import threading
+from responses import target
 import streamlit as st
 
 from typing import Optional
@@ -6,7 +9,7 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 from langchain.callbacks.base import BaseCallbackHandler
 
 
-from const import MODELS
+from const import MODEL_CONTEXT_LENGTH, MODELS
 from models.types import Chat, Message, RoleEnum
 from retrievals.retrieval import DeepRetrievalApi
 from generations.completion import Citation, QuotedAnswer, get_answer_with_context
@@ -15,6 +18,7 @@ from generations.completion import Citation, QuotedAnswer, get_answer_with_conte
 class AppController:
     chats: list[Chat]
     active_chat_idx: int
+    selected_model: str
 
     def __init__(self):
         self.__config()
@@ -37,9 +41,6 @@ class AppController:
 
     def __render(self):
         self.__render_sidebar()
-        self.__render_main()
-
-    def __render_main(self):
         self.__render_history()
         self.__render_chat()
 
@@ -76,6 +77,45 @@ class AppController:
                     )
                 )
                 st.session_state.chats = self.chats
+            with st.spinner("Please wait, I'm searching for references... :eyes:"):
+                stop_event = threading.Event()
+                thread = ReturnValueThread(
+                    target=DeepRetrievalApi().search, args=(user_query,)
+                )
+                add_script_run_ctx(thread)
+                thread.start()
+                thread.join()
+                stop_event.set()
+
+                try:
+                    related_articles = thread.result
+                except Exception as e:
+                    related_articles = [], ""
+                    st.error("Error happened when searching for docs.")
+            with st.spinner("I'm thinking..."):
+                with st.chat_message(RoleEnum.assistant):
+                    chat_box = st.markdown("")
+                    stream_handler = StreamHandler(chat_box)
+                    try:
+                        stop_event = threading.Event()
+                        thread = ReturnValueThread(
+                            target=get_answer_with_context,
+                            args=(
+                                user_query,
+                                self.selected_model,
+                                related_articles,
+                                stream_handler,
+                            ),
+                        )
+                        add_script_run_ctx(thread)
+                        thread.start()
+                        thread.join()
+                        stop_event.set()
+                        completion = thread.result
+                    except Exception as e:
+                        completion = "Error happened when generating completion."
+                        st.error(completion)
+                    st.balloons()
 
     def __render_sidebar(self):
         with st.sidebar:
@@ -86,7 +126,7 @@ class AppController:
                 """
             )
             st.divider()
-            selected_model = st.selectbox(
+            self.selected_model = st.selectbox(
                 label="Choose LLM model",
                 options=MODELS,
                 label_visibility="collapsed",
@@ -125,3 +165,88 @@ class ReturnValueThread(threading.Thread):
 
     def run(self):
         self.result = self._target(*self._args, **self._kwargs)
+
+
+class StreamHandler(BaseCallbackHandler):
+    def __init__(self, container, initial_text="", display_method="markdown"):
+        self.container = container
+        self.display_text = initial_text
+        self.display_method = display_method
+        self.text_so_far = ""
+
+    def _get_value_of_key_in_streaming_json(
+        self, key: str, stream: str
+    ) -> Optional[str]:
+        """
+        Given an incomplete json string, try to grab the content of a key (first order only, not nested).
+        This can be used recursively to get nested keys.
+        Inputs can be : {"answer": "The answer is 42", "citations": [ ...]}
+        OR [{"file_name": "123", "quote_in_source": "The answer is 42", "quote_in_answer": "The answer is 42"}, ...]
+        """
+        END_QUOTE_MAP = {
+            '"': '"',
+            "'": "'",
+            "{": "}",
+            "[": "]",
+        }
+
+        first_index = stream.find(f'"{key}": ') + len(f'"{key}": ')
+        if first_index == -1:
+            return None
+
+        # This can be ' or " or { or [
+        opening_quote = stream[first_index]
+        if opening_quote != "[":
+            opening_quote = '"'
+
+        end_quote = END_QUOTE_MAP[opening_quote]
+        end_index = stream.find(end_quote, first_index + 1)
+        if end_index == -1:
+            end_index = len(stream)
+
+        return stream[first_index:end_index]
+
+    def on_llm_new_token(self, token: str, **kwargs) -> None:
+        self.text_so_far += token
+        print("debug", self.text_so_far)
+
+        # For structured JSON output, only start display when the key we are looking for is found.
+        # it stops when that key's value is finished.
+        # {
+        #     "answer": "The answer is 42", <-- only show this
+        #     "citations": [ ...]
+        # }
+        answer = self._get_value_of_key_in_streaming_json("answer", self.text_so_far)
+        citation_string = self._get_value_of_key_in_streaming_json(
+            "citations", self.text_so_far
+        )
+        individual_citations = (
+            citation_string.split("},") if citation_string is not None else []
+        )
+        print(individual_citations)
+
+        citation_list = []
+        for i, c in enumerate(individual_citations):
+            citation = Citation(
+                file_name=self._get_value_of_key_in_streaming_json("file_name", c),
+                quote_in_source=self._get_value_of_key_in_streaming_json(
+                    "quote_in_source", c
+                ),
+                quote_in_answer=self._get_value_of_key_in_streaming_json(
+                    "quote_in_answer", c
+                ),
+            )
+            citation_list.append(citation)
+            print(f"Citation {i+1}: {citation}")
+
+        response_model = QuotedAnswer(answer=answer, citations=citation_list)
+
+        # The extracted text.
+        self.display_text = str(response_model)
+
+        # Render
+        display_function = getattr(self.container, self.display_method, None)
+        if display_function is not None:
+            display_function(self.display_text)
+        else:
+            raise ValueError(f"Invalid display_method: {self.display_method}")

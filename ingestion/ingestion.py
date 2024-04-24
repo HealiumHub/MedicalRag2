@@ -101,11 +101,17 @@ class Ingestion:
         db = chromadb.PersistentClient(path=self.CHROMA_PATH)
         chroma_collection = db.get_or_create_collection(db_name)
         vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-        storage_context = StorageContext.from_defaults(
-            persist_dir=self.CHROMA_PATH, vector_store=vector_store
-        )
-        index = load_index_from_storage(storage_context)
+        index = VectorStoreIndex.from_vector_store(vector_store)
         return index
+
+        # db = chromadb.PersistentClient(path=self.CHROMA_PATH)
+        # chroma_collection = db.get_or_create_collection(db_name)
+        # vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+        # storage_context = StorageContext.from_defaults(
+        #     persist_dir=self.CHROMA_PATH, vector_store=vector_store
+        # )
+        # index = load_index_from_storage(storage_context)
+        # return index
 
     def clear_database(self):
         if os.path.exists(self.CHROMA_PATH):

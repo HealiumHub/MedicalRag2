@@ -40,46 +40,24 @@ class QuotedAnswer(BaseModel):
         ...,
         description="The answer to the user question, which is based on the given sources.",
     )
-    # citations: List[Citation] = Field(
-    #     ..., description="Citations from the given sources that justify the answer."
-    # )
+    citations: List[Citation] = Field(
+        ..., description="Citations from the given sources that justify the answer."
+    )
 
     def __str__(self):
         # Format the answer to display to user.
         answer = self.answer
 
-        # for i, citation in enumerate(self.citations):
-        #     # Insert [1], [2], [3], ... to the answer.
-        #     insert_index = answer.find(citation.quote_in_answer) + len(
-        #         citation.quote_in_answer
-        #     )
-        #     answer = answer[:insert_index] + f" [{i+1}] " + answer[insert_index:]
+        for i, citation in enumerate(self.citations):
+            # Insert [1], [2], [3], ... to the answer.
+            insert_index = answer.find(citation.quote_in_answer) + len(
+                citation.quote_in_answer
+            )
+            answer = answer[:insert_index] + f" [{i+1}] " + answer[insert_index:]
 
-        #     answer += f"\n\n[{i+1}] from [{citation.file_name}.pdf](): \n> {citation.quote_in_source}"
+            answer += f"\n\n[{i+1}] from [{citation.file_name}.pdf](): \n> {citation.quote_in_source}"
 
         return answer
-
-
-def transform_to_chat_messages(messages):
-    """Transforms a list of messages to a list of ChatMessage objects."""
-
-    # Assistant: AIMessage
-    # User: HumanMessage
-    # System: SystemMessage
-    res = []
-    for msg in messages:
-        # [{'type': 'text', 'text': {'value': completion}}]
-        content = msg["content"][0]["text"]["value"]
-        if content is None:
-            continue
-
-        if msg["role"] == "assistant":
-            res.append(ChatMessage(content=content, role="assistant"))
-        elif msg["role"] == "user":
-            res.append(HumanMessage(content=content))
-        elif msg["role"] == "system":
-            res.append(SystemMessage(content=content))
-    return res
 
 
 def get_answer_with_context(
@@ -158,20 +136,20 @@ def get_answer_with_context(
 
     # chain = model | StrOutputParser()
     chain = model | parser
-    st.session_state.messages.extend(
-        [
-            {
-                "role": "system",
-                "content": [{"type": "text", "text": {"value": system_prompt}}],
-            },
-            {
-                "role": "user",
-                "content": [  # push in the query for display, NOT the actual prompt passed to LLM.
-                    {"type": "text", "text": {"value": query}}
-                ],
-            },
-        ]
-    )
+    # st.session_state.messages.extend(
+    #     [
+    #         {
+    #             "role": "system",
+    #             "content": [{"type": "text", "text": {"value": system_prompt}}],
+    #         },
+    #         {
+    #             "role": "user",
+    #             "content": [  # push in the query for display, NOT the actual prompt passed to LLM.
+    #                 {"type": "text", "text": {"value": query}}
+    #             ],
+    #         },
+    #     ]
+    # )
 
     answer = chain.invoke(messages)
     # print(answer.citations)
