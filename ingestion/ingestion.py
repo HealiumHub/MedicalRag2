@@ -5,7 +5,7 @@ import shutil
 from typing import Sequence
 import chromadb
 
-from llama_index.core import Settings
+from llama_index.core import Settings, load_index_from_storage
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.schema import BaseNode, Document
 from llama_index.core import VectorStoreIndex, StorageContext
@@ -94,6 +94,17 @@ class Ingestion:
         )
         for document in documents:
             index.insert(document)
+        index.storage_context.persist(self.CHROMA_PATH)
+        return index
+
+    def read_from_chroma(self, db_name: str = "default_db"):
+        db = chromadb.PersistentClient(path=self.CHROMA_PATH)
+        chroma_collection = db.get_or_create_collection(db_name)
+        vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+        storage_context = StorageContext.from_defaults(
+            persist_dir=self.CHROMA_PATH, vector_store=vector_store
+        )
+        index = load_index_from_storage(storage_context)
         return index
 
     def clear_database(self):
@@ -107,10 +118,10 @@ class Ingestion:
             print(document.text)
 
 
-if __name__ == "__main__":
-    ingestion = Ingestion()
-    # ingestion.clear_database()
-    documents = ingestion.load_documents(k=2)  # smart chunking
-    # nodes = ingestion.split_documents(documents)
-    # nodes = ingestion.extract_metadata(documents=documents)
-    ingestion.add_to_chroma(documents=documents)
+# if __name__ == "__main__":
+#     ingestion = Ingestion()
+#     # ingestion.clear_database()
+#     documents = ingestion.load_documents(k=2)  # smart chunking
+#     # nodes = ingestion.split_documents(documents)
+#     # nodes = ingestion.extract_metadata(documents=documents)
+#     ingestion.add_to_chroma(documents=documents)

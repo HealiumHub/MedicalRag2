@@ -1,3 +1,3 @@
-from UI.app_controller import AppController
+from ui.app_controller import AppController
 
 AppController()

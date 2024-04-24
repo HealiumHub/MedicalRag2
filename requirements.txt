@@ -13,3 +13,4 @@ langchain
 streamlit
 graphviz
 pypdf
+pydantic

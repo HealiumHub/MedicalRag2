@@ -40,22 +40,22 @@ class QuotedAnswer(BaseModel):
         ...,
         description="The answer to the user question, which is based on the given sources.",
     )
-    citations: List[Citation] = Field(
-        ..., description="Citations from the given sources that justify the answer."
-    )
+    # citations: List[Citation] = Field(
+    #     ..., description="Citations from the given sources that justify the answer."
+    # )
 
     def __str__(self):
         # Format the answer to display to user.
         answer = self.answer
 
-        for i, citation in enumerate(self.citations):
-            # Insert [1], [2], [3], ... to the answer.
-            insert_index = answer.find(citation.quote_in_answer) + len(
-                citation.quote_in_answer
-            )
-            answer = answer[:insert_index] + f" [{i+1}] " + answer[insert_index:]
+        # for i, citation in enumerate(self.citations):
+        #     # Insert [1], [2], [3], ... to the answer.
+        #     insert_index = answer.find(citation.quote_in_answer) + len(
+        #         citation.quote_in_answer
+        #     )
+        #     answer = answer[:insert_index] + f" [{i+1}] " + answer[insert_index:]
 
-            answer += f"\n\n[{i+1}] from [{citation.file_name}.pdf](): \n> {citation.quote_in_source}"
+        #     answer += f"\n\n[{i+1}] from [{citation.file_name}.pdf](): \n> {citation.quote_in_source}"
 
         return answer
 
