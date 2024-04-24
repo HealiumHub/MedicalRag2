@@ -109,16 +109,6 @@ def get_answer_with_context(
     # print(f"System prompt: {system_prompt}")
 
     if "gpt" in model_name:
-        if len(st.session_state.messages) == 0:
-            st.session_state.messages = [
-                {
-                    "role": "system",
-                    "content": [
-                        {"type": "text", "text": {"value": personality_prompt}}
-                    ],
-                }
-            ]
-
         messages = [
             # *transform_to_chat_messages(st.session_state.messages),
             SystemMessage(content=personality_prompt),
@@ -136,20 +126,6 @@ def get_answer_with_context(
 
     # chain = model | StrOutputParser()
     chain = model | parser
-    # st.session_state.messages.extend(
-    #     [
-    #         {
-    #             "role": "system",
-    #             "content": [{"type": "text", "text": {"value": system_prompt}}],
-    #         },
-    #         {
-    #             "role": "user",
-    #             "content": [  # push in the query for display, NOT the actual prompt passed to LLM.
-    #                 {"type": "text", "text": {"value": query}}
-    #             ],
-    #         },
-    #     ]
-    # )
 
     answer = chain.invoke(messages)
     # print(answer.citations)

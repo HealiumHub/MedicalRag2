@@ -216,37 +216,39 @@ class StreamHandler(BaseCallbackHandler):
         #     "answer": "The answer is 42", <-- only show this
         #     "citations": [ ...]
         # }
-        answer = self._get_value_of_key_in_streaming_json("answer", self.text_so_far)
-        citation_string = self._get_value_of_key_in_streaming_json(
-            "citations", self.text_so_far
-        )
-        individual_citations = (
-            citation_string.split("},") if citation_string is not None else []
-        )
-        print(individual_citations)
+        
+        # NOTE: ONLY raw output for now.
+        # answer = self._get_value_of_key_in_streaming_json("answer", self.text_so_far)
+        # citation_string = self._get_value_of_key_in_streaming_json(
+        #     "citations", self.text_so_far
+        # )
+        # individual_citations = (
+        #     citation_string.split("},") if citation_string is not None else []
+        # )
+        # print(individual_citations)
 
-        citation_list = []
-        for i, c in enumerate(individual_citations):
-            citation = Citation(
-                file_name=self._get_value_of_key_in_streaming_json("file_name", c),
-                quote_in_source=self._get_value_of_key_in_streaming_json(
-                    "quote_in_source", c
-                ),
-                quote_in_answer=self._get_value_of_key_in_streaming_json(
-                    "quote_in_answer", c
-                ),
-            )
-            citation_list.append(citation)
-            print(f"Citation {i+1}: {citation}")
+        # citation_list = []
+        # for i, c in enumerate(individual_citations):
+        #     citation = Citation(
+        #         file_name=self._get_value_of_key_in_streaming_json("file_name", c),
+        #         quote_in_source=self._get_value_of_key_in_streaming_json(
+        #             "quote_in_source", c
+        #         ),
+        #         quote_in_answer=self._get_value_of_key_in_streaming_json(
+        #             "quote_in_answer", c
+        #         ),
+        #     )
+        #     citation_list.append(citation)
+        #     print(f"Citation {i+1}: {citation}")
 
-        response_model = QuotedAnswer(answer=answer, citations=citation_list)
+        # response_model = QuotedAnswer(answer=answer, citations=citation_list)
 
-        # The extracted text.
-        self.display_text = str(response_model)
+        # # The extracted text.
+        # self.display_text = str(response_model)
 
         # Render
         display_function = getattr(self.container, self.display_method, None)
         if display_function is not None:
-            display_function(self.display_text)
+            display_function(self.text_so_far)
         else:
             raise ValueError(f"Invalid display_method: {self.display_method}")

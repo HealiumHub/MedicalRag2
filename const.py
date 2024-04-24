@@ -1,5 +1,7 @@
 MODELS = [
     "gpt-3.5-turbo-0125",
+    "llama3:8b",
+    "llama3:instruct",
     "gemma:2b",
     "gemma:2b-instruct",
     "gemma:7b-instruct",
@@ -17,6 +19,8 @@ MODELS = [
 MAX_OUTPUT = 1200
 
 MODEL_CONTEXT_LENGTH = {
+    "llama3:8b": 8192,
+    "llama3:instruct": 8192,
     "gemma:2b": 8192,
     "gemma:2b-instruct": 8192,
     "gemma:7b-instruct": 8192,
