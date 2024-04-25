@@ -10,6 +10,7 @@ from models.types import Chat, Message, RoleEnum, Source
 from models.types import Chat, Message, RoleEnum
 from retrievals.chroma_retrieval import DeepRetrievalApi
 from retrievals.graph_retrieval import GraphRetrievalApi
+from retrievals.retrieval import DeepRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
