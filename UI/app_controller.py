@@ -1,3 +1,4 @@
+import logging
 import threading
 
 import streamlit as st
@@ -10,9 +11,10 @@ from retrievals.retrieval import DeepRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
+logger = logging.getLogger(__name__)
+
 
 class AppController:
-
     def __init__(self):
         self.__config()
         self.__render()
@@ -48,7 +50,7 @@ class AppController:
             return "assets/logo.png"
 
     def __render_history(self):
-        print(st.session_state.active_chat_idx)
+        logger.info(st.session_state.active_chat_idx)
         st.header("How can I help you today? 😄", divider="rainbow")
         for message in st.session_state.chats[
             st.session_state.active_chat_idx
@@ -148,7 +150,7 @@ class AppController:
                         )
                         st.balloons()
                     except Exception as e:
-                        print(e)
+                        logger.exception(e)
                         completion = "Error happened when generating completion."
                         st.error(completion, icon="🚨")
 
@@ -168,13 +170,10 @@ class AppController:
             )
             # TODO Update the selected_model
 
-            print(
-                "DEBUG",
-                st.session_state.active_chat_idx,
-                st.session_state.selected_model,
+            logger.info(
+                f"{st.session_state.active_chat_idx=}, {st.session_state.selected_model=}"
             )
 
-            # TODO: Dropdown is sus af.
             st.session_state.selected_chat = st.selectbox(
                 label="Chats",
                 options=[chat.id for chat in st.session_state.chats],

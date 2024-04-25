@@ -1,3 +1,4 @@
+colorlog
 llama-index
 llama-index-llms-ollama
 llama-index-llms-huggingface
