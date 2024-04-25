@@ -8,6 +8,7 @@ llama-index-embeddings-huggingface
 llama-index-embeddings-instructor
 llama-index-vector-stores-chroma
 llama-index-extractors-entity
+llama-index-vector-stores-neo4jvector
 langchain_core
 llmsherpa
 llama-parse
