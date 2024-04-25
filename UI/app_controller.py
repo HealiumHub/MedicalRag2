@@ -109,9 +109,11 @@ class AppController:
                 with st.spinner("Please wait, I'm searching for references... :eyes:"):
                     stop_event = threading.Event()
                     thread = ReturnValueThread(
-                        # target=DeepRetrievalApi().search, args=(user_query,)
-                        target=ExtensionRetrievalApi().search,
-                        args=(user_queries,),
+                        target=RetrievalApiEnum.get_retrieval(
+                            st.session_state.retrieval_api,
+                            alpha=st.session_state.sparse_dense_weight,
+                        ).search,
+                        args=(user_query,),
                     )
                     add_script_run_ctx(thread)
                     thread.start()
@@ -241,6 +243,16 @@ class AppController:
                 value=PromptConfig.PERSONALITY,
                 help="Enter a custom instruction to guide the model.",
                 key="custom_instruction",
+            )
+            _ = st.slider(
+                label="Lexical/Semantic Weight",
+                min_value=0.0,
+                max_value=1.0,
+                value=0.0,
+                step=0.05,
+                format="%f",
+                help="Weight for sparse/dense retrieval, only used for hybrid query mode. (0 = lexical, 1 = semantic)",
+                key="sparse_dense_weight",
             )
             _ = st.slider(
                 label="Temperature",
