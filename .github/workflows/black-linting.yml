@@ -1,0 +1,24 @@
+name: Black Linting
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+      
+      # Specify a version to make sure it's reproducible
+      - name: Install dependencies
+        run: pip install black==23.9.1
+
+      - name: Run Black
+        run: black --config ./pyproject.toml --check --diff .
