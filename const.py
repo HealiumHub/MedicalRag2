@@ -1,5 +1,7 @@
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
 
 class PromptConfig:
     DISCLAIMER = (
@@ -51,4 +53,5 @@ MODEL_CONTEXT_LENGTH = {
     "llama2-70b-4096": 4096,
 }
 
-API_KEY = os.environ["OPENAI_API_KEY"]
+API_KEY = os.getenv("OPENAI_API_KEY", "")
+print(API_KEY)

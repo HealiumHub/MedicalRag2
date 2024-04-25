@@ -36,6 +36,7 @@ from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
 
 from const import API_KEY
+
 logger = logging.getLogger(__name__)
 
 
@@ -43,7 +44,6 @@ class Ingestion:
     DATA_PATH = "./ingestion/pdf"
     CHROMA_PATH = "chroma"
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-    API_KEY = 
 
     def __init__(self, with_openai: bool = False):
         Settings.llm = Ollama(model="gemma:2b")
