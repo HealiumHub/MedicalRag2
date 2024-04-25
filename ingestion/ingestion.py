@@ -1,30 +1,30 @@
 import glob
+import logging
 import math
 import os
 import shutil
 from typing import Sequence
+
 import chromadb
-
-from llama_index.core import Settings, load_index_from_storage
-from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.core.schema import BaseNode, Document
-from llama_index.core import VectorStoreIndex, StorageContext
-from llama_index.vector_stores.chroma import ChromaVectorStore
-
-from llama_index.core.ingestion import IngestionPipeline
-from llama_index.extractors.entity import EntityExtractor
+from llama_index.core import (
+    Settings,
+    StorageContext,
+    VectorStoreIndex,
+)
 from llama_index.core.extractors import (
-    SummaryExtractor,
-    QuestionsAnsweredExtractor,
-    TitleExtractor,
     KeywordExtractor,
 )
-
-from llama_index.llms.ollama import Ollama
+from llama_index.core.ingestion import IngestionPipeline
+from llama_index.core.node_parser import SimpleNodeParser
+from llama_index.core.schema import BaseNode, Document
 from llama_index.embeddings.ollama import OllamaEmbedding
-
+from llama_index.extractors.entity import EntityExtractor
+from llama_index.llms.ollama import Ollama
+from llama_index.vector_stores.chroma import ChromaVectorStore
 from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
+
+logger = logging.getLogger(__name__)
 
 
 class Ingestion:
@@ -34,7 +34,7 @@ class Ingestion:
 
     def __init__(self):
         Settings.llm = Ollama(model="gemma:2b")
-        Settings.embed_model = OllamaEmbedding(model_name="snowflake-arctic-embed")
+        Settings.embed_model = OllamaEmbedding(model_name="all-minilm:latest")
 
     def load_documents(self, k=math.inf):
         pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
@@ -44,7 +44,7 @@ class Ingestion:
             if i >= k:
                 break
             i += 1
-            print(file, "k=", i)
+            logger.info(f"{file=}, {i=}")
             doc = pdf_reader.read_pdf(file)
             block: Block
             for block in doc.chunks():
@@ -74,7 +74,7 @@ class Ingestion:
         node_parser = SimpleNodeParser.from_defaults(chunk_size=1024)
         # Extract nodes from documents
         nodes = node_parser.get_nodes_from_documents(documents)
-        print(f"Split {len(documents)} documents into {len(nodes)} chunks")
+        logger.info(f"Split {len(documents)} documents into {len(nodes)} chunks")
         return nodes
 
     def add_to_chroma(
@@ -119,6 +119,6 @@ class Ingestion:
 
     def print_documents(self, documents: list[Document]):
         for document in documents:
-            print("--- New Page ---")
-            # print(document.metadata)
-            print(document.text)
+            logger.info("--- New Page ---")
+            # logger.info(document.metadata)
+            logger.info(document.text)
