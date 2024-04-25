@@ -5,11 +5,9 @@ class PromptConfig:
     DISCLAIMER = (
         "\n\n*Please consult professional doctor for accurate medical advices.*"
     )
-    PERSONALITY = """
-    You are MedLight, an assistant developed to help bridge medical research to the public.
-    The system will give you some relevant research articles that you can use.
-    Do not use research papers if they are irrelevant to the question.
-    """
+    PERSONALITY = """You are MedLight, an assistant developed to help bridge medical research to the public.
+The system will give you some relevant research articles that you can use.
+Do not use research papers if they are irrelevant to the question."""
 
 
 MODELS = [

@@ -1,18 +1,20 @@
+import logging
 import threading
 
 import streamlit as st
 from streamlit.runtime.scriptrunner import add_script_run_ctx
 
-from const import MODELS
+from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum, Source
 from retrievals.retrieval import DeepRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
+logger = logging.getLogger(__name__)
+
 
 class AppController:
-
     def __init__(self):
         self.__config()
         self.__render()
@@ -48,6 +50,7 @@ class AppController:
             return "assets/logo.png"
 
     def __render_history(self):
+        logger.info(st.session_state.active_chat_idx)
         st.header("How can I help you today? 😄", divider="rainbow")
         for message in st.session_state.chats[
             st.session_state.active_chat_idx
@@ -133,6 +136,8 @@ class AppController:
                                 user_query,
                                 st.session_state.selected_model,
                                 related_articles,
+                                st.session_state.custom_instruction,
+                                st.session_state.temperature,
                                 stream_handler,
                             ),
                         )
@@ -160,7 +165,7 @@ class AppController:
                         )
                         st.balloons()
                     except Exception as e:
-                        print("Exception", e)
+                        logger.exception(e)
                         completion = "Error happened when generating completion."
                         st.error(completion, icon="🚨")
 
@@ -180,7 +185,10 @@ class AppController:
             )
             # TODO Update the selected_model
 
-            # TODO: Dropdown is sus af.
+            logger.info(
+                f"{st.session_state.active_chat_idx=}, {st.session_state.selected_model=}"
+            )
+
             st.session_state.selected_chat = st.selectbox(
                 label="Chats",
                 options=[chat.id for chat in st.session_state.chats],
@@ -194,6 +202,24 @@ class AppController:
                 type="primary",
                 on_click=self.__new_chat,
                 use_container_width=True,
+            )
+            
+            st.divider()
+            _ = st.text_area(
+                label="Custom instruction",
+                value=PromptConfig.PERSONALITY,
+                help="Enter a custom instruction to guide the model.",
+                key="custom_instruction",
+            )
+            _ = st.slider(
+                label="Temperature",
+                min_value=0.0,
+                max_value=2.0,
+                value=0.0,
+                step=0.05,
+                format="%f",
+                help="The temperature of the sampling distribution.",
+                key="temperature",
             )
 
     def __new_chat(self):
