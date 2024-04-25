@@ -12,9 +12,6 @@ from .utilities import ReturnValueThread, StreamHandler
 
 
 class AppController:
-    chats: list[Chat]
-    active_chat_idx: int
-    selected_model: str
 
     def __init__(self):
         self.__config()
@@ -31,12 +28,12 @@ class AppController:
         # Initialize the chat history & active chat index.
         if "chats" not in st.session_state:
             st.session_state.chats = [Chat(id=0)]
-        self.chats = st.session_state.chats
 
-        print(st.session_state.to_dict())
         if "active_chat_idx" not in st.session_state:
             st.session_state.active_chat_idx = 0
-        self.active_chat_idx = st.session_state.active_chat_idx
+
+        if "selected_model" not in st.session_state:
+            st.session_state.selected_model = 0
 
     def __render(self):
         self.__render_sidebar()
@@ -46,13 +43,16 @@ class AppController:
     def __get_avatar_for_role(self, role: str) -> str:
         if role == RoleEnum.user:
             return "assets/michael-avt.jpeg"
-        elif role == RoleEnum.assistant:
+        # elif role == RoleEnum.assistant:
+        else:
             return "assets/logo.png"
 
     def __render_history(self):
-        print(self.active_chat_idx)
+        print(st.session_state.active_chat_idx)
         st.header("How can I help you today? 😄", divider="rainbow")
-        for message in self.chats[self.active_chat_idx].messages:
+        for message in st.session_state.chats[
+            st.session_state.active_chat_idx
+        ].messages:
             role = message.role
             content = message.content
 
@@ -69,16 +69,24 @@ class AppController:
 
     def __render_chat(self):
         if user_query := st.chat_input("Enter your question here ✍️"):
-            with st.chat_message(RoleEnum.user, avatar=f"assets/michael-avt.jpeg"):
+            with st.chat_message(
+                RoleEnum.user, avatar=self.__get_avatar_for_role(RoleEnum.user)
+            ):
                 st.markdown(user_query)
-                self.chats[self.active_chat_idx].messages.append(
+                st.session_state.chats[
+                    st.session_state.active_chat_idx
+                ].messages.append(
                     Message(
-                        id=len(self.chats[self.active_chat_idx].messages) + 1,
+                        id=len(
+                            st.session_state.chats[
+                                st.session_state.active_chat_idx
+                            ].messages
+                        )
+                        + 1,
                         role=RoleEnum.user,
                         content=user_query,
                     )
                 )
-                st.session_state.chats = self.chats
 
             with st.spinner("Please wait, I'm searching for references... :eyes:"):
                 stop_event = threading.Event()
@@ -94,7 +102,7 @@ class AppController:
                     related_articles = thread.result
                 except Exception as e:
                     related_articles = [], ""
-                    st.error("Error happened when searching for docs.")
+                    st.error("Error happened when searching for docs.", icon="🚨")
 
             with st.spinner("I'm thinking..."):
                 with st.chat_message(
@@ -111,7 +119,7 @@ class AppController:
                             target=get_answer_with_context,
                             args=(
                                 user_query,
-                                self.selected_model,
+                                st.session_state.selected_model,
                                 related_articles,
                                 stream_handler,
                             ),
@@ -124,17 +132,25 @@ class AppController:
                         completion = thread.result
 
                         # Save the response to history.
-                        self.chats[self.active_chat_idx].messages.append(
+                        st.session_state.chats[
+                            st.session_state.active_chat_idx
+                        ].messages.append(
                             Message(
-                                id=len(self.chats[self.active_chat_idx].messages) + 1,
+                                id=len(
+                                    st.session_state.chats[
+                                        st.session_state.active_chat_idx
+                                    ].messages
+                                )
+                                + 1,
                                 role=RoleEnum.assistant,
                                 content=completion,
                             )
                         )
+                        st.balloons()
                     except Exception as e:
+                        print(e)
                         completion = "Error happened when generating completion."
-                        st.error(completion)
-                    st.balloons()
+                        st.error(completion, icon="🚨")
 
     def __render_sidebar(self):
         with st.sidebar:
@@ -145,27 +161,28 @@ class AppController:
                 """
             )
             st.divider()
-            self.selected_model = st.selectbox(
+            st.session_state.selected_model = st.selectbox(
                 label="Choose LLM model",
                 options=MODELS,
                 label_visibility="collapsed",
             )
             # TODO Update the selected_model
 
-            print("index", self.active_chat_idx)
-            
+            print(
+                "DEBUG",
+                st.session_state.active_chat_idx,
+                st.session_state.selected_model,
+            )
+
             # TODO: Dropdown is sus af.
-            selected_chat = st.selectbox(
+            st.session_state.selected_chat = st.selectbox(
                 label="Chats",
-                options=[chat.id for chat in self.chats],
-                index=self.active_chat_idx,
+                options=[chat.id for chat in st.session_state.chats],
+                index=st.session_state.active_chat_idx,
                 format_func=lambda x: f"Chat {x + 1}",
                 label_visibility="collapsed",
             )
-            if selected_chat is None:
-                selected_chat = self.active_chat_idx
 
-            self.__change_thread(selected_chat)
             st.button(
                 label="New Chat",
                 type="primary",
@@ -174,11 +191,6 @@ class AppController:
             )
 
     def __new_chat(self):
-        active_chat = Chat(id=len(self.chats))
-        self.chats.append(active_chat)
-        st.session_state.chats = self.chats
-        self.__change_thread(active_chat.id)
-
-    def __change_thread(self, idx: int):
-        self.active_chat_idx = idx
-        st.session_state.active_chat_idx = idx
+        active_chat = Chat(id=len(st.session_state.chats))
+        st.session_state.chats.append(active_chat)
+        st.session_state.active_chat_idx = active_chat.id

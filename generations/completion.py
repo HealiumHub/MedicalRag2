@@ -24,6 +24,7 @@ def get_model(model_name: str) -> ChatOpenAI | Ollama:
             model=model_name,
             verbose=True,
             num_predict=MAX_OUTPUT,
+            repeat_penalty=1.5,
         )
 
     return model
@@ -68,7 +69,7 @@ def get_answer_with_context(
     chain = model | StrOutputParser()
 
     answer = chain.invoke(messages, config={"callbacks": [stream_handler]})
-    
+
     # Suffix disclaimer, this saves token and we don't have to prompt it.
     answer += PromptConfig.DISCLAIMER
     return answer
