@@ -110,7 +110,7 @@ class AppController:
                 except Exception as e:
                     related_articles = []
                     st.error("Error happened when searching for docs.", icon="🚨")
-                print(related_articles)
+
                 for article in related_articles:
                     with st.expander(f"Article {article.id}"):
                         article: Source = article
