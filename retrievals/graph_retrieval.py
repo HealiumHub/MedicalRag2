@@ -1,8 +1,11 @@
 import json
+import logging
 
 from ingestion.graph_embedding import GraphIngestion
 from models.types import Source
 from retrievals.retrieval import Retrieval
+
+logger = logging.getLogger(__name__)
 
 
 @Retrieval.register
@@ -22,7 +25,7 @@ class GraphRetrievalApi:
         response = self.retriever.retrieve(query)
         formatted_response: list[Source] = []
         for x in response:
-            print("\n content1 \n", json.dumps(x.node.to_dict(), indent=4))
+            logger.debug(json.dumps(x.node.to_dict(), indent=4))
             source = Source(
                 id=x.node_id,
                 doi=x.metadata.get("doi", ""),

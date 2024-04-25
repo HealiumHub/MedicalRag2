@@ -6,10 +6,8 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 
 from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
+from models.enum import RetrievalApiEnum
 from models.types import Chat, Message, RoleEnum, Source
-from retrievals.chroma_retrieval import DeepRetrievalApi
-from retrievals.extension_retrieval import ExtensionRetrievalApi
-from retrievals.graph_retrieval import GraphRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
@@ -95,8 +93,9 @@ class AppController:
             with st.spinner("Please wait, I'm searching for references... :eyes:"):
                 stop_event = threading.Event()
                 thread = ReturnValueThread(
-                    # target=DeepRetrievalApi().search, args=(user_query,)
-                    target=ExtensionRetrievalApi().search,
+                    target=RetrievalApiEnum.get_retrieval(
+                        st.session_state.retrieval_api
+                    ).search,
                     args=(user_query,),
                 )
                 add_script_run_ctx(thread)
@@ -209,6 +208,11 @@ class AppController:
             )
 
             st.divider()
+            _ = st.selectbox(
+                "Choose Retrieval API",
+                options=[api_name for api_name in RetrievalApiEnum.__members__],
+                key="retrieval_api",
+            )
             _ = st.text_area(
                 label="Custom instruction",
                 value=PromptConfig.PERSONALITY,

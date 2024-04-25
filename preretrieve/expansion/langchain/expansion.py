@@ -1,16 +1,12 @@
 import logging
-import os
-from typing import Any, Optional
 
-from dotenv import load_dotenv
 from langchain.output_parsers import PydanticOutputParser
 from langchain_community.chat_models import ChatOpenAI
 from langchain_community.llms.ollama import Ollama
 from langchain_core.prompts import PromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
 
-load_dotenv()
-API_KEY = os.getenv("OPENAI_API_KEY", "")
+from const import API_KEY
 
 logger = logging.getLogger(__name__)
 
@@ -58,5 +54,5 @@ class QueryExpansion:
     def paraphase_query(self, query: str):
         response = self.chain.invoke(query)
         response.paraphrased_query.append(query)
-        print(response)
+        logger.debug(response)
         return response.paraphrased_query

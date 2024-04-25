@@ -1,7 +1,10 @@
-from ingestion.ingestion import Ingestion
-from retrievals.retrieval import Retrieval
+import logging
+
 from ingestion.ingestion import Ingestion
 from models.types import Source
+from retrievals.retrieval import Retrieval
+
+logger = logging.getLogger(__name__)
 
 
 @Retrieval.register
@@ -14,7 +17,7 @@ class DeepRetrievalApi:
 
     def search(self, query):  # -> list:
         response = self.retriever.retrieve(query)
-        print("Debug retrieval.py:13", response)
+        logger.debug(response)
         formatted_response: list[Source] = []
         for x in response:
             source = Source(
