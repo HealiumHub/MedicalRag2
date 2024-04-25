@@ -1,8 +1,7 @@
 from ingestion.ingestion import Ingestion
-from retrievals.retrieval import Retrieval
-from ingestion.ingestion import Ingestion
 from models.types import Source
 from preretrieve.expansion.langchain.expansion import QueryExpansion
+from retrievals.retrieval import Retrieval
 
 
 @Retrieval.register

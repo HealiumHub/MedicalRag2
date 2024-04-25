@@ -1,8 +1,8 @@
 import json
-from ingestion.graph_embedding import GraphIngestion
 
-from retrievals.retrieval import Retrieval
+from ingestion.graph_embedding import GraphIngestion
 from models.types import Source
+from retrievals.retrieval import Retrieval
 
 
 @Retrieval.register

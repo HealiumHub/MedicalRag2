@@ -7,11 +7,9 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum, Source
-from models.types import Chat, Message, RoleEnum
 from retrievals.chroma_retrieval import DeepRetrievalApi
 from retrievals.extension_retrieval import ExtensionRetrievalApi
 from retrievals.graph_retrieval import GraphRetrievalApi
-from retrievals.retrieval import DeepRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
@@ -98,7 +96,7 @@ class AppController:
                 stop_event = threading.Event()
                 thread = ReturnValueThread(
                     # target=DeepRetrievalApi().search, args=(user_query,)
-                    target=ExtensionRetrievalApi().search,
+                    target=DeepRetrievalApi().search,
                     args=(user_query,),
                 )
                 add_script_run_ctx(thread)
