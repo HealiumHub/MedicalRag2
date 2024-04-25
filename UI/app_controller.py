@@ -1,34 +1,23 @@
+import threading
+
 import streamlit as st
+from streamlit.runtime.scriptrunner import add_script_run_ctx
 
-from UI.const import MODELS
-from completion import QuotedAnswer, get_answer_with_context
+from const import MODELS
+from generations.completion import get_answer_with_context
+from models.types import Chat, Message, RoleEnum
+from retrievals.retrieval import DeepRetrievalApi
 
+from .utilities import ReturnValueThread, StreamHandler
 
 
 class AppController:
+
     def __init__(self):
         self.__config()
         self.__render()
 
     def __config(self):
-        if "messages_dict" not in st.session_state:
-            st.session_state.messages_dict = {}
-        if "related_articles" not in st.session_state:
-            st.session_state.related_articles = {}
-        # Init thread and message
-        if "thread_id" not in st.session_state:
-            st.session_state.thread_id = 1
-            st.session_state.thread_ids.append(st.session_state.thread_id)
-            st.session_state.messages = st.session_state.messages_dict.get(
-                st.session_state.thread_id, []
-            )
-        # Initialize messages if not present.
-        if "messages" not in st.session_state:
-            st.session_state.messages = st.session_state.messages_dict.get(
-                st.session_state.thread_id, []
-            )
-
-    def __render(self):
         st.set_page_config(
             page_title="HealthLight Project",
             page_icon="⛑️",
@@ -36,100 +25,172 @@ class AppController:
             initial_sidebar_state="expanded",
         )
 
-        # Select model
-        selected_model = st.sidebar.selectbox("Choose completion model", MODELS)
+        # Initialize the chat history & active chat index.
+        if "chats" not in st.session_state:
+            st.session_state.chats = [Chat(id=0)]
 
-        # New threads
-        st.sidebar.divider()
-        if st.sidebar.button(label="New thread", type="primary", use_container_width=True):
-            st.session_state.thread_id = len(st.session_state.thread_ids) + 1
-            st.session_state.thread_ids.append(st.session_state.thread_id)
-            st.session_state.messages = st.session_state.messages_dict.get(
-                st.session_state.thread_id, []
-            )
-        # Update thread messages.
-        st.session_state.messages_dict[
-            st.session_state.thread_id
-        ] = st.session_state.messages
+        if "active_chat_idx" not in st.session_state:
+            st.session_state.active_chat_idx = 0
 
-        for i, thread_id in enumerate(st.session_state.thread_ids):
-            if thread_id == st.session_state.thread_id:
-                st.sidebar.button(
-                    f"**Thread {i + 1} :point_left:**",
-                    on_click=self.change_thread,
-                    args=(thread_id,),
-                    use_container_width=True,
-                )
-            else:
-                st.sidebar.button(
-                    f"Thread {i + 1}",
-                    on_click=self.change_thread,
-                    args=(thread_id,),
-                    use_container_width=True,
-                )
-        # Title
-        left_col, right_col = st.columns([0.5, 0.5], gap="medium")
-        left_col.markdown("### MedLight")
-        right_col.markdown("### References")
+        if "selected_model" not in st.session_state:
+            st.session_state.selected_model = 0
 
-        if len(st.session_state.related_articles[st.session_state.thread_id]) > 0:
-            right_col.markdown(
-                "\n".join(
-                    [
-                        f'##### [{i + 1}. DOI {x["file_name"]}, {x["file_name"]}]()'
-                        + f"\n {self.format_content(x)}\n***"
-                        for i, x in enumerate(
-                        st.session_state.related_articles[st.session_state.thread_id]
-                    )
-                    ]
-                )
-            )
+    def __render(self):
+        self.__render_sidebar()
+        self.__render_history()
+        self.__render_chat()
+
+    def __get_avatar_for_role(self, role: str) -> str:
+        if role == RoleEnum.user:
+            return "assets/michael-avt.jpeg"
+        # elif role == RoleEnum.assistant:
         else:
-            pass
+            return "assets/logo.png"
 
-        # Render the messages
-        for msg in st.session_state.messages:
-            role = msg.role if not isinstance(msg, dict) else msg["role"]
-            content: str = (
-                msg.content[0].text.value
-                if not isinstance(msg, dict)
-                else msg["content"][0]["text"]["value"]
-            )
+    def __render_history(self):
+        print(st.session_state.active_chat_idx)
+        st.header("How can I help you today? 😄", divider="rainbow")
+        for message in st.session_state.chats[
+            st.session_state.active_chat_idx
+        ].messages:
+            role = message.role
+            content = message.content
 
             if content is None:
                 continue
+            if role == RoleEnum.system:
+                pass
 
-            if isinstance(content, QuotedAnswer):
-                # Render reference buttons.
-                # TODO: Need better UI for this one.
-                with left_col.chat_message(role):
-                    for i, citation in enumerate(content.citations):
-                        st.button(f"[{i+1}] from {citation.source_id}")
-
-                content = str(content)
-
-            # print(f"Role: {role}, Content: {content}")
-
-            # Show disclaimer for assistant messages.
-            if (
-                    role == "assistant"
-                    and "Please consult professional doctor for accurate medical advices."
-                    not in content
+            with st.chat_message(
+                role,
+                avatar=(self.__get_avatar_for_role(role)),
             ):
-                content += (
-                    "\n\n*Please consult professional doctor for accurate medical advices.*"
+                st.markdown(content)
+
+    def __render_chat(self):
+        if user_query := st.chat_input("Enter your question here ✍️"):
+            with st.chat_message(
+                RoleEnum.user, avatar=self.__get_avatar_for_role(RoleEnum.user)
+            ):
+                st.markdown(user_query)
+                st.session_state.chats[
+                    st.session_state.active_chat_idx
+                ].messages.append(
+                    Message(
+                        id=len(
+                            st.session_state.chats[
+                                st.session_state.active_chat_idx
+                            ].messages
+                        )
+                        + 1,
+                        role=RoleEnum.user,
+                        content=user_query,
+                    )
                 )
 
-            if role == "system":  # Don't show system messages.
-                pass
-            else:
-                with left_col.chat_message(role):
-                    st.markdown(content)
-    def change_thread(self, thread_id):
-        st.session_state.thread_id = thread_id
-        st.session_state.messages = st.session_state.messages_dict.get(
-            st.session_state.thread_id, []
-        )
+            with st.spinner("Please wait, I'm searching for references... :eyes:"):
+                stop_event = threading.Event()
+                thread = ReturnValueThread(
+                    target=DeepRetrievalApi().search, args=(user_query,)
+                )
+                add_script_run_ctx(thread)
+                thread.start()
+                thread.join()
+                stop_event.set()
 
-    def format_content(self, x):
-        return x["content"][:500] + "..." if len(x["content"]) > 500 else x["content"]
+                try:
+                    related_articles = thread.result
+                except Exception as e:
+                    related_articles = [], ""
+                    st.error("Error happened when searching for docs.", icon="🚨")
+
+            with st.spinner("I'm thinking..."):
+                with st.chat_message(
+                    RoleEnum.assistant,
+                    avatar=self.__get_avatar_for_role(RoleEnum.assistant),
+                ):
+                    # Temp chatbox for streaming outputs
+                    chat_box = st.markdown("")
+                    stream_handler = StreamHandler(chat_box)
+
+                    try:
+                        stop_event = threading.Event()
+                        thread = ReturnValueThread(
+                            target=get_answer_with_context,
+                            args=(
+                                user_query,
+                                st.session_state.selected_model,
+                                related_articles,
+                                stream_handler,
+                            ),
+                        )
+                        add_script_run_ctx(thread)
+                        thread.start()
+                        thread.join()
+                        stop_event.set()
+
+                        completion = thread.result
+
+                        # Save the response to history.
+                        st.session_state.chats[
+                            st.session_state.active_chat_idx
+                        ].messages.append(
+                            Message(
+                                id=len(
+                                    st.session_state.chats[
+                                        st.session_state.active_chat_idx
+                                    ].messages
+                                )
+                                + 1,
+                                role=RoleEnum.assistant,
+                                content=completion,
+                            )
+                        )
+                        st.balloons()
+                    except Exception as e:
+                        print(e)
+                        completion = "Error happened when generating completion."
+                        st.error(completion, icon="🚨")
+
+    def __render_sidebar(self):
+        with st.sidebar:
+            st.title("HealthLight ⛑️")
+            st.markdown(
+                """
+                This is a project that aims to provide a conversational AI system that can help you with your health-related questions.
+                """
+            )
+            st.divider()
+            st.session_state.selected_model = st.selectbox(
+                label="Choose LLM model",
+                options=MODELS,
+                label_visibility="collapsed",
+            )
+            # TODO Update the selected_model
+
+            print(
+                "DEBUG",
+                st.session_state.active_chat_idx,
+                st.session_state.selected_model,
+            )
+
+            # TODO: Dropdown is sus af.
+            st.session_state.selected_chat = st.selectbox(
+                label="Chats",
+                options=[chat.id for chat in st.session_state.chats],
+                index=st.session_state.active_chat_idx,
+                format_func=lambda x: f"Chat {x + 1}",
+                label_visibility="collapsed",
+            )
+
+            st.button(
+                label="New Chat",
+                type="primary",
+                on_click=self.__new_chat,
+                use_container_width=True,
+            )
+
+    def __new_chat(self):
+        active_chat = Chat(id=len(st.session_state.chats))
+        st.session_state.chats.append(active_chat)
+        st.session_state.active_chat_idx = active_chat.id
