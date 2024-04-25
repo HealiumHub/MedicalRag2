@@ -1,0 +1,38 @@
+from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.prompts import PromptTemplate
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.llms.ollama import Ollama
+from langchain.output_parsers import PydanticOutputParser
+
+OPENAI_API_KEY = "sk-proj-0iDXDcIkdt2rI3kzzmAsT3BlbkFJUye2sTEx0cPp72V0khve"
+
+class ParaphrasedQuery(BaseModel):
+    """Perform query paraphase. If there are multiple common ways of phrasing a user question \
+    or common synonyms for key words in the question, make sure to return multiple versions \
+    of the query with the different phrasings.
+
+    If there are acronyms or words you are not familiar with, do not try to rephrase them.
+
+    Return at least 3 versions of the question."""
+
+    paraphrased_query: list[str] = Field(
+        ...,
+        description="A list of unique paraphrasing of the original question.",
+    )
+# llm = Ollama(model="llama2")
+llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.1,api_key=OPENAI_API_KEY)
+parser = PydanticOutputParser(pydantic_object=ParaphrasedQuery)
+
+prompt = PromptTemplate(
+    template="""{format_instructions}\n{query}\n""",
+    input_variables=["query"],
+    partial_variables={"format_instructions": parser.get_format_instructions()},
+)
+
+chain = prompt | llm | parser
+
+def paraphase_query(query:str):
+    response =  chain.invoke(query)
+    response.paraphrased_query.append(query)  
+    print(response)
+    return response.paraphrased_query
