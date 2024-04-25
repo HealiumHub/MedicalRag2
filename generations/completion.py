@@ -8,10 +8,10 @@ from const import MAX_OUTPUT, MODEL_CONTEXT_LENGTH, PromptConfig
 API_KEY = ""
 
 
-def get_model(model_name: str) -> ChatOpenAI | Ollama:
+def get_model(model_name: str, temperature: float) -> ChatOpenAI | Ollama:
     if "gpt" in model_name:
         model = ChatOpenAI(
-            temperature=0,
+            temperature=temperature,
             model=model_name,
             api_key=API_KEY,
             verbose=True,
@@ -20,7 +20,7 @@ def get_model(model_name: str) -> ChatOpenAI | Ollama:
         )
     else:
         model = Ollama(
-            temperature=0,
+            temperature=temperature,
             model=model_name,
             verbose=True,
             num_predict=MAX_OUTPUT,
@@ -40,10 +40,10 @@ def preprocess_context(model_name: str, prompt: str) -> str:
 
 
 def get_answer_with_context(
-    query: str, model_name: str, related_articles: str | list[dict], stream_handler
+    query: str, model_name: str, related_articles: str | list[dict], custom_instruction: str, temperature: float, stream_handler
 ) -> str:
     # Initialize models & context length.
-    model = get_model(model_name)
+    model = get_model(model_name, temperature)
 
     user_prompt = f"Please answer the following medical question and provide relevant references. Question: {query}"
     system_prompt = (
@@ -54,14 +54,14 @@ def get_answer_with_context(
     if "gpt" in model_name:
         # Separates context and personality prompt -> clearer context 4 models.
         messages = [
-            SystemMessage(content=PromptConfig.PERSONALITY),
+            SystemMessage(content=custom_instruction),
             SystemMessage(content=system_prompt),
             HumanMessage(content=user_prompt),
         ]
     else:
         # gemini and claude -> no 2 consecutive system prompts.
         messages = [
-            SystemMessage(content=f"{PromptConfig.PERSONALITY}\n\n{system_prompt}"),
+            SystemMessage(content=f"{custom_instruction}\n\n{system_prompt}"),
             HumanMessage(content=user_prompt),
         ]
 
