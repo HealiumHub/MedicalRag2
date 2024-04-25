@@ -17,7 +17,13 @@ Run the following command
 ./unzip.sh
 ```
 
-3. Run this command to ingest the pdf to the chromaDB
+3. Setup environment key for OpenAI in parent folder `.env` (optional)
+
+```
+OPENAI_API_KEY=xxx
+```
+
+4. Run this command to ingest the pdf to the chromaDB
 
 ```bash
 python3 ingestion/apply_ingestion.py
