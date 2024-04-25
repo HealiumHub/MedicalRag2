@@ -25,7 +25,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 # init graph db
 url = "neo4j://localhost:7687"
-username ="neo4j"
+username = "neo4j"
 password = "yasuotruong"
 database = "neo4j"
 DATA_PATH = "pdf"
@@ -35,62 +35,63 @@ DATA_PATH = "pdf"
 Settings.chunk_size = 512
 
 
-neo4j_vector = Neo4jVectorStore(
-  username, 
-  password, 
-  url, 
-  embedding_dimension=1536,
-  index_name="yasuo_index",
-  hybrid_search=True,
-)
+# neo4j_vector = Neo4jVectorStore(
+#     username,
+#     password,
+#     url,
+#     embedding_dimension=1536,
+#     index_name="yasuo_index",
+#     hybrid_search=True,
+# )
 
-storage_context = StorageContext.from_defaults(vector_store=neo4j_vector)
-print("done init")
+# storage_context = StorageContext.from_defaults(vector_store=neo4j_vector)
+# print("done init")
 
-# load document
-LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-pdf_reader = LayoutPDFReader(LLM_SHERPA_API_URL)
-documents = []
-i = 0
-for file in glob.glob(DATA_PATH + "/*.pdf"):
-  if i >= 1:
-    break
-  i += 1
-  print(file, "k=", i)
-  doc = pdf_reader.read_pdf(file)
-  block: Block
-  for block in doc.chunks():
-    document = Document(text=block.to_context_text())
-    documents.append(document)
-print("done load documents")
+# # load document
+# LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
+# pdf_reader = LayoutPDFReader(LLM_SHERPA_API_URL)
+# documents = []
+# i = 0
+# for file in glob.glob(DATA_PATH + "/*.pdf"):
+#     if i >= 1:
+#         break
+#     i += 1
+#     print(file, "k=", i)
+#     doc = pdf_reader.read_pdf(file)
+#     block: Block
+#     for block in doc.chunks():
+#         metadata = {
+#             "page": block.page_idx,
+#             "source": os.path.basename(file),
+#             "tag": block.tag,
+#         }
+#         document = Document(text=block.to_context_text(), metadata=metadata)
+#         documents.append(document)
+# print("done load documents")
 
-# embed to graph db
-index = VectorStoreIndex.from_documents(
-  documents,
-  storage_context=storage_context,
-  # max_triplets_per_chunk=2,
-  # include_embeddings=True,
-  show_progress=True
-)
-print("done embed")
+# # embed to graph db
+# index = VectorStoreIndex.from_documents(
+#     documents,
+#     storage_context=storage_context,
+#     # max_triplets_per_chunk=2,
+#     # include_embeddings=True,
+#     show_progress=True,
+# )
+# print("done embed")
 
 # load existing index
-# index = Neo4jVectorStore(
-#   username, 
-#   password, 
-#   url, 
-#   database,
-#   index_name="yasuo_index",
-#   hybrid_search=True
-# )
-# loaded_index = VectorStoreIndex.from_vector_store(index)
+vector_store = Neo4jVectorStore(
+    username, password, url, database, index_name="yasuo_index", hybrid_search=True
+)
+loaded_index = VectorStoreIndex.from_vector_store(vector_store)
 
 # retrieve from graph db
-query_engine = index.as_query_engine()
+query_engine = loaded_index.as_retriever()
 print("done retrieve")
 
 # generate
-response = query_engine.query("Tell me about the connection between communicative VL and vaccinecompliance ")
-print(response)
-display(Markdown(f"<b>{response}</b>"))
-  
+res = query_engine.retrieve("Tell me about the connection between communicative VL and vaccinecompliance")
+print(res)
+# response = query_engine.query()
+# print(response)
+# display(Markdown(f"<b>{response}</b>"))
