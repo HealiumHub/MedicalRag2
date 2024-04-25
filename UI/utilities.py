@@ -33,7 +33,16 @@ class StreamHandler(BaseCallbackHandler):
         else:
             raise ValueError(f"Invalid display_method: {self.display_method}")
 
-    def on_llm_end(self, response: LLMResult, *, run_id: UUID, parent_run_id: UUID | None = None, **kwargs):
+    def on_llm_end(
+        self,
+        response: LLMResult,
+        *,
+        run_id: UUID,
+        parent_run_id: UUID | None = None,
+        **kwargs,
+    ):
         # Streamlit does not rerender when the answer finishes, so we need to add the disclaimer here.
         self.on_llm_new_token(PromptConfig.DISCLAIMER)
-        return super().on_llm_end(response, run_id=run_id, parent_run_id=parent_run_id, **kwargs)
+        return super().on_llm_end(
+            response, run_id=run_id, parent_run_id=parent_run_id, **kwargs
+        )

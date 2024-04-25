@@ -39,7 +39,12 @@ def preprocess_context(model_name: str, prompt: str) -> str:
 
 
 def get_answer_with_context(
-    query: str, model_name: str, related_articles: str | list[dict], custom_instruction: str, temperature: float, stream_handler
+    query: str,
+    model_name: str,
+    related_articles: str | list[dict],
+    custom_instruction: str,
+    temperature: float,
+    stream_handler,
 ) -> str:
     # Initialize models & context length.
     model = get_model(model_name, temperature)
