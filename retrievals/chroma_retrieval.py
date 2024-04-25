@@ -1,7 +1,10 @@
-from ingestion.ingestion import Ingestion
-from retrievals.retrieval import Retrieval
+import logging
+
 from ingestion.ingestion import Ingestion
 from models.types import Source
+from retrievals.retrieval import Retrieval
+
+logger = logging.getLogger(__name__)
 
 
 @Retrieval.register
@@ -13,30 +16,30 @@ class DeepRetrievalApi:
         self.retriever = index.as_retriever(similarity_top_k=6)
 
 
-def search(self, queries):
-    # create set formatted_response
-    documentIdSet = set()
-    formatted_response = []
+    def search(self, queries):
+        # create set formatted_response
+        documentIdSet = set()
+        formatted_response = []
 
-    for q in queries:
-        response = self.retriever.retrieve(q)
+        for q in queries:
+            response = self.retriever.retrieve(q)
 
-        for x in response:
-            if x.node_id not in documentIdSet:
-                documentIdSet.add(x.node_id)
-                source = Source(
-                    id=x.node_id,
-                    doi=x.metadata.get("doi", ""),
-                    file_name=x.metadata.get("file_name", ""),
-                    content=x.get_content(),
-                    score=round(x.get_score(), 2),
-                )
-                formatted_response.append(source)
-            else:
-                # search the document in formatted_response and update the score with greates
-                for doc in formatted_response:
-                    if doc.id == x.node_id:
-                        doc.score = max(doc.score, round(x.get_score(), 2))
-                        break
-    # logger.info(json.dumps(formatted_response, indent=4, default=str))
-    return formatted_response
+            for x in response:
+                if x.node_id not in documentIdSet:
+                    documentIdSet.add(x.node_id)
+                    source = Source(
+                        id=x.node_id,
+                        doi=x.metadata.get("doi", ""),
+                        file_name=x.metadata.get("file_name", ""),
+                        content=x.get_content(),
+                        score=round(x.get_score(), 2),
+                    )
+                    formatted_response.append(source)
+                else:
+                    # search the document in formatted_response and update the score with greates
+                    for doc in formatted_response:
+                        if doc.id == x.node_id:
+                            doc.score = max(doc.score, round(x.get_score(), 2))
+                            break
+        # logger.info(json.dumps(formatted_response, indent=4, default=str))
+        return formatted_response

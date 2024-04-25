@@ -7,11 +7,10 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 
 from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
+from models.enum import RetrievalApiEnum
 from models.types import Chat, Message, RoleEnum, Source
 from preretrieve.expansion.langchain.expansion import QueryExpansion
-from retrievals.chroma_retrieval import DeepRetrievalApi
 from retrievals.extension_retrieval import ExtensionRetrievalApi
-from retrievals.graph_retrieval import GraphRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
@@ -232,6 +231,11 @@ class AppController:
             )
 
             st.divider()
+            _ = st.selectbox(
+                "Choose Retrieval API",
+                options=[api_name for api_name in RetrievalApiEnum.__members__],
+                key="retrieval_api",
+            )
             _ = st.text_area(
                 label="Custom instruction",
                 value=PromptConfig.PERSONALITY,

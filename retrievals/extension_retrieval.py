@@ -42,7 +42,6 @@ class ExtensionRetrievalApi:
 
     def search_v0(self, query):
         response = self.retriever.retrieve(query)
-        print("Debug retrieval.py:13", response)
         formatted_response: list[Source] = []
         for x in response:
             source = Source(
