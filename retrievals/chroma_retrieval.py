@@ -3,6 +3,7 @@ from retrievals.retrieval import Retrieval
 from ingestion.ingestion import Ingestion
 from models.types import Source
 
+
 @Retrieval.register
 class DeepRetrievalApi:
     # Retrieve using deep models.
