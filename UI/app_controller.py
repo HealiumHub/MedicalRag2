@@ -5,7 +5,7 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 
 from const import MODELS
 from generations.completion import get_answer_with_context
-from models.types import Chat, Message, RoleEnum
+from models.types import Chat, Message, RoleEnum, Source
 from retrievals.retrieval import DeepRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
@@ -48,7 +48,6 @@ class AppController:
             return "assets/logo.png"
 
     def __render_history(self):
-        print(st.session_state.active_chat_idx)
         st.header("How can I help you today? 😄", divider="rainbow")
         for message in st.session_state.chats[
             st.session_state.active_chat_idx
@@ -99,10 +98,23 @@ class AppController:
                 stop_event.set()
 
                 try:
-                    related_articles = thread.result
+                    related_articles: list[Source] = thread.result
                 except Exception as e:
-                    related_articles = [], ""
+                    related_articles = []
                     st.error("Error happened when searching for docs.", icon="🚨")
+                print(related_articles)
+                for article in related_articles:
+                    with st.expander(f"Article {article.id}"):
+                        article: Source = article
+                        st.markdown(
+                            f"""
+                            **id**: {article.id}  
+                            **DOI**: {article.doi}  
+                            **File Name**: {article.file_name}  
+                            **Content**: {article.content}  
+                            **Score**: {article.score}  
+                                    """
+                        )
 
             with st.spinner("I'm thinking..."):
                 with st.chat_message(
@@ -148,7 +160,7 @@ class AppController:
                         )
                         st.balloons()
                     except Exception as e:
-                        print(e)
+                        print("Exception", e)
                         completion = "Error happened when generating completion."
                         st.error(completion, icon="🚨")
 
@@ -167,12 +179,6 @@ class AppController:
                 label_visibility="collapsed",
             )
             # TODO Update the selected_model
-
-            print(
-                "DEBUG",
-                st.session_state.active_chat_idx,
-                st.session_state.selected_model,
-            )
 
             # TODO: Dropdown is sus af.
             st.session_state.selected_chat = st.selectbox(

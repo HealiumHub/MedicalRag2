@@ -1,10 +1,16 @@
+import os
+
+
 class PromptConfig:
-    DISCLAIMER = "\n\n*Please consult professional doctor for accurate medical advices.*"
+    DISCLAIMER = (
+        "\n\n*Please consult professional doctor for accurate medical advices.*"
+    )
     PERSONALITY = """
     You are MedLight, an assistant developed to help bridge medical research to the public.
     The system will give you some relevant research articles that you can use.
     Do not use research papers if they are irrelevant to the question.
     """
+
 
 MODELS = [
     "phi3:latest",
@@ -46,3 +52,5 @@ MODEL_CONTEXT_LENGTH = {
     "mixtral-8x7b-32768": 32768,
     "llama2-70b-4096": 4096,
 }
+
+API_KEY = os.environ["OPENAI_API_KEY"]

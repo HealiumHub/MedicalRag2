@@ -5,11 +5,13 @@ import shutil
 from typing import Sequence
 import chromadb
 
-from llama_index.core import Settings, load_index_from_storage
+from llama_index.core import Settings
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.core.schema import BaseNode, Document
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.embeddings.openai import OpenAIEmbedding
+
 
 from llama_index.core.ingestion import IngestionPipeline
 from llama_index.extractors.entity import EntityExtractor
@@ -26,15 +28,24 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
 
+from const import API_KEY
+
 
 class Ingestion:
     DATA_PATH = "./ingestion/pdf"
     CHROMA_PATH = "chroma"
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
+    API_KEY = 
 
-    def __init__(self):
+    def __init__(self, with_openai: bool = False):
         Settings.llm = Ollama(model="gemma:2b")
-        Settings.embed_model = OllamaEmbedding(model_name="snowflake-arctic-embed")
+        if with_openai:
+            Settings.embed_model = OpenAIEmbedding(
+                model="text-embedding-3-small",
+                api_key=API_KEY,
+            )
+        else:
+            Settings.embed_model = OllamaEmbedding(model_name="snowflake-arctic-embed")
 
     def load_documents(self, k=math.inf):
         pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)

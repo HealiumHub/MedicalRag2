@@ -1,27 +1,25 @@
 from ingestion.ingestion import Ingestion
+from models.types import Source
 
 
 class DeepRetrievalApi:
     # Retrieve using deep models.
 
     def __init__(self):
-        index = Ingestion().read_from_chroma()
+        index = Ingestion(with_openai=True).read_from_chroma()
         self.retriever = index.as_retriever(similarity_top_k=6)
 
-    def search(self, query):
+    def search(self, query):  # -> list:
         response = self.retriever.retrieve(query)
-
-        formatted_response = []
+        print("Debug retrieval.py:13", response)
+        formatted_response: list[Source] = []
         for x in response:
-            formatted_response.append(
-                {
-                    "id": x.node_id,
-                    # TODO: Populate metatdata.
-                    "doi": x.metadata.get("doi", ""),
-                    "file_name": x.metadata.get("file_name", "").replace(".pdf", ""),
-                    "title": x.metadata.get("title", ""),
-                    "content": x.get_content(),
-                    "score": round(x.get_score(), 2),
-                }
+            source = Source(
+                id=x.node_id,
+                doi=x.metadata.get("doi", ""),
+                file_name=x.metadata.get("file_name", ""),
+                content=x.get_content(),
+                score=round(x.get_score(), 2),
             )
+            formatted_response.append(source)
         return formatted_response

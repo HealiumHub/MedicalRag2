@@ -1,11 +1,10 @@
+import os
 from langchain.schema.output_parser import StrOutputParser
 from langchain_community.chat_models import ChatOpenAI
 from langchain_community.llms.ollama import Ollama
 from langchain_core.messages import HumanMessage, SystemMessage
 
-from const import MAX_OUTPUT, MODEL_CONTEXT_LENGTH, PromptConfig
-
-API_KEY = ""
+from const import API_KEY, MAX_OUTPUT, MODEL_CONTEXT_LENGTH, PromptConfig
 
 
 def get_model(model_name: str) -> ChatOpenAI | Ollama:

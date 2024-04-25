@@ -68,3 +68,11 @@ class Message(BaseModel):
 class Chat(BaseModel):
     id: int
     messages: list[Message] = []
+
+
+class Source(BaseModel):
+    id: str
+    doi: str
+    file_name: str
+    content: str
+    score: float
