@@ -8,6 +8,7 @@ from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.enum import RetrievalApiEnum
 from models.types import Chat, Message, RoleEnum, Source
+from preretrieve.expansion.langchain.hyde import HyDE
 
 from .utilities import ReturnValueThread, StreamHandler
 
@@ -89,6 +90,9 @@ class AppController:
                         content=user_query,
                     )
                 )
+                
+                user_query = HyDE().run(user_query)
+                st.write(user_query)
 
             with st.spinner("Please wait, I'm searching for references... :eyes:"):
                 stop_event = threading.Event()
