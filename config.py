@@ -26,7 +26,7 @@ LOGGING_CONFIG = {
         },
         # Output to console
         "console": {
-            "level": "DEBUG",
+            "level": "INFO",
             "class": "logging.StreamHandler",
             "formatter": "verbose",
         },

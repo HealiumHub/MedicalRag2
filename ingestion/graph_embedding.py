@@ -1,16 +1,13 @@
 import glob
-from llama_index.core import Settings
-from llmsherpa.readers.layout_reader import Block
-from llama_index.core.schema import Document
-from llmsherpa.readers import LayoutPDFReader
-from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
-
-from llama_index.core import VectorStoreIndex
-from llama_index.core import StorageContext
-
 import logging
-import sys
 import os
+import sys
+
+from llama_index.core import Settings, StorageContext, VectorStoreIndex
+from llama_index.core.schema import Document
+from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
+from llmsherpa.readers import LayoutPDFReader
+from llmsherpa.readers.layout_reader import Block
 
 # logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 

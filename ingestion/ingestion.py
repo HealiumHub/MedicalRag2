@@ -35,7 +35,10 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
 
-from const import API_KEY
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 logger = logging.getLogger(__name__)
 

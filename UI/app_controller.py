@@ -7,8 +7,8 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum, Source
-from models.types import Chat, Message, RoleEnum
 from retrievals.chroma_retrieval import DeepRetrievalApi
+from retrievals.extension_retrieval import ExtensionRetrievalApi
 from retrievals.graph_retrieval import GraphRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
@@ -96,7 +96,7 @@ class AppController:
                 stop_event = threading.Event()
                 thread = ReturnValueThread(
                     # target=DeepRetrievalApi().search, args=(user_query,)
-                    target=GraphRetrievalApi().search,
+                    target=ExtensionRetrievalApi().search,
                     args=(user_query,),
                 )
                 add_script_run_ctx(thread)
@@ -109,7 +109,7 @@ class AppController:
                 except Exception as e:
                     related_articles = []
                     st.error("Error happened when searching for docs.", icon="🚨")
-                print(related_articles)
+
                 for article in related_articles:
                     with st.expander(f"Article {article.id}"):
                         article: Source = article
