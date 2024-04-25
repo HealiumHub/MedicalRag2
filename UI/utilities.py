@@ -43,5 +43,6 @@ class StreamHandler(BaseCallbackHandler):
     ):
         # Streamlit does not rerender when the answer finishes, so we need to add the disclaimer here.
         self.on_llm_new_token(PromptConfig.DISCLAIMER)
-        return super().on_llm_end(response, run_id=run_id, parent_run_id=parent_run_id, **kwargs)
-    
+        return super().on_llm_end(
+            response, run_id=run_id, parent_run_id=parent_run_id, **kwargs
+        )
