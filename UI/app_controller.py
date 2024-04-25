@@ -209,7 +209,7 @@ class AppController:
                 on_click=self.__new_chat,
                 use_container_width=True,
             )
-            
+
             st.divider()
             _ = st.text_area(
                 label="Custom instruction",
