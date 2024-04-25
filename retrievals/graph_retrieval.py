@@ -2,6 +2,7 @@ import json
 from ingestion.graph_embedding import GraphIngestion
 
 from retrievals.retrieval import Retrieval
+from models.types import Source
 
 
 @Retrieval.register
@@ -19,19 +20,15 @@ class GraphRetrievalApi:
 
     def search(self, query):
         response = self.retriever.retrieve(query)
-        formatted_response = []
+        formatted_response: list[Source] = []
         for x in response:
             print("\n content1 \n", json.dumps(x.node.to_dict(), indent=4))
-            formatted_response.append(
-                {
-                    "id": x.node_id,
-                    # TODO: Populate metatdata.
-                    "doi": x.metadata.get("doi", ""),
-                    "file_name": x.metadata.get("source", ""),
-                    "page": x.metadata.get("page", ""),
-                    "content": x.get_content(),
-                    "score": round(x.get_score(), 2),
-                    # "related_info": x.node.,
-                }
+            source = Source(
+                id=x.node_id,
+                doi=x.metadata.get("doi", ""),
+                file_name=x.metadata.get("source", ""),
+                content=x.get_content(),
+                score=round(x.get_score(), 2),
             )
+            formatted_response.append(source)
         return formatted_response

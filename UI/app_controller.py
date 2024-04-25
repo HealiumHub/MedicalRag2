@@ -7,7 +7,6 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum, Source
-from retrievals.retrieval import DeepRetrievalApi
 from models.types import Chat, Message, RoleEnum
 from retrievals.chroma_retrieval import DeepRetrievalApi
 from retrievals.graph_retrieval import GraphRetrievalApi
