@@ -4,7 +4,7 @@ import threading
 import streamlit as st
 from streamlit.runtime.scriptrunner import add_script_run_ctx
 
-from const import MODELS
+from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum
 from retrievals.retrieval import DeepRetrievalApi
@@ -123,6 +123,8 @@ class AppController:
                                 user_query,
                                 st.session_state.selected_model,
                                 related_articles,
+                                st.session_state.custom_instruction,
+                                st.session_state.temperature,
                                 stream_handler,
                             ),
                         )
@@ -187,6 +189,24 @@ class AppController:
                 type="primary",
                 on_click=self.__new_chat,
                 use_container_width=True,
+            )
+            
+            st.divider()
+            _ = st.text_area(
+                label="Custom instruction",
+                value=PromptConfig.PERSONALITY,
+                help="Enter a custom instruction to guide the model.",
+                key="custom_instruction",
+            )
+            _ = st.slider(
+                label="Temperature",
+                min_value=0.0,
+                max_value=2.0,
+                value=0.0,
+                step=0.05,
+                format="%f",
+                help="The temperature of the sampling distribution.",
+                key="temperature",
             )
 
     def __new_chat(self):
