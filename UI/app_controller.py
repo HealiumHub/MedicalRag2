@@ -96,7 +96,7 @@ class AppController:
                 stop_event = threading.Event()
                 thread = ReturnValueThread(
                     # target=DeepRetrievalApi().search, args=(user_query,)
-                    target=DeepRetrievalApi().search,
+                    target=ExtensionRetrievalApi().search,
                     args=(user_query,),
                 )
                 add_script_run_ctx(thread)
