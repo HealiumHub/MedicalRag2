@@ -1,0 +1,22 @@
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.nox
+  | \.tox
+  | \.venv
+  | \.env
+  | env
+  | venv
+  | node_modules
+  | _build
+  | buck-out
+  | build
+  | dist
+  | migrations
+)/
+'''
