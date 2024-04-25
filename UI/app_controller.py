@@ -208,6 +208,24 @@ class AppController:
                 on_click=self.__new_chat,
                 use_container_width=True,
             )
+            
+            st.divider()
+            _ = st.text_area(
+                label="Custom instruction",
+                value=PromptConfig.PERSONALITY,
+                help="Enter a custom instruction to guide the model.",
+                key="custom_instruction",
+            )
+            _ = st.slider(
+                label="Temperature",
+                min_value=0.0,
+                max_value=2.0,
+                value=0.0,
+                step=0.05,
+                format="%f",
+                help="The temperature of the sampling distribution.",
+                key="temperature",
+            )
 
             st.divider()
             _ = st.text_area(

@@ -36,6 +36,7 @@ from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
 
 from dotenv import load_dotenv
+
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY", "")
 

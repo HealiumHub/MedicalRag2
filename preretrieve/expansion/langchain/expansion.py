@@ -6,9 +6,10 @@ from langchain_community.llms.ollama import Ollama
 from langchain.output_parsers import PydanticOutputParser
 from typing import Optional, Any
 
-import logging 
+import logging
 
 from dotenv import load_dotenv
+
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY", "")
 
@@ -28,20 +29,24 @@ class ParaphrasedQuery(BaseModel):
         ...,
         description="A list of unique paraphrasing of the original question.",
     )
+
+
 # llm = Ollama(model="llama2")
 class QueryExpansion:
     def __init__(self, with_openAI: bool):
-        self.LLM_factory("",with_openAI)
+        self.LLM_factory("", with_openAI)
 
-    def LLM_factory(self,model,with_openAI: bool):
+    def LLM_factory(self, model, with_openAI: bool):
         if with_openAI:
-            self.llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.1,api_key=API_KEY)
-        else: 
+            self.llm = ChatOpenAI(
+                model="gpt-3.5-turbo-0125", temperature=0.1, api_key=API_KEY
+            )
+        else:
             if len(model) > 0:
                 self.llm = Ollama(model=model)
-            else: 
+            else:
                 self.llm = Ollama(model="llama2")
-           
+
         parser = PydanticOutputParser(pydantic_object=ParaphrasedQuery)
         prompt = PromptTemplate(
             template="""{format_instructions}\n{query}\n""",
@@ -51,8 +56,8 @@ class QueryExpansion:
 
         self.chain = prompt | self.llm | parser
 
-    def paraphase_query(self,query:str):
-        response =  self.chain.invoke(query)
-        response.paraphrased_query.append(query)  
+    def paraphase_query(self, query: str):
+        response = self.chain.invoke(query)
+        response.paraphrased_query.append(query)
         print(response)
         return response.paraphrased_query
