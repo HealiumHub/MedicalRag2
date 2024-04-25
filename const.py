@@ -7,6 +7,7 @@ class PromptConfig:
     """
 
 MODELS = [
+    "phi3:latest",
     "gpt-3.5-turbo-0125",
     "llama3:8b",
     "llama3:instruct",
@@ -27,6 +28,7 @@ MODELS = [
 MAX_OUTPUT = 1200
 
 MODEL_CONTEXT_LENGTH = {
+    "phi3:latest": 128000,
     "llama3:8b": 8192,
     "llama3:instruct": 8192,
     "gemma:2b": 8192,
