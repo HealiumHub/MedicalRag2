@@ -1,10 +1,11 @@
+import json
 from ingestion.graph_embedding import GraphIngestion
-import logging
+
+from retrievals.retrieval import Retrieval
 
 
+@Retrieval.register
 class GraphRetrievalApi:
-    # Retrieve using deep models.
-
     def __init__(self):
         graph_ingestion = GraphIngestion()
         graph_ingestion.init_graph_db()
@@ -18,19 +19,19 @@ class GraphRetrievalApi:
 
     def search(self, query):
         response = self.retriever.retrieve(query)
-        logging.info("done retrieval", extra={"resp": response})
-
         formatted_response = []
         for x in response:
+            print("\n content1 \n", json.dumps(x.node.to_dict(), indent=4))
             formatted_response.append(
                 {
                     "id": x.node_id,
                     # TODO: Populate metatdata.
                     "doi": x.metadata.get("doi", ""),
-                    "file_name": x.metadata.get("file_name", "").replace(".pdf", ""),
-                    "title": x.metadata.get("title", ""),
+                    "file_name": x.metadata.get("source", ""),
+                    "page": x.metadata.get("page", ""),
                     "content": x.get_content(),
                     "score": round(x.get_score(), 2),
+                    # "related_info": x.node.,
                 }
             )
         return formatted_response

@@ -41,7 +41,7 @@ class GraphIngestion:
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
     DATA_PATH = "/*.pdf"
 
-    def __init__(self, model, embedding_model, logging_level=logging.INFO):
+    def __init__(self, model=None, embedding_model=None, logging_level=logging.INFO):
         # cfg
         logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
@@ -50,14 +50,15 @@ class GraphIngestion:
         self.index = None
 
         # If not set, default is OpenAI's GPT-3.5
-        Settings.llm = model
-        Settings.embed_model = embedding_model
+        if model is not None and embedding_model is not None:
+            Settings.llm = model
+            Settings.embed_model = embedding_model
 
     def init_graph_db(
         self,
-        username,
-        password,
-        url,
+        username="neo4j",
+        password="yasuotruong",
+        url="neo4j://localhost:7687",
         database="neo4j",
         embedding_dimension=DEFAULT_EMBEDDING_DIMENSION,
         index_name="yasuo_index",
@@ -127,10 +128,11 @@ class GraphIngestion:
 
     def get_latest_index(
         self,
-        username,
-        password,
-        url,
-        database,
+        username="neo4j",
+        password="yasuotruong",
+        url="neo4j://localhost:7687",
+        database="neo4j",
+        embedding_dimension=DEFAULT_EMBEDDING_DIMENSION,
         index_name="yasuo_index",
         hybrid_search=True,
     ):
@@ -140,6 +142,7 @@ class GraphIngestion:
             url=url,
             database=database,
             index_name=index_name,
+            embedding_dimension=embedding_dimension,
             hybrid_search=hybrid_search,
         )
 

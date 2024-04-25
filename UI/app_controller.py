@@ -8,6 +8,9 @@ from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum, Source
 from retrievals.retrieval import DeepRetrievalApi
+from models.types import Chat, Message, RoleEnum
+from retrievals.chroma_retrieval import DeepRetrievalApi
+from retrievals.graph_retrieval import GraphRetrievalApi
 
 from .utilities import ReturnValueThread, StreamHandler
 
@@ -93,7 +96,9 @@ class AppController:
             with st.spinner("Please wait, I'm searching for references... :eyes:"):
                 stop_event = threading.Event()
                 thread = ReturnValueThread(
-                    target=DeepRetrievalApi().search, args=(user_query,)
+                    # target=DeepRetrievalApi().search, args=(user_query,)
+                    target=GraphRetrievalApi().search,
+                    args=(user_query,),
                 )
                 add_script_run_ctx(thread)
                 thread.start()
