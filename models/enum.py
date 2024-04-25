@@ -9,10 +9,10 @@ class RetrievalApiEnum(str, Enum):
     NEO4J_RETRIEVAL = "NEO4J_RETRIEVAL"
 
     @staticmethod
-    def get_retrieval(str) -> Retrieval:
-        if str == RetrievalApiEnum.NEO4J_RETRIEVAL:
-            return GraphRetrievalApi()
-        elif str == RetrievalApiEnum.CHROMA_RETRIEVAL:
-            return DeepRetrievalApi()
+    def get_retrieval(retrieval_type: str, **kwargs) -> Retrieval:
+        if retrieval_type == RetrievalApiEnum.NEO4J_RETRIEVAL:
+            return GraphRetrievalApi(**kwargs)
+        elif retrieval_type == RetrievalApiEnum.CHROMA_RETRIEVAL:
+            return DeepRetrievalApi(**kwargs)
         else:
             raise ValueError("Invalid retrieval API")

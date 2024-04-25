@@ -3,6 +3,9 @@ import logging
 from ingestion.ingestion import Ingestion
 from models.types import Source
 from retrievals.retrieval import Retrieval
+from llama_index.core.vector_stores.types import (
+    VectorStoreQueryMode,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -11,9 +14,14 @@ logger = logging.getLogger(__name__)
 class DeepRetrievalApi:
     # Retrieve using deep models.
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         index = Ingestion(with_openai=True).read_from_chroma()
-        self.retriever = index.as_retriever(similarity_top_k=6)
+        print(kwargs)
+        self.retriever = index.as_retriever(
+            similarity_top_k=6,
+            vector_store_query_mode=VectorStoreQueryMode.HYBRID,
+            **kwargs
+        )
 
     def search(self, query):  # -> list:
         response = self.retriever.retrieve(query)
