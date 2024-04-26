@@ -10,7 +10,7 @@ from generations.completion import get_answer_with_context
 from models.enum import RetrievalApiEnum
 from models.types import Chat, Message, RoleEnum, Source
 from preretrieve.expansion.langchain.expansion import QueryExpansion
-from retrievals.extension_retrieval import ExtensionRetrievalApi
+from preretrieve.hyde import HyDE
 
 from .utilities import ReturnValueThread, StreamHandler
 
