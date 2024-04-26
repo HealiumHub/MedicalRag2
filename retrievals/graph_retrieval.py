@@ -18,8 +18,8 @@ class GraphRetrievalApi:
         )
         self.retriever = index.as_retriever()
 
-    def search(self, query):
-        response = self.retriever.retrieve(query)
+    def search(self, queries: list[str] = []):
+        response = self.retriever.retrieve(queries[0])
         formatted_response: list[Source] = []
         for x in response:
             print("\n content1 \n", json.dumps(x.node.to_dict(), indent=4))
