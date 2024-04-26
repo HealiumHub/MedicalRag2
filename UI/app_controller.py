@@ -55,6 +55,8 @@ class AppController:
     def __render_history(self):
         logger.info(st.session_state.active_chat_idx)
         st.header("How can I help you today? 😄", divider="rainbow")
+
+        message: Message
         for message in st.session_state.chats[
             st.session_state.active_chat_idx
         ].messages:
@@ -71,7 +73,9 @@ class AppController:
                 avatar=(self.__get_avatar_for_role(role)),
             ):
                 st.markdown(content)
-                self.__render_expended_queries(message.expanded_queries)
+                self.__render_expended_queries(
+                    message.expanded_queries, message.hyde_passages
+                )
                 self.__render_references(message.related_articles)
 
     def __render_chat(self):
@@ -81,10 +85,15 @@ class AppController:
             ):
                 st.markdown(user_query)
 
-                # Queries expansion
-                queryExapansion = QueryExpansion(with_openAI=True)
-                user_queries = queryExapansion.paraphase_query(user_query)
-                self.__render_expended_queries(user_queries)
+                # Preretrieval = Query Expansion + HyDE
+                with st.spinner(
+                    "Please wait, I'm analyzing your questions... :mag_right:"
+                ):
+                    queryExapansion = QueryExpansion(with_openAI=True)
+                    expanded_queries = queryExapansion.paraphase_query(user_query)
+                    user_queries = [HyDE().run(query) for query in expanded_queries]
+                    self.__render_expended_queries(expanded_queries, user_queries)
+
                 st.session_state.chats[
                     st.session_state.active_chat_idx
                 ].messages.append(
@@ -97,7 +106,8 @@ class AppController:
                         + 1,
                         role=RoleEnum.user,
                         content=user_query,
-                        expanded_queries=user_queries,
+                        expanded_queries=expanded_queries,
+                        hyde_passages=user_queries,
                         related_articles=[],
                     )
                 )
@@ -110,10 +120,10 @@ class AppController:
                     stop_event = threading.Event()
                     thread = ReturnValueThread(
                         target=RetrievalApiEnum.get_retrieval(
-                            st.session_state.retrieval_api,
+                            retrieval_type=st.session_state.retrieval_api,
                             alpha=st.session_state.sparse_dense_weight,
                         ).search,
-                        args=(user_query,),
+                        args=(user_queries,),
                     )
                     add_script_run_ctx(thread)
                     thread.start()
@@ -167,6 +177,7 @@ class AppController:
                                 role=RoleEnum.assistant,
                                 content=completion,
                                 expanded_queries=[],
+                                hyde_passages=[],
                                 related_articles=related_articles,
                             )
                         )
@@ -176,13 +187,18 @@ class AppController:
                         completion = "Error happened when generating completion."
                         st.error(completion, icon="🚨")
 
-    def __render_expended_queries(self, user_queries: list[str]):
-        with st.expander(
-            "Let's Get Curious Together! These are questions that we ask on your behalf.",
-            expanded=True,
-        ):
-            for query in user_queries:
-                st.markdown(f":mag_right: {query}")
+    def __render_expended_queries(
+        self, expanded_queries: list[str], hyde_passages: list[str]
+    ):
+        st.markdown(
+            "**Let's Get Curious Together! These are questions that we ask on your behalf.**"
+        )
+        for query, passage in zip(expanded_queries, hyde_passages):
+            with st.expander(
+                f":mag_right: {query}",
+                expanded=True,
+            ):
+                st.markdown(f"""{passage}""")
 
     def __render_references(self, related_articles: list[Source]):
         for article in related_articles:
@@ -248,7 +264,7 @@ class AppController:
                 label="Lexical/Semantic Weight",
                 min_value=0.0,
                 max_value=1.0,
-                value=0.0,
+                value=1.0,
                 step=0.05,
                 format="%f",
                 help="Weight for sparse/dense retrieval, only used for hybrid query mode. (0 = lexical, 1 = semantic)",

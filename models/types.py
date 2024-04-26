@@ -73,6 +73,7 @@ class Message(BaseModel):
     content: str | QuotedAnswer
     related_articles: list[Source] = []
     expanded_queries: list[str] = []
+    hyde_passages: list[str] = []
 
 
 class Chat(BaseModel):

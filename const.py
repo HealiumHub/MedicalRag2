@@ -16,8 +16,8 @@ Do not use research papers if they are irrelevant to the question."""
 
 
 MODELS = [
-    "phi3:latest",
     "gpt-3.5-turbo-0125",
+    "phi3:latest",
     "llama3:8b",
     "llama3:instruct",
     "gemma:2b",

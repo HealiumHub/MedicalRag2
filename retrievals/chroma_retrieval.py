@@ -23,7 +23,7 @@ class DeepRetrievalApi:
             **kwargs
         )
 
-    def search(self, queries):
+    def search(self, queries: list[str]):
         # create set formatted_response
         documentIdSet = set()
         formatted_response = []
