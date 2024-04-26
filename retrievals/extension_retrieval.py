@@ -12,10 +12,7 @@ class ExtensionRetrievalApi:
         index = Ingestion(with_openai=True).read_from_chroma()
         self.retriever = index.as_retriever(similarity_top_k=6)
 
-    def search(self, query):
-        queryExpansion = QueryExpansion(with_openAI=True)
-        queries = queryExpansion.paraphase_query(query)
-
+    def search(self, queries):
         # create set formatted_response
         documentIdSet = set()
         formatted_response = []

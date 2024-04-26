@@ -1,4 +1,5 @@
 import logging
+import re
 import threading
 
 import streamlit as st
@@ -7,6 +8,7 @@ from streamlit.runtime.scriptrunner import add_script_run_ctx
 from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.types import Chat, Message, RoleEnum, Source
+from preretrieve.expansion.langchain.expansion import QueryExpansion
 from retrievals.chroma_retrieval import DeepRetrievalApi
 from retrievals.extension_retrieval import ExtensionRetrievalApi
 from retrievals.graph_retrieval import GraphRetrievalApi
@@ -70,6 +72,8 @@ class AppController:
                 avatar=(self.__get_avatar_for_role(role)),
             ):
                 st.markdown(content)
+                self.__render_expended_queries(message.expanded_queries)
+                self.__render_references(message.related_articles)
 
     def __render_chat(self):
         if user_query := st.chat_input("Enter your question here ✍️"):
@@ -77,6 +81,11 @@ class AppController:
                 RoleEnum.user, avatar=self.__get_avatar_for_role(RoleEnum.user)
             ):
                 st.markdown(user_query)
+
+                # Queries expansion
+                queryExapansion = QueryExpansion(with_openAI=True)
+                user_queries = queryExapansion.paraphase_query(user_query)
+                self.__render_expended_queries(user_queries)
                 st.session_state.chats[
                     st.session_state.active_chat_idx
                 ].messages.append(
@@ -89,45 +98,34 @@ class AppController:
                         + 1,
                         role=RoleEnum.user,
                         content=user_query,
+                        expanded_queries=user_queries,
+                        related_articles=[],
                     )
                 )
 
-            with st.spinner("Please wait, I'm searching for references... :eyes:"):
-                stop_event = threading.Event()
-                thread = ReturnValueThread(
-                    # target=DeepRetrievalApi().search, args=(user_query,)
-                    target=ExtensionRetrievalApi().search,
-                    args=(user_query,),
-                )
-                add_script_run_ctx(thread)
-                thread.start()
-                thread.join()
-                stop_event.set()
+            with st.chat_message(
+                RoleEnum.assistant,
+                avatar=self.__get_avatar_for_role(RoleEnum.assistant),
+            ):
+                with st.spinner("Please wait, I'm searching for references... :eyes:"):
+                    stop_event = threading.Event()
+                    thread = ReturnValueThread(
+                        # target=DeepRetrievalApi().search, args=(user_query,)
+                        target=ExtensionRetrievalApi().search,
+                        args=(user_queries,),
+                    )
+                    add_script_run_ctx(thread)
+                    thread.start()
+                    thread.join()
+                    stop_event.set()
 
-                try:
-                    related_articles: list[Source] = thread.result
-                except Exception as e:
-                    related_articles = []
-                    st.error("Error happened when searching for docs.", icon="🚨")
+                    try:
+                        related_articles: list[Source] = thread.result
+                    except Exception as e:
+                        related_articles = []
+                        st.error("Error happened when searching for docs.", icon="🚨")
 
-                for article in related_articles:
-                    with st.expander(f"Article {article.id}"):
-                        article: Source = article
-                        st.markdown(
-                            f"""
-                            **id**: {article.id}  
-                            **DOI**: {article.doi}  
-                            **File Name**: {article.file_name}  
-                            **Content**: {article.content}  
-                            **Score**: {article.score}  
-                                    """
-                        )
-
-            with st.spinner("I'm thinking..."):
-                with st.chat_message(
-                    RoleEnum.assistant,
-                    avatar=self.__get_avatar_for_role(RoleEnum.assistant),
-                ):
+                with st.spinner("I'm thinking..."):
                     # Temp chatbox for streaming outputs
                     chat_box = st.markdown("")
                     stream_handler = StreamHandler(chat_box)
@@ -152,6 +150,8 @@ class AppController:
 
                         completion = thread.result
 
+                        self.__render_references(related_articles)
+
                         # Save the response to history.
                         st.session_state.chats[
                             st.session_state.active_chat_idx
@@ -165,6 +165,8 @@ class AppController:
                                 + 1,
                                 role=RoleEnum.assistant,
                                 content=completion,
+                                expanded_queries=[],
+                                related_articles=related_articles,
                             )
                         )
                         st.balloons()
@@ -172,6 +174,27 @@ class AppController:
                         logger.exception(e)
                         completion = "Error happened when generating completion."
                         st.error(completion, icon="🚨")
+
+    def __render_expended_queries(self, user_queries: list[str]):
+        with st.expander(
+            "Let's Get Curious Together! These are questions that we ask on your behalf.",
+            expanded=True,
+        ):
+            for query in user_queries:
+                st.markdown(f":mag_right: {query}")
+
+    def __render_references(self, related_articles: list[Source]):
+        for article in related_articles:
+            with st.expander(f"Article {article.id}"):
+                st.markdown(
+                    f"""
+                                    **id**: {article.id}  
+                                    **DOI**: {article.doi}  
+                                    **File Name**: {article.file_name}  
+                                    **Content**: {article.content}  
+                                    **Score**: {article.score}  
+                                            """
+                )
 
     def __render_sidebar(self):
         with st.sidebar:
