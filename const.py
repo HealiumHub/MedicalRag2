@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 
 class PromptConfig:
@@ -54,6 +55,3 @@ MODEL_CONTEXT_LENGTH = {
     "mixtral-8x7b-32768": 32768,
     "llama2-70b-4096": 4096,
 }
-
-API_KEY = os.getenv("OPENAI_API_KEY", "")
-print(API_KEY)
