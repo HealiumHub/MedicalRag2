@@ -18,7 +18,7 @@ class ParaphrasedQuery(BaseModel):
 
     If there are acronyms or words you are not familiar with, do not try to rephrase them.
 
-    Return at least 3 versions of the question."""
+    Return 2 versions of the question."""
 
     paraphrased_query: list[str] = Field(
         ...,

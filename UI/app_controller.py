@@ -117,22 +117,13 @@ class AppController:
                 avatar=self.__get_avatar_for_role(RoleEnum.assistant),
             ):
                 with st.spinner("Please wait, I'm searching for references... :eyes:"):
-                    stop_event = threading.Event()
-                    thread = ReturnValueThread(
-                        target=RetrievalApiEnum.get_retrieval(
+                    try:
+                        related_articles = RetrievalApiEnum.get_retrieval(
                             retrieval_type=st.session_state.retrieval_api,
                             alpha=st.session_state.sparse_dense_weight,
-                        ).search,
-                        args=(user_queries,),
-                    )
-                    add_script_run_ctx(thread)
-                    thread.start()
-                    thread.join()
-                    stop_event.set()
-
-                    try:
-                        related_articles: list[Source] = thread.result
+                        ).search(user_queries)
                     except Exception as e:
+                        raise e
                         related_articles = []
                         st.error("Error happened when searching for docs.", icon="🚨")
 
@@ -142,24 +133,14 @@ class AppController:
                     stream_handler = StreamHandler(chat_box)
 
                     try:
-                        stop_event = threading.Event()
-                        thread = ReturnValueThread(
-                            target=get_answer_with_context,
-                            args=(
-                                user_query,
+                        completion = get_answer_with_context(
+                            user_query,
                                 st.session_state.selected_model,
                                 related_articles,
                                 st.session_state.custom_instruction,
                                 st.session_state.temperature,
                                 stream_handler,
-                            ),
                         )
-                        add_script_run_ctx(thread)
-                        thread.start()
-                        thread.join()
-                        stop_event.set()
-
-                        completion = thread.result
 
                         self.__render_references(related_articles)
 
@@ -200,7 +181,7 @@ class AppController:
             ):
                 st.markdown(f"""{passage}""")
 
-    def __render_references(self, related_articles: list[Source]):
+    def __render_references(self, related_articles: list[Source] = []):
         for article in related_articles:
             with st.expander(f"Article {article.id}"):
                 st.markdown(
