@@ -36,7 +36,7 @@ from llmsherpa.readers.layout_reader import Block
 class GraphIngestion:
     DEFAULT_EMBEDDING_DIMENSION = 1536
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-    DATA_PATH = "/*.pdf"
+    DATA_PATH = "./pdf/*.pdf"
 
     def __init__(self, model=None, embedding_model=None, logging_level=logging.INFO):
         # cfg
@@ -101,12 +101,10 @@ class GraphIngestion:
                 }
                 document = Document(text=block.to_context_text(), metadata=metadata)
                 documents.append(document)
-        logging.info("done load documents")
+        logging.info(f"done load documents {len(documents)}")
 
         self.index = self.embed_documents(documents, show_progress=show_progress)
-        logging.info("done embed")
-
-        return self.index
+        logging.info(f"done embed | {self.index}")
 
     def embed_documents(self, documents, show_progress=True):
         # load storage context using initialized vector store
