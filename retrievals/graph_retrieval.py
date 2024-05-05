@@ -37,49 +37,47 @@ class GraphRetrievalApi:
         response = self.retriever.retrieve(queries[0])
 
         formatted_response: list[Source] = []
-        for x in response:
-            # logging.info(json.dumps(x.node.to_dict()["relationships"], indent=4))
-            for rel in x.node.relationships.values():
-
-                node_id = rel.to_dict()["node_id"]
-                logging.info(f"traverse relationship {rel.to_json()}")
-                records, summary, keys = self.driver.execute_query(
-                    f"""MATCH (n:Chunk)
-                    WHERE n.ref_doc_id = "{node_id}"
-                    OR n.id = "{node_id}"
-                    RETURN n LIMIT 1""",
-                )
-
-                if len(records) < 1:
-                    logging.error(
-                        f"Expected 1 record, got {len(records)} | id: {node_id}"
-                    )
-                    logging.info(records)
-                    continue
-                rel_node = dict(records[0].data()["n"])
-                text = rel_node.get("text", "")
-                logging.info(f"related node {rel_node}")
-                logging.info(f"Related text: {rel_node.get('text')}")
-
-                # TODO find a way to find these information
-                source = Source(
-                    id="x",
-                    doi="",
-                    file_name="x",
-                    content=text,
-                    score=round(0.3, 2),
-                )
-                formatted_response.append(source)
+        for chunk in response:
+            self.get_related_chunks(formatted_response, chunk)
 
             source = Source(
-                id=x.node_id,
-                doi=x.metadata.get("doi", ""),
-                file_name=x.metadata.get("source", ""),
-                content=x.get_content(),
-                score=round(x.get_score(), 2),
+                id=chunk.node_id,
+                doi=chunk.metadata.get("doi", ""),
+                file_name=chunk.metadata.get("source", ""),
+                content=chunk.get_content(),
+                score=round(chunk.get_score(), 2),
             )
             formatted_response.append(source)
 
         logging.info(f"total formatted response: {len(formatted_response)}")
         self.close()  # close db conn
         return formatted_response
+
+    def get_related_chunks(self, formatted_response: list[Source], parent: Record):
+        # get related text
+        for rel in parent.node.relationships.values():
+            node_id = rel.to_dict()["node_id"]
+            records, summary, keys = self.driver.execute_query(
+                f"""MATCH (n:Chunk)
+                WHERE n.ref_doc_id = "{node_id}"
+                OR n.id = "{node_id}"
+                RETURN n LIMIT 1""",
+            )
+
+            if len(records) != 1:
+                logging.error(f"Expected 1 record, got {len(records)} | id: {node_id}")
+                continue
+
+            rel_node = dict(records[0].data()["n"])
+            text = rel_node.get("text", "")
+            logging.info(f"Related text: {rel_node.get('text')}")
+
+            # TODO find a way to find these information
+            source = Source(
+                id="x",
+                doi="",
+                file_name="x",
+                content=text,
+                score=round(0.3, 2),
+            )
+            formatted_response.append(source)
