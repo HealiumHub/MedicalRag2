@@ -89,10 +89,26 @@ class AppController:
                 with st.spinner(
                     "Please wait, I'm analyzing your questions... :mag_right:"
                 ):
-                    queryExapansion = QueryExpansion(with_openAI=True)
-                    expanded_queries = queryExapansion.paraphase_query(user_query)
-                    user_queries = [HyDE().run(query) for query in expanded_queries]
-                    self.__render_expended_queries(expanded_queries, user_queries)
+                    queryExpansion = QueryExpansion(with_openAI=True)
+
+                    # Default is only user query
+                    expanded_queries = [user_query]
+                    if st.session_state.use_query_expansion:
+                        expanded_queries = queryExpansion.paraphase_query(user_query)
+
+                    # Default is no hyde_passages
+                    hyde_passages = expanded_queries
+                    if st.session_state.use_hyde:
+                        hyde_passages = [
+                            HyDE().run(query) for query in expanded_queries
+                        ]
+
+                    # Only render this if either query expansion or HyDE is enabled.
+                    if (
+                        st.session_state.use_query_expansion
+                        or st.session_state.use_hyde
+                    ):
+                        self.__render_expended_queries(expanded_queries, hyde_passages)
 
                 st.session_state.chats[
                     st.session_state.active_chat_idx
@@ -107,7 +123,7 @@ class AppController:
                         role=RoleEnum.user,
                         content=user_query,
                         expanded_queries=expanded_queries,
-                        hyde_passages=user_queries,
+                        hyde_passages=hyde_passages,
                         related_articles=[],
                     )
                 )
@@ -123,7 +139,7 @@ class AppController:
                             retrieval_type=st.session_state.retrieval_api,
                             alpha=st.session_state.sparse_dense_weight,
                         ).search,
-                        args=(user_queries,),
+                        args=(hyde_passages,),
                     )
                     add_script_run_ctx(thread)
                     thread.start()
@@ -254,6 +270,19 @@ class AppController:
                 options=[api_name for api_name in RetrievalApiEnum.__members__],
                 key="retrieval_api",
             )
+
+            # Toggle to use query expansion and HyDE
+            _ = st.checkbox(
+                label="Use Query Expansion",
+                value=True,
+                key="use_query_expansion",
+            )
+            _ = st.checkbox(
+                label="Use HyDE",
+                value=True,
+                key="use_hyde",
+            )
+
             _ = st.text_area(
                 label="Custom instruction",
                 value=PromptConfig.PERSONALITY,
