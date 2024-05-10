@@ -138,6 +138,7 @@ class AppController:
                         target=RetrievalApiEnum.get_retrieval(
                             retrieval_type=st.session_state.retrieval_api,
                             alpha=st.session_state.sparse_dense_weight,
+                            similarity_top_k=st.session_state.similarity_top_k,
                         ).search,
                         args=(hyde_passages,),
                     )
@@ -269,6 +270,17 @@ class AppController:
                 "Choose Retrieval API",
                 options=[api_name for api_name in RetrievalApiEnum.__members__],
                 key="retrieval_api",
+            )
+
+            # Choose number of chunks to retrieve
+            _ = st.slider(
+                label="Number of chunks to retrieve",
+                min_value=1,
+                max_value=20,
+                value=5,
+                step=1,
+                format="%d",
+                key="similarity_top_k",
             )
 
             # Toggle to use query expansion and HyDE
