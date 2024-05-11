@@ -36,7 +36,7 @@ from llmsherpa.readers.layout_reader import Block
 class GraphIngestion:
     DEFAULT_EMBEDDING_DIMENSION = 1536
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-    DATA_PATH = "/*.pdf"
+    DATA_PATH = "pdf/*.pdf"
 
     def __init__(self, model=None, embedding_model=None, logging_level=logging.INFO):
         # cfg
