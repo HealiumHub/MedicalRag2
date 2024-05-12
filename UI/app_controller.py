@@ -9,12 +9,16 @@ from const import MODELS, PromptConfig
 from generations.completion import get_answer_with_context
 from models.enum import RetrievalApiEnum
 from models.types import Chat, Message, RoleEnum, Source
+from postretrieve.rerank import Reranker
 from preretrieve.expansion.langchain.expansion import QueryExpansion
 from preretrieve.hyde import HyDE
 
 from .utilities import ReturnValueThread, StreamHandler
 
 logger = logging.getLogger(__name__)
+
+# Cache it so model don't get loaded again
+reranker = Reranker()
 
 
 class AppController:
@@ -153,6 +157,18 @@ class AppController:
                         related_articles = []
                         st.error("Error happened when searching for docs.", icon="🚨")
 
+                # Post retrieval steps
+                with st.spinner("I'm organizing the articles..."):
+                    reranked_articles = []
+                    if st.session_state.use_rerank:
+                        # Rerank the articles
+
+                        # TODO: Cache the reranker?
+                        reranked_articles = reranker.get_top_k(
+                            user_query, related_articles, st.session_state.rerank_top_k
+                        )
+                        related_articles = reranked_articles
+
                 with st.spinner("I'm thinking..."):
                     # Temp chatbox for streaming outputs
                     chat_box = st.markdown("")
@@ -178,7 +194,7 @@ class AppController:
 
                         completion = thread.result
 
-                        self.__render_references(related_articles)
+                        self.__render_references(related_articles, reranked_articles)
 
                         # Save the response to history.
                         st.session_state.chats[
@@ -196,6 +212,7 @@ class AppController:
                                 expanded_queries=[],
                                 hyde_passages=[],
                                 related_articles=related_articles,
+                                reranked_articles=reranked_articles,
                             )
                         )
                         st.balloons()
@@ -217,7 +234,9 @@ class AppController:
             ):
                 st.markdown(f"""{passage}""")
 
-    def __render_references(self, related_articles: list[Source]):
+    def __render_references(
+        self, related_articles: list[Source], reranked_articles: list[Source] = []
+    ):
         for article in related_articles:
             with st.expander(f"Article {article.id}"):
                 st.markdown(
@@ -226,6 +245,18 @@ class AppController:
                                     **DOI**: {article.doi}  
                                     **File Name**: {article.file_name}  
                                     **Page**: {article.page}  
+                                    **Content**: {article.content}  
+                                    **Score**: {article.score}  
+                                            """
+                )
+
+        for article in reranked_articles:
+            with st.expander(f"Reranked Article {article.id}"):
+                st.markdown(
+                    f"""
+                                    **id**: {article.id}  
+                                    **DOI**: {article.doi}  
+                                    **File Name**: {article.file_name}  
                                     **Content**: {article.content}  
                                     **Score**: {article.score}  
                                             """
@@ -275,7 +306,7 @@ class AppController:
 
             # Choose number of chunks to retrieve
             _ = st.slider(
-                label="Number of chunks to retrieve",
+                label="Number of chunks to retrieve from retrieval module",
                 min_value=1,
                 max_value=20,
                 value=5,
@@ -283,6 +314,26 @@ class AppController:
                 format="%d",
                 key="similarity_top_k",
             )
+
+            st.divider()
+            # Toggle to use rerank
+            _ = st.checkbox(
+                label="Use rerank",
+                value=True,
+                key="use_rerank",
+            )
+
+            # Choose top-k chunks after post-retrieval
+            _ = st.slider(
+                label="Number of chunks to take after rerank",
+                min_value=1,
+                max_value=20,
+                value=5,
+                step=1,
+                format="%d",
+                key="rerank_top_k",
+            )
+            st.divider()
 
             # Toggle to use query expansion and HyDE
             _ = st.checkbox(
