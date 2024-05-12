@@ -71,7 +71,14 @@ class Message(BaseModel):
     id: int
     role: RoleEnum | str
     content: str | QuotedAnswer
+    
+    # Retrieval
     related_articles: list[Source] = []
+    
+    # Post-retrieve
+    reranked_related_articles: list[Source] = []
+    
+    # Pre-retrieve
     expanded_queries: list[str] = []
     hyde_passages: list[str] = []
 
