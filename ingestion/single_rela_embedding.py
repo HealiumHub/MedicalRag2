@@ -22,31 +22,33 @@ graph = Neo4jGraph(
 )
 print("Graph initialized")
 
+from langchain_core.prompts import ChatPromptTemplate
+
+template = ChatPromptTemplate.from_template(
+    """
+    You are an expert in diabetes.
+    You need to extract nodes and relationships from the document to construct graph schema.
+    The graph has the Diabetes node at the center and all other nodes are connected to it.
+    If the label sounds like another created label, use the existing label.
+    Create new labels if needed
+    
+    Take a deep breath and analyze the document. Extract the information and create the graph.
+    """
+)
+
 
 llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0125")
 llm_transformer = LLMGraphTransformer(
     llm=llm,
     allowed_nodes=[
-        "Medical_concept",
-        "Country",
-        "Institution",
-        "Person",
-        "Unknown",
+        "Node",
     ],
     allowed_relationships=[
-        "HELPS",
-        "BOOST",
-        "REDUCES",
-        "RELATED_TO",
-        "ABSORBS",
-        "CONTAINS",
-        "CAUSES",
-        "TREATS",
-        "HAS",
-        "UNKNOWN_RELATIONSHIP",
+        "RELATIONSHIP",
     ],
     strict_mode=True,
     node_properties=["source", "page", "tag"],
+    # prompt=template,
 )
 print("LLM initialized")
 
@@ -69,20 +71,12 @@ for file in glob.glob(DATA_PATH):
             "page": block.page_idx,
             "source": os.path.basename(file),
             "tag": block.tag,
-            "text": block.to_context_text(),
         }
         documents = [Document(page_content=block.to_context_text(), metadata=metadata)]
         graph_documents = llm_transformer.convert_to_graph_documents(documents)
         print(f"Text extracted from the document: {block.to_context_text()}")
         print(f"Nodes:{graph_documents[0].nodes}")
         print(f"Relationships:{graph_documents[0].relationships}")
-        graph.add_graph_documents(graph_documents, include_source=False)
-        block_idx += 1
+        graph.add_graph_documents(graph_documents)
 
-# Delete single node
-graph.query(
-    """MATCH (n)
-    WHERE NOT (n)-[]-()
-    DELETE n
-"""
-)
+        block_idx += 1

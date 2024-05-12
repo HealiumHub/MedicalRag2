@@ -20,18 +20,28 @@ Task:Generate Cypher statement to query a graph database.
 Instructions:
 Use only Cypher to query the graph database.
 Use only the provided relationship types and properties in the schema.
+Generate longest path between two nodes.
 Do not use any other relationship types or properties that are not provided.
-Use WHERE clause and contains to get more results.
-Take a deep breath and double check the cypher query. Ensure that it is correct.
+Do not use the node label
+Do not use relationship types
+Keeps everything generics
+
 Schema:
 {schema}
-Cypher examples:
-# List 25 bioactive components?
-MATCH (n:`Bioactivecomponents`) RETURN n LIMIT 25
 
-# Which mushrooms that can reduce blood glucose?
-MATCH (n:Mushroom)-[r:REDUCES]-(b:Biomarker) WHERE b.id CONTAINS "Blood Glucose" RETURN n, b
-
+Examples:
+# What is the relationship between Hyponatremia and Nocturnal Enuresis
+MATCH p=(start)-[*1..5]-(end)
+WHERE start.id CONTAINS 'Hyponatremia' AND end.id CONTAINS 'Nocturnal Enuresis'
+RETURN p
+ORDER BY length(p) DESC
+LIMIT 1
+# What is the result of Plasma Arginine-Vasopressin Concentrations and Urine Concentration Inability
+MATCH p=(start)-[*1..5]-(end)
+WHERE start.id CONTAINS 'Plasma Arginine-Vasopressin Concentrations' AND end.id CONTAINS 'Urine Concentration Inability'
+RETURN p
+ORDER BY length(p) DESC
+LIMIT 1
 
 Note: Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than for you to construct a Cypher statement.
@@ -59,18 +69,28 @@ existing_index_return = Neo4jVector.from_existing_index(
     text_node_property="text",
 )
 
-# question:
-# what mushroom contains Ergosterol that can reduce blood glucose?
-# what mushroom contains beta-glucans that can reduce blood glucose?
-# what can reduces urine causes by demopressin?
-# how many treatments are there for diabetes?
-# how many mushrooms can reduce blood glucose?
-# what can Lentinus Edodes do?
-# list all mushrooms that has effect to diabetes
-# which mushroom can boost insulin?
-# which mushroom has the therapeutic effect against metabolic syndrome
+# p1
+# q: what is the result of Plasma Arginine-Vasopressin Concentrations and Urine Concentration Inability
+# rr: List all relationships between Plasma Arginine-Vasopressin and Urine
 
-q = "what mushroom contains beta-glucans that can reduce blood glucose?"
+# p2
+# q: what is the effect of Primary Monosymptomatic Enuresis on Restoration Of Desmopressin?
+# rr: List all relationships between Monosymptomatic Enuresis and Restoration Of Desmopressin
+
+# p3
+# q: what is the effect of Primary Monosymptomatic Enuresis on Restoration Of Desmopressin and Nasal Mucosa?
+# rr: List all relationships between Monosymptomatic Enuresis and Restoration Of Desmopressin and Nasal Mucosa
+
+# p4
+# q: what is the relationship between Mild-To-Moderate Hemophilia A and Diabetes Insipidus
+# rr: List all relationships between Hemophilia A and Diabetes
+
+# p5
+# q: what is the relationship between Vasopressin and Diabetes Retinopathy?
+# rr: List all relationships between Vasopressin and Diabetes
+
+q = "what is the relationship between Vasopressin and Diabetes Retinopathy"
+rewrite_q = "List all relationships between Vasopressin and Diabetes Retinopathy"
 
 vector_results = existing_index_return.similarity_search(q, k=5)
 
@@ -83,7 +103,8 @@ print("Vector result: ", vector_result)
 print("##########")
 
 
-graph_result = chain_language_example.invoke({"query": q})
+graph_result = chain_language_example.invoke({"query": rewrite_q})
+# graph_result = ""
 print("##########")
 print(graph_result)
 print("##########")
