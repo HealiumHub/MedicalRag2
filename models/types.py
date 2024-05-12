@@ -7,6 +7,7 @@ class Source(BaseModel):
     id: str
     doi: str
     file_name: str
+    page: int
     content: str
     score: float
 
