@@ -42,6 +42,10 @@ WHERE start.id CONTAINS 'Plasma Arginine-Vasopressin Concentrations' AND end.id 
 RETURN p
 ORDER BY length(p) DESC
 LIMIT 1
+# What causes diabetes
+MATCH p=(start)-[:CASES]->(end)
+WHERE start.id CONTAINS 'Diabetes'
+RETURN p
 
 Note: Do not include any explanations or apologies in your responses.
 Do not respond to any questions that might ask anything else than for you to construct a Cypher statement.
@@ -89,8 +93,8 @@ existing_index_return = Neo4jVector.from_existing_index(
 # q: what is the relationship between Vasopressin and Diabetes Retinopathy?
 # rr: List all relationships between Vasopressin and Diabetes
 
-q = "what is the relationship between Vasopressin and Diabetes Retinopathy"
-rewrite_q = "List all relationships between Vasopressin and Diabetes Retinopathy"
+q = "What are 5 latest discoveries of diabetes"
+rewrite_q = "List all relationships of diabetes"
 
 vector_results = existing_index_return.similarity_search(q, k=5)
 
