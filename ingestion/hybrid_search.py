@@ -94,7 +94,7 @@ existing_index_return = Neo4jVector.from_existing_index(
 # rr: List all relationships between Vasopressin and Diabetes
 
 q = "What are 5 latest discoveries of diabetes"
-rewrite_q = "List all relationships of diabetes"
+rewrite_q = "List all relationships of diabetesdef search(self, queries: list[str]):"
 
 vector_results = existing_index_return.similarity_search(q, k=5)
 

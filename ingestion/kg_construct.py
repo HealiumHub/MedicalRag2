@@ -15,10 +15,12 @@ DEFAULT_EMBEDDING_DIMENSION = 1536
 LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
 DATA_PATH = "pdf/*.pdf"
 
+logger = logging.getLogger(__name__)
+
 
 class KGConstruct:
     def __init__(self):
-        logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+        logger.basicConfig(stream=sys.stdout, level=logger.INFO)
 
         self.llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo-0125")
         self.llm_graph_transformer = LLMGraphTransformer(
@@ -45,7 +47,7 @@ class KGConstruct:
             strict_mode=True,
             node_properties=["source", "page", "tag", "text"],
         )
-        logging.info("LLM initialized")
+        logger.info("LLM initialized")
 
         self.graph = Neo4jGraph(
             url="neo4j://localhost:7687",
@@ -54,7 +56,7 @@ class KGConstruct:
             database="neo4j",
         )
 
-        logging.info("Graph initialized")
+        logger.info("Graph initialized")
 
     def process(self):
         # use llm sherpa to read pdf
@@ -64,7 +66,7 @@ class KGConstruct:
         for file in glob.glob(DATA_PATH):
             doc = pdf_reader.read_pdf(file)
             block: Block
-            logging.info(f"Processing file: {os.path.basename(file)}")
+            logger.info(f"Processing file: {os.path.basename(file)}")
 
             block_idx = 0
             for block in doc.chunks():
@@ -85,17 +87,17 @@ class KGConstruct:
                     documents
                 )
 
-                logging.info(
+                logger.info(
                     f"Text extracted from the document: {block.to_context_text()}"
                 )
-                logging.info(f"Nodes:{graph_documents[0].nodes}")
-                logging.info(f"Relationships:{graph_documents[0].relationships}")
+                logger.info(f"Nodes:{graph_documents[0].nodes}")
+                logger.info(f"Relationships:{graph_documents[0].relationships}")
 
                 self.graph.add_graph_documents(graph_documents, include_source=False)
                 block_idx += 1
 
         self._clear_lonely_nodes()
-        logging.info("done process")
+        logger.info("done process")
 
     def _clear_lonely_nodes(self):
         # Delete single node
