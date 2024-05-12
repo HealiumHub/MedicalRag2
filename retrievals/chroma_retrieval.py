@@ -17,8 +17,7 @@ class DeepRetrievalApi:
     def __init__(self, **kwargs):
         index = Ingestion(with_openai=True).read_from_chroma()
         self.retriever = index.as_retriever(
-            vector_store_query_mode=VectorStoreQueryMode.HYBRID,
-            **kwargs
+            vector_store_query_mode=VectorStoreQueryMode.HYBRID, **kwargs
         )
 
     def search(self, queries: list[str]):
