@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 # Cache it so model don't get loaded again
 reranker = Reranker()
 
+
 class AppController:
     def __init__(self):
         self.__config()
@@ -161,9 +162,11 @@ class AppController:
                     reranked_articles = []
                     if st.session_state.use_rerank:
                         # Rerank the articles
-                        
+
                         # TODO: Cache the reranker?
-                        reranked_articles = reranker.get_top_k(user_query, related_articles, st.session_state.rerank_top_k)
+                        reranked_articles = reranker.get_top_k(
+                            user_query, related_articles, st.session_state.rerank_top_k
+                        )
                         related_articles = reranked_articles
 
                 with st.spinner("I'm thinking..."):
@@ -231,7 +234,9 @@ class AppController:
             ):
                 st.markdown(f"""{passage}""")
 
-    def __render_references(self, related_articles: list[Source], reranked_articles: list[Source] = []):
+    def __render_references(
+        self, related_articles: list[Source], reranked_articles: list[Source] = []
+    ):
         for article in related_articles:
             with st.expander(f"Article {article.id}"):
                 st.markdown(
@@ -243,7 +248,7 @@ class AppController:
                                     **Score**: {article.score}  
                                             """
                 )
-        
+
         for article in reranked_articles:
             with st.expander(f"Reranked Article {article.id}"):
                 st.markdown(
@@ -308,7 +313,7 @@ class AppController:
                 format="%d",
                 key="similarity_top_k",
             )
-            
+
             st.divider()
             # Toggle to use rerank
             _ = st.checkbox(

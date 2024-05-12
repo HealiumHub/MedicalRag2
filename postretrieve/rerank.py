@@ -45,4 +45,4 @@ class Reranker:
     def get_top_k(self, query: str, chunks: list[Source], k: int = 5) -> list[Source]:
         # Avoid modifying the original list
         chunks = chunks.copy()
-        return self.rerank(query, chunks)[:min(k, len(chunks))]
+        return self.rerank(query, chunks)[: min(k, len(chunks))]
