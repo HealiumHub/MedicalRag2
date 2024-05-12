@@ -18,3 +18,4 @@ streamlit
 graphviz
 pypdf
 pydantic
+watchdog

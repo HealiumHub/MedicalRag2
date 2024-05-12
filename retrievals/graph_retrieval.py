@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 @Retrieval.register
 class GraphRetrievalApi:
-    def __init__(self):
+    def __init__(self, **kwargs):
         graph_ingestion = GraphIngestion()
         graph_ingestion.init_graph_db()
         index = graph_ingestion.get_latest_index(
@@ -19,7 +19,7 @@ class GraphRetrievalApi:
             database="neo4j",
             url="neo4j://localhost:7687",
         )
-        self.retriever = index.as_retriever()
+        self.retriever = index.as_retriever(**kwargs)
 
     def search(self, queries: list[str] = []):
         response = self.retriever.retrieve(queries[0])
