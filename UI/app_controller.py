@@ -225,6 +225,7 @@ class AppController:
                                     **id**: {article.id}  
                                     **DOI**: {article.doi}  
                                     **File Name**: {article.file_name}  
+                                    **Page**: {article.page}  
                                     **Content**: {article.content}  
                                     **Score**: {article.score}  
                                             """

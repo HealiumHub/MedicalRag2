@@ -13,6 +13,7 @@ from llama_index.core.schema import BaseNode, Document
 from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.core.node_parser import SentenceWindowNodeParser
 
 
 from llama_index.core.ingestion import IngestionPipeline
@@ -44,7 +45,7 @@ logger = logging.getLogger(__name__)
 
 
 class Ingestion:
-    DATA_PATH = "./ingestion/pdf"
+    DATA_PATH = "./ingestion/pdf_new"
     CHROMA_PATH = "chroma"
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
 
@@ -72,7 +73,7 @@ class Ingestion:
             for block in doc.chunks():
                 metadata = {
                     "page": block.page_idx,
-                    "source": os.path.basename(file),
+                    "file_name": os.path.basename(file),
                     "tag": block.tag,
                 }
                 document = Document(text=block.to_context_text(), metadata=metadata)
@@ -97,6 +98,16 @@ class Ingestion:
         # Extract nodes from documents
         nodes = node_parser.get_nodes_from_documents(documents)
         logger.info(f"Split {len(documents)} documents into {len(nodes)} chunks")
+        return nodes
+
+    def sentence_window_split(self, documents: list[Document]):
+        # create the sentence window node parser w/ default settings
+        node_parser = SentenceWindowNodeParser.from_defaults(
+            window_size=3,
+            window_metadata_key="window",
+            original_text_metadata_key="original_text",
+        )
+        nodes = node_parser.get_nodes_from_documents(documents)
         return nodes
 
     def add_to_chroma(

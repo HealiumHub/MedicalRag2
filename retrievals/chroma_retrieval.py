@@ -6,6 +6,8 @@ from retrievals.retrieval import Retrieval
 from llama_index.core.vector_stores.types import (
     VectorStoreQueryMode,
 )
+from llama_index.core.postprocessor import MetadataReplacementPostProcessor
+
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +29,8 @@ class DeepRetrievalApi:
 
         for q in queries:
             response = self.retriever.retrieve(q)
-
+            processor = MetadataReplacementPostProcessor(target_metadata_key="window")
+            response = processor.postprocess_nodes(response)
             for x in response:
                 if x.node_id not in documentIdSet:
                     documentIdSet.add(x.node_id)
@@ -35,6 +38,7 @@ class DeepRetrievalApi:
                         id=x.node_id,
                         doi=x.metadata.get("doi", ""),
                         file_name=x.metadata.get("file_name", ""),
+                        page=x.metadata.get("page", ""),
                         content=x.get_content(),
                         score=round(x.get_score(), 2),
                     )
