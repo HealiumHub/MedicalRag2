@@ -3,7 +3,7 @@ from typing import List
 
 from llama_index.core.schema import NodeWithScore
 
-from ingestion.ingestion import ingestion_index
+from ingestion.dataloader import ingestion_index
 from models.types import Source
 from postretrieve.rerank import Reranker
 from retrievals.retrieval import Retrieval
