@@ -14,6 +14,7 @@ from llama_index.core import VectorStoreIndex, StorageContext
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core.node_parser import SentenceWindowNodeParser
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 
 from llama_index.core.ingestion import IngestionPipeline
@@ -38,26 +39,47 @@ from llmsherpa.readers.layout_reader import Block
 
 from dotenv import load_dotenv
 
+from const import EmbeddingConfig
+
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY", "")
-
+EMBEDDING_MODEL_NAME = os.getenv(
+    "EMBEDDING_MODEL_NAME", "huggingface/ls-da3m0ns/bge_large_medical"
+)
 logger = logging.getLogger(__name__)
 
 
 class Ingestion:
-    DATA_PATH = "./ingestion/pdf_new"
+    DATA_PATH = "./ingestion/pdf/diabetes"
     CHROMA_PATH = "chroma"
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
 
-    def __init__(self, with_openai: bool = False):
-        Settings.llm = Ollama(model="gemma:2b")
-        if with_openai:
-            Settings.embed_model = OpenAIEmbedding(
-                model="text-embedding-3-small",
+    def __init__(
+        self,
+        embedding_model_name: str,
+    ):
+        Settings.embed_model = self.__get_embed_model(embedding_model_name)
+
+    def __get_embed_model(self, embedding_model_name: str):
+        if embedding_model_name.startswith(EmbeddingConfig.OPENAI_PREFIX):
+            return OpenAIEmbedding(
+                model=embedding_model_name.replace(EmbeddingConfig.OPENAI_PREFIX, ""),
                 api_key=API_KEY,
             )
+        elif embedding_model_name.startswith(EmbeddingConfig.HUGGINGFACE_PREFIX):
+            return HuggingFaceEmbedding(
+                model_name=embedding_model_name.replace(
+                    EmbeddingConfig.HUGGINGFACE_PREFIX, ""
+                )
+            )
+        elif embedding_model_name.startswith(EmbeddingConfig.OLLAMA_PREFIX):
+            return OllamaEmbedding(
+                model_name=embedding_model_name.replace(
+                    EmbeddingConfig.OLLAMA_PREFIX, ""
+                )
+            )
         else:
-            Settings.embed_model = OllamaEmbedding(model_name="snowflake-arctic-embed")
+            raise ValueError(f"Unknown embedding model: {embedding_model_name}")
 
     def load_documents(self, k=math.inf):
         pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
@@ -155,3 +177,6 @@ class Ingestion:
             logger.info("--- New Page ---")
             # logger.info(document.metadata)
             logger.info(document.text)
+
+
+ingestion_index = Ingestion(embedding_model_name=EMBEDDING_MODEL_NAME)

@@ -1,7 +1,11 @@
 import logging
+from typing import List
 
-from ingestion.ingestion import Ingestion
+from llama_index.core.schema import NodeWithScore
+
+from ingestion.ingestion import ingestion_index
 from models.types import Source
+from postretrieve.rerank import Reranker
 from retrievals.retrieval import Retrieval
 from llama_index.core.vector_stores.types import (
     VectorStoreQueryMode,
@@ -17,7 +21,7 @@ class DeepRetrievalApi:
     # Retrieve using deep models.
 
     def __init__(self, **kwargs):
-        index = Ingestion(with_openai=True).read_from_chroma()
+        index = ingestion_index.read_from_chroma()
         self.retriever = index.as_retriever(
             vector_store_query_mode=VectorStoreQueryMode.HYBRID, **kwargs
         )
@@ -28,9 +32,11 @@ class DeepRetrievalApi:
         formatted_response = []
 
         for q in queries:
-            response = self.retriever.retrieve(q)
+            response: List[NodeWithScore] = self.retriever.retrieve(q)
+            response = Reranker().get_top_k(q, response, k=5)
             processor = MetadataReplacementPostProcessor(target_metadata_key="window")
             response = processor.postprocess_nodes(response)
+
             for x in response:
                 if x.node_id not in documentIdSet:
                     documentIdSet.add(x.node_id)

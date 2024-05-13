@@ -1,9 +1,16 @@
+from enum import Enum
 import os
 
 from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.getenv("OPENAI_API_KEY", "")
+
+
+class EmbeddingConfig(str, Enum):
+    OPENAI_PREFIX = "openai/"
+    HUGGINGFACE_PREFIX = "huggingface/"
+    OLLAMA_PREFIX = "ollama/"
 
 
 class PromptConfig:

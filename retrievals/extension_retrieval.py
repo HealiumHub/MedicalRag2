@@ -2,7 +2,7 @@ from llama_index.core.vector_stores.types import (
     VectorStoreQueryMode,
 )
 
-from ingestion.ingestion import Ingestion
+from ingestion.ingestion import ingestion_index
 from models.types import Source
 from preretrieve.expansion.langchain.expansion import QueryExpansion
 from retrievals.retrieval import Retrieval
@@ -13,7 +13,7 @@ class ExtensionRetrievalApi:
     # Retrieve using deep models.
 
     def __init__(self, **kwargs):
-        index = Ingestion(with_openai=True).read_from_chroma()
+        index = ingestion_index.read_from_chroma()
         self.retriever = index.as_retriever(
             similarity_top_k=6,
             vector_store_query_mode=VectorStoreQueryMode.HYBRID,
