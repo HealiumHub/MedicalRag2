@@ -32,16 +32,28 @@ def format_results_to_table(name, eval_results: list[RetrievalEvalResult]):
         expected_ids = eval_result.expected_ids
 
         # Calculate fp, fn, tp, tn based on retrieved_ids and expected_ids
-        row_json['fp'] = len(set(retrieved_ids) - set(expected_ids))
-        row_json['fn'] = len(set(expected_ids) - set(retrieved_ids))
-        row_json['tp'] = len(set(retrieved_ids) & set(expected_ids))
-        row_json['tn'] = len(set(retrieved_ids) & set(expected_ids))
-        
+        row_json["false positive"] = len(set(retrieved_ids) - set(expected_ids))
+        row_json["false negative"] = len(set(expected_ids) - set(retrieved_ids))
+        row_json["true positive"] = len(set(retrieved_ids) & set(expected_ids))
+        row_json["true negative"] = len(set(retrieved_ids) & set(expected_ids))
+
         # Calculate precision, recall, f1
-        row_json['precision'] = row_json['tp'] / (row_json['tp'] + row_json['fp'] + 1e-10)
-        row_json['recall'] = row_json['tp'] / (row_json['tp'] + row_json['fn'] + 1e-10)
-        row_json['f1'] = 2 * (row_json['precision'] * row_json['recall']) / (row_json['precision'] + row_json['recall'] + 1e-10)
-        
+        row_json["precision"] = row_json["true positive"] / (
+            row_json["true positive"] + row_json["false positive"] + 1e-10
+        )
+        row_json["recall"] = row_json["true positive"] / (
+            row_json["true positive"] + row_json["false negative"] + 1e-10
+        )
+        row_json["f1"] = (
+            2
+            * (row_json["precision"] * row_json["recall"])
+            / (row_json["precision"] + row_json["recall"] + 1e-10)
+        )
+
+        # Get mrr & hit rate
+        metric_results = eval_result.metric_vals_dict
+        row_json.update(metric_results)
+
         metric_dicts.append(row_json)
 
     full_df = pd.DataFrame(metric_dicts)
