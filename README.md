@@ -21,6 +21,10 @@ Run the following command
 
 ```
 OPENAI_API_KEY=xxx
+EMBEDDING_MODEL_NAME="openai/text-embedding-3-small"
+# EMBEDDING_MODEL_NAME="huggingface/ls-da3m0ns/bge_large_medical"
+# EMBEDDING_MODEL_NAME="ollama/snowflake-arctic-embed"
+RERANKING_MODEL_NAME="ncbi/MedCPT-Cross-Encoder"
 ```
 
 4. Run this command to ingest the pdf to the chromaDB

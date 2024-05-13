@@ -1,7 +1,7 @@
-from ingestion import Ingestion
+from ingestion.ingestion import ingestion_index
 
 
-ingestion = Ingestion(with_openai=True)
+ingestion = ingestion_index
 ingestion.clear_database()
 documents = ingestion.load_documents(k=6)  # smart chunking
 nodes = ingestion.sentence_window_split(documents=documents)
