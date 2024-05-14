@@ -1,6 +1,6 @@
 from enum import Enum
 from retrievals.chroma_retrieval import DeepRetrievalApi
-from retrievals.graph_retrieval import GraphRetrievalApi
+from retrievals.graph.graph_retrieval import GraphRetrievalApi
 from retrievals.retrieval import Retrieval
 
 

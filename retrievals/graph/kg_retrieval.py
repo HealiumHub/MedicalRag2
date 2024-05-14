@@ -6,7 +6,7 @@ from langchain.graphs import Neo4jGraph
 from langchain.vectorstores import Neo4jVector
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.prompts.prompt import PromptTemplate
-from kg_retrieval_prompt import CYPHER_GENERATION_TEMPLATE
+from retrievals.graph.kg_retrieval_prompt import CYPHER_GENERATION_TEMPLATE
 
 logger = logging.getLogger(__name__)
 
