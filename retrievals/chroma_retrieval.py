@@ -3,7 +3,7 @@ from typing import List
 
 from llama_index.core.schema import NodeWithScore
 
-from ingestion.ingestion import ingestion_index
+from ingestion.ingestionn import ingestion_index
 from models.types import Source
 from postretrieve.rerank import Reranker
 from retrievals.retrieval import Retrieval
@@ -12,6 +12,7 @@ from llama_index.core.vector_stores.types import (
 )
 from llama_index.core.postprocessor import MetadataReplacementPostProcessor
 
+from ingestion.db.faiss.ingestion import FaissIngestion
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +22,8 @@ class DeepRetrievalApi:
     # Retrieve using deep models.
 
     def __init__(self, **kwargs):
-        index = ingestion_index.read_from_chroma()
+        # index = Ingestion(with_openai=True).read_from_chroma()
+        index = FaissIngestion(with_openai=True).load_index()
         self.retriever = index.as_retriever(
             vector_store_query_mode=VectorStoreQueryMode.HYBRID, **kwargs
         )

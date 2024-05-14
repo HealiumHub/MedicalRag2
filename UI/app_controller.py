@@ -153,6 +153,7 @@ class AppController:
 
                     try:
                         related_articles: list[Source] = thread.result
+                        print(related_articles)
                     except Exception as e:
                         related_articles = []
                         st.error("Error happened when searching for docs.", icon="🚨")

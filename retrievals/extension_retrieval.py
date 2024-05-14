@@ -2,7 +2,7 @@ from llama_index.core.vector_stores.types import (
     VectorStoreQueryMode,
 )
 
-from ingestion.ingestion import ingestion_index
+from ingestion.ingestionn import ingestion_index
 from models.types import Source
 from preretrieve.expansion.langchain.expansion import QueryExpansion
 from retrievals.retrieval import Retrieval
