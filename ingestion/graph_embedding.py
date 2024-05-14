@@ -9,34 +9,11 @@ from llama_index.vector_stores.neo4jvector import Neo4jVectorStore
 from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
 
-# logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-
-# init graph db
-# url = "neo4j://localhost:7687"
-# username = "neo4j"
-# password = "yasuotruong"
-# database = "neo4j"
-# DATA_PATH = "pdf"
-
-# Settings.llm = Ollama(model="gemma:2b", temperature=0.0)
-# Settings.embed_model = get_ollama_embedding()
-# Settings.chunk_size = 512
-
-# # retrieve from graph db
-# query_engine = loaded_index.as_retriever()
-# print("done retrieve")
-
-# # generate
-# res = query_engine.retrieve(
-#     "Tell me about the connection between communicative VL and vaccinecompliance"
-# )
-# print(res)
-
 
 class GraphIngestion:
     DEFAULT_EMBEDDING_DIMENSION = 1536
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-    DATA_PATH = "/*.pdf"
+    DATA_PATH = "pdf/*.pdf"
 
     def __init__(self, model=None, embedding_model=None, logging_level=logging.INFO):
         # cfg
@@ -78,7 +55,7 @@ class GraphIngestion:
 
         return neo4j_vector
 
-    def process_ingestion(self, data_path=DATA_PATH, k=1, show_progress=True):
+    def process_ingestion(self, data_path=DATA_PATH, k=100, show_progress=True):
         # use llm sherpa to read pdf
         pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
         documents = []
