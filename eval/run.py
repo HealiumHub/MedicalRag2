@@ -1,22 +1,59 @@
+import asyncio
+from typing import List
+
 import pandas as pd
 from llama_index.core.evaluation import (
     EmbeddingQAFinetuneDataset,
-    RetrieverEvaluator,
     RetrievalEvalResult,
+    RetrieverEvaluator,
 )
-import asyncio
-from ingestion.dataloader import ingestion_index
 from llama_index.core.evaluation.benchmarks import BeirEvaluator
+from llama_index.core.evaluation.retrieval.base import BaseRetrievalEvaluator
+from llama_index.core.schema import (
+    Document,
+    MetadataMode,
+    NodeWithScore,
+    QueryBundle,
+    TextNode,
+)
+from llama_index.core.indices.base_retriever import BaseRetriever
+
+from ingestion.dataloader import ingestion_index
+from postretrieve.rerank import Reranker
 
 # Resources:
 # - https://docs.llamaindex.ai/en/stable/examples/evaluation/retrieval/retriever_eval/
 # - https://docs.llamaindex.ai/en/stable/examples/evaluation/BeirEvaluation/
 
 # TODO: Needs to read from the same db used to create the dataset. Currently different -> all is wrong
-retriever = ingestion_index.read_from_chroma().as_retriever()
+retriever = ingestion_index.read_from_chroma().as_retriever(similarity_top_k=50)
+
+
+class RerankedRetriever(BaseRetriever):
+    def __init__(self, retriever: BaseRetriever):
+        super().__init__()
+        self.retriever = retriever
+        self.reranker = Reranker()
+
+    def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+        return super()._retrieve(query_bundle)
+
+    async def aretrieve(self, query: str):
+        retrieved_nodes = await self.retriever.aretrieve(query)
+        return self.rerank(query, retrieved_nodes)
+
+    def rerank(self, query: str, retrieved_nodes: list[NodeWithScore]):
+        # Rerank the retrieved nodes
+        retrieved_nodes = self.reranker.get_top_k(query, retrieved_nodes, 5)
+        return retrieved_nodes
+
+
 metrics = ["mrr", "hit_rate"]
 qa_dataset = EmbeddingQAFinetuneDataset.from_json("pg_eval_dataset.json")
-retriever_evaluator = RetrieverEvaluator.from_metric_names(metrics, retriever=retriever)
+reranked_retriever = RerankedRetriever(retriever)
+retriever_evaluator: BaseRetrievalEvaluator = RetrieverEvaluator.from_metric_names(
+    metrics, retriever=reranked_retriever
+)
 
 # try it out on an entire dataset
 eval_results = asyncio.run(retriever_evaluator.aevaluate_dataset(qa_dataset))
