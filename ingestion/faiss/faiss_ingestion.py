@@ -16,11 +16,8 @@ from llama_index.core import (
 )
 from llama_index.vector_stores.faiss import FaissVectorStore
 
-import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 from const import EmbeddingConfig
 
-from llama_index_client import OpenAiEmbedding
 # from ingestion import Ingestion
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llmsherpa.readers import LayoutPDFReader
@@ -50,9 +47,7 @@ from llama_index.core import (
 )
 from llama_index.vector_stores.faiss import FaissVectorStore
 
-import sys
-
-from llama_index_client import OpenAiEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
 from const import EmbeddingConfig
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from llmsherpa.readers import LayoutPDFReader
@@ -64,9 +59,6 @@ from llama_index.embeddings.ollama import OllamaEmbedding
 from dotenv import load_dotenv
 load_dotenv()
 
-import sys
-print(sys.path)
-
 API_KEY = os.getenv("OPENAI_API_KEY", "")
 EMBEDDING_MODEL_NAME = os.getenv(
     "EMBEDDING_MODEL_NAME", "huggingface/ls-da3m0ns/bge_large_medical"
@@ -74,6 +66,7 @@ EMBEDDING_MODEL_NAME = os.getenv(
 logger = logging.getLogger(__name__)
 
 class FaissIngestion():
+    LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
     FAISS_PATH = "faiss"
     DATA_PATH = "./ingestion/pdf_new"
 
@@ -85,12 +78,12 @@ class FaissIngestion():
 
     def __get_embed_model(self, embedding_model_name: str):
         if embedding_model_name.startswith(EmbeddingConfig.OPENAI_PREFIX):
-            return OpenAiEmbedding(
+            return OpenAIEmbedding(
                 model=embedding_model_name.replace(EmbeddingConfig.OPENAI_PREFIX, ""),
                 api_key=API_KEY,
             )
         elif embedding_model_name.startswith(EmbeddingConfig.HUGGINGFACE_PREFIX):
-            return HuggingFaceEmbedding(
+            HuggingFaceEmbedding(
                 model_name=embedding_model_name.replace(
                     EmbeddingConfig.HUGGINGFACE_PREFIX, ""
                 )
@@ -122,6 +115,7 @@ class FaissIngestion():
         return index
 
     def load_index(self):
+        print("Loading index")
         vector_store = FaissVectorStore.from_persist_dir(self.FAISS_PATH)
         storage_context = StorageContext.from_defaults(
             vector_store=vector_store, 
@@ -175,5 +169,7 @@ class FaissIngestion():
         return nodes
 
     def clear_database(self):
-        if os.path.exists(self.CHROMA_PATH):
-            shutil.rmtree(self.CHROMA_PATH)
+        if os.path.exists(self.FAISS_PATH):
+            shutil.rmtree(self.FAISS_PATH)
+
+faiss_instance = FaissIngestion(embedding_model_name='openai/text-embedding-3-small')
