@@ -14,7 +14,9 @@ from llama_index.core.postprocessor import MetadataReplacementPostProcessor
 
 # from ingestion.db.faiss.ingestion import FaissIngestion
 from ingestion.faiss.faiss_ingestion import faiss_instance
+
 logger = logging.getLogger(__name__)
+
 
 @Retrieval.register
 class FaissRetrievalApi:

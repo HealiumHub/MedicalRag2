@@ -4,6 +4,7 @@ from retrievals.graph.graph_retrieval import GraphRetrievalApi
 from retrievals.retrieval import Retrieval
 from retrievals.faiss_retrieval import FaissRetrievalApi
 
+
 class RetrievalApiEnum(str, Enum):
     CHROMA_RETRIEVAL = "CHROMA_RETRIEVAL"
     FAISS_RETRIEVAL = "FAISS_RETRIEVAL"

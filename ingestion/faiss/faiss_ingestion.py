@@ -27,6 +27,7 @@ from llama_index.core.schema import BaseNode, Document
 from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.embeddings.ollama import OllamaEmbedding
 from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -57,6 +58,7 @@ from llama_index.core.schema import BaseNode, Document
 from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.embeddings.ollama import OllamaEmbedding
 from dotenv import load_dotenv
+
 load_dotenv()
 
 API_KEY = os.getenv("OPENAI_API_KEY", "")
@@ -65,7 +67,8 @@ EMBEDDING_MODEL_NAME = os.getenv(
 )
 logger = logging.getLogger(__name__)
 
-class FaissIngestion():
+
+class FaissIngestion:
     LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
     FAISS_PATH = "faiss"
     DATA_PATH = "./ingestion/pdf_new"
@@ -96,18 +99,18 @@ class FaissIngestion():
             )
         else:
             raise ValueError(f"Unknown embedding model: {embedding_model_name}")
-        
-    def create_index(self, nodes = []):
+
+    def create_index(self, nodes=[]):
         if len(nodes) == 0:
             print("Nodes cannot be empty")
-            return 
-        
+            return
+
         faiss_index = faiss.IndexFlatL2(1536)
         vector_store = FaissVectorStore(faiss_index=faiss_index)
         storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
         index = VectorStoreIndex(
-            nodes = nodes,
+            nodes=nodes,
             storage_context=storage_context,
             show_progress=True,
         )
@@ -118,16 +121,14 @@ class FaissIngestion():
         print("Loading index")
         vector_store = FaissVectorStore.from_persist_dir(self.FAISS_PATH)
         storage_context = StorageContext.from_defaults(
-            vector_store=vector_store, 
-            persist_dir = self.FAISS_PATH
+            vector_store=vector_store, persist_dir=self.FAISS_PATH
         )
         index = load_index_from_storage(storage_context=storage_context)
-        return index 
-    
+        return index
+
     def clear_database(self):
         if os.path.exists(self.FAISS_PATH):
             shutil.rmtree(self.FAISS_PATH)
-
 
     def load_documents(self, k=math.inf):
         pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
@@ -172,4 +173,5 @@ class FaissIngestion():
         if os.path.exists(self.FAISS_PATH):
             shutil.rmtree(self.FAISS_PATH)
 
-faiss_instance = FaissIngestion(embedding_model_name='openai/text-embedding-3-small')
+
+faiss_instance = FaissIngestion(embedding_model_name="openai/text-embedding-3-small")
