@@ -1,4 +1,5 @@
 import os
+from typing import Union
 from langchain.schema.output_parser import StrOutputParser
 from langchain_community.chat_models import ChatOpenAI
 from langchain_community.llms.ollama import Ollama
@@ -7,7 +8,7 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from const import API_KEY, MAX_OUTPUT, MODEL_CONTEXT_LENGTH, PromptConfig
 
 
-def get_model(model_name: str, temperature: float) -> ChatOpenAI | Ollama:
+def get_model(model_name: str, temperature: float) -> Union[ChatOpenAI, Ollama]:
     if "gpt" in model_name:
         model = ChatOpenAI(
             temperature=temperature,
@@ -41,7 +42,7 @@ def preprocess_context(model_name: str, prompt: str) -> str:
 def get_answer_with_context(
     query: str,
     model_name: str,
-    related_articles: str | list[dict],
+    related_articles: Union[str, list[dict]],
     custom_instruction: str,
     temperature: float,
     stream_handler,
@@ -72,7 +73,10 @@ def get_answer_with_context(
     # RAW OUTPUT
     chain = model | StrOutputParser()
 
-    answer = chain.invoke(messages, config={"callbacks": [stream_handler]})
+    if stream_handler is None:
+        answer = chain.invoke(messages)
+    else:
+        answer = chain.invoke(messages, config={"callbacks": [stream_handler]})
 
     # Suffix disclaimer, this saves token and we don't have to prompt it.
     answer += PromptConfig.DISCLAIMER

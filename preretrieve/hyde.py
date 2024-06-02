@@ -37,3 +37,8 @@ class HyDE:
         response: HypotheticalDocument = self.chain.invoke(query)
         logger.debug(response)
         return response.passage
+
+    async def arun(self, query: str) -> str:
+        response: HypotheticalDocument = await self.chain.ainvoke(query)
+        logger.debug(response)
+        return response.passage

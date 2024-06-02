@@ -3,7 +3,7 @@ from typing import List
 
 from llama_index.core.schema import NodeWithScore
 
-from ingestion.ingestion import ingestion_index
+from ingestion.dataloader import ingestion_index
 from models.types import Source
 from postretrieve.rerank import Reranker
 from retrievals.retrieval import Retrieval
@@ -29,31 +29,38 @@ class DeepRetrievalApi:
     def search(self, queries: list[str]):
         # create set formatted_response
         documentIdSet = set()
-        formatted_response = []
+        processor = MetadataReplacementPostProcessor(target_metadata_key="window")
 
+        relevant_chunks: List[NodeWithScore] = []
         for q in queries:
-            response: List[NodeWithScore] = self.retriever.retrieve(q)
-            response = Reranker().get_top_k(q, response, k=5)
-            processor = MetadataReplacementPostProcessor(target_metadata_key="window")
-            response = processor.postprocess_nodes(response)
-
-            for x in response:
+            chunks: List[NodeWithScore] = self.retriever.retrieve(q)
+            
+            # Dedupe the response
+            for x in chunks:
                 if x.node_id not in documentIdSet:
                     documentIdSet.add(x.node_id)
-                    source = Source(
-                        id=x.node_id,
-                        doi=x.metadata.get("doi", ""),
-                        file_name=x.metadata.get("file_name", ""),
-                        page=x.metadata.get("page", ""),
-                        content=x.get_content(),
-                        score=round(x.get_score(), 2),
-                    )
-                    formatted_response.append(source)
+                    relevant_chunks.append(x)
                 else:
                     # search the document in formatted_response and update the score with greates
-                    for doc in formatted_response:
-                        if doc.id == x.node_id:
+                    for doc in relevant_chunks:
+                        if doc.node_id == x.node_id:
                             doc.score = max(doc.score, round(x.get_score(), 2))
                             break
-        # logger.info(json.dumps(formatted_response, indent=4, default=str))
-        return formatted_response
+
+        relevant_chunks = Reranker().get_top_k(q, relevant_chunks, k=10)
+        relevant_chunks = processor.postprocess_nodes(relevant_chunks)
+
+        list_source = []
+        for x in relevant_chunks:
+            source = Source(
+                id=x.node_id,
+                doi=x.metadata.get("doi", ""),
+                file_name=x.metadata.get("file_name", ""),
+                page=x.metadata.get("page", ""),
+                content=x.get_content(),
+                score=round(x.get_score(), 2),
+            )
+            list_source.append(source)
+
+        # logger.info(json.dumps(list_source, indent=4, default=str))
+        return list_source
