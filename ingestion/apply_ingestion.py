@@ -1,4 +1,4 @@
-from ingestion.ingestion import ingestion_index
+from ingestion import ingestion_index
 
 
 ingestion = ingestion_index

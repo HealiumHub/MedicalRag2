@@ -21,3 +21,4 @@ pydantic
 watchdog
 torch
 transformers
+faiss-cpu

@@ -1,32 +1,41 @@
+import logging
+from typing import List
+
+from llama_index.core.schema import NodeWithScore
+
+# from ingestion.ingestionn import ingestion_index
+from models.types import Source
+from postretrieve.rerank import Reranker
+from retrievals.retrieval import Retrieval
 from llama_index.core.vector_stores.types import (
     VectorStoreQueryMode,
 )
+from llama_index.core.postprocessor import MetadataReplacementPostProcessor
 
-from ingestion.ingestionn import ingestion_index
-from models.types import Source
-from preretrieve.expansion.langchain.expansion import QueryExpansion
-from retrievals.retrieval import Retrieval
+# from ingestion.db.faiss.ingestion import FaissIngestion
+from ingestion.faiss.faiss_ingestion import faiss_instance
+
+logger = logging.getLogger(__name__)
 
 
 @Retrieval.register
-class ExtensionRetrievalApi:
+class FaissRetrievalApi:
     # Retrieve using deep models.
 
     def __init__(self, **kwargs):
-        index = ingestion_index.read_from_chroma()
-        self.retriever = index.as_retriever(
-            similarity_top_k=6,
-            vector_store_query_mode=VectorStoreQueryMode.HYBRID,
-            **kwargs,
-        )
+        index = faiss_instance.load_index()
+        self.retriever = index.as_retriever()
 
-    def search(self, queries):
+    def search(self, queries: list[str]):
         # create set formatted_response
         documentIdSet = set()
         formatted_response = []
 
         for q in queries:
-            response = self.retriever.retrieve(q)
+            response: List[NodeWithScore] = self.retriever.retrieve(q)
+            response = Reranker().get_top_k(q, response, k=5)
+            processor = MetadataReplacementPostProcessor(target_metadata_key="window")
+            response = processor.postprocess_nodes(response)
 
             for x in response:
                 if x.node_id not in documentIdSet:
@@ -35,6 +44,7 @@ class ExtensionRetrievalApi:
                         id=x.node_id,
                         doi=x.metadata.get("doi", ""),
                         file_name=x.metadata.get("file_name", ""),
+                        page=x.metadata.get("page", ""),
                         content=x.get_content(),
                         score=round(x.get_score(), 2),
                     )
@@ -46,18 +56,4 @@ class ExtensionRetrievalApi:
                             doc.score = max(doc.score, round(x.get_score(), 2))
                             break
         # logger.info(json.dumps(formatted_response, indent=4, default=str))
-        return formatted_response
-
-    def search_v0(self, query):
-        response = self.retriever.retrieve(query)
-        formatted_response: list[Source] = []
-        for x in response:
-            source = Source(
-                id=x.node_id,
-                doi=x.metadata.get("doi", ""),
-                file_name=x.metadata.get("file_name", ""),
-                content=x.get_content(),
-                score=round(x.get_score(), 2),
-            )
-            formatted_response.append(source)
         return formatted_response
