@@ -8,14 +8,14 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from const import API_KEY, MAX_OUTPUT, MODEL_CONTEXT_LENGTH, PromptConfig
 
 
-def get_model(model_name: str, temperature: float) -> Union[ChatOpenAI, Ollama]:
+def get_model(model_name: str, temperature: float, streaming: bool = True) -> Union[ChatOpenAI, Ollama]:
     if "gpt" in model_name:
         model = ChatOpenAI(
             temperature=temperature,
             model=model_name,
             api_key=API_KEY,
             verbose=True,
-            streaming=True,
+            streaming=streaming,
             max_tokens=MAX_OUTPUT,
         )
     else:
