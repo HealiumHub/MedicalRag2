@@ -9,7 +9,6 @@ llama-index-embeddings-instructor
 llama-index-vector-stores-chroma
 llama-index-extractors-entity
 llama-index-vector-stores-neo4jvector
-llama-index-llms-openai
 langchain_core
 llmsherpa
 llama-parse
@@ -22,3 +21,5 @@ pydantic
 watchdog
 torch
 transformers
+langchain-community
+md2pdf

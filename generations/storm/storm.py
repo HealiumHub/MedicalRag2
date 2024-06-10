@@ -1,3 +1,4 @@
+import re
 from typing import Tuple
 import json
 
@@ -6,8 +7,26 @@ from langchain_core.messages import HumanMessage, SystemMessage
 from tqdm import tqdm
 
 from generations.completion import get_model
+from generations.storm.pdf import md_to_pdf
 from models.enum import RetrievalApiEnum
 from models.types import Source
+from langchain.callbacks import get_openai_callback
+
+
+def generate_toc(markdown_text: str):
+    toc = []
+    headings = re.findall(r"^(#+) (.*)$", markdown_text, re.MULTILINE)
+    
+    heading: str
+    text: str
+    for heading, text in headings:
+        number_of_hashtags = len(heading) - len(heading.replace("#", ""))
+
+        # With more 1 hashtag, add 2 spaces for each hashtag
+        toc.append(
+            f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{text.replace('#', '').replace(' ', '-').lower()})"
+        )
+    return "\n".join(toc)
 
 
 class Storm:
@@ -44,9 +63,9 @@ class Storm:
 
     def generate_question(self, topic: str, perspective: str, history: list[str]):
         model = get_model(self.model_name, 0.5, streaming=False)
-        system_prompt = """You are an experienced writer and want to edit a long-form article about a given topic . Besides your identity as a writer, you have a specific focus when researching the topic .
+        system_prompt = """You are an experienced writer and want to edit a long-form article about a given topic . Besides your identity as a writer, you have a specific focus when researching the topic.
     Now , you are chatting with an expert to get information . Ask good questions to get more useful information .
-    Please ask no more than one question at a time and don 't ask what you have asked before. Other than generating the question, don't adding anything additional.
+    Please ask no more than one question at a time and don't ask what you have asked before. Other than generating the question, don't adding anything additional.
     Your questions should be related to the topic you want to write.\n\nConversation history: {history}\n\n"""
         user_prompt = """Here's the topic:\n\nTOPIC:{topic}\n\nYour specific focus: {perspective}\n\nQuestion:"""
 
@@ -61,10 +80,9 @@ class Storm:
 
     def generate_answer(self, topic: str, question: str, context: str):
         model = get_model(self.model_name, 0.5, streaming=False)
-        system_prompt = """You are an expert who can use information effectively . You are chatting with a
-    writer who wants to write an article on topic you know . You
-    have gathered the related information and will now use the information to form a response.
-    Make your response as informative as possible and make sure every sentence is supported by the gathered information.\n\nRelated information: {context}\n\n"""
+        system_prompt = """You are an expert who can use information effectively . You are chatting with a writer who wants to write an article on topic you know .
+        You have gathered the related information and will now use the information to form a response.
+        Make your response as informative as possible and make sure every sentence is supported by the gathered information.\n\nRelated information: {context}\n\n"""
         user_prompt = """Here's the topic:\n\nTOPIC:{topic}\n\nQuestion: {question}"""
         messages = [
             SystemMessage(content=system_prompt.format(context=context)),
@@ -76,8 +94,9 @@ class Storm:
     def generate_outline(self, topic: str) -> str:
         system_prompt = """Write an outline for an article about a given topic.
     Here is the format of your writing:
-    Use "#" Title " to indicate section title , "##" Title " to indicate subsection title , "###" Title " to indicate subsubsection title , and so on.
-    Do not include other information.\n\n"""
+    Use "# Title" to indicate section title , "## Subsection Title" to indicate
+    subsection title , "### Sub-subsection title" to indicate sub-subsection title , and so on.
+    Do not include other information."""
         user_prompt = """Here's the topic:\n\nTOPIC:{topic}"""
         messages = [
             SystemMessage(content=system_prompt),
@@ -94,9 +113,10 @@ class Storm:
     covers the general information. Now you want to improve it based on the given
     information learned from an information - seeking conversation to make it more
     comprehensive. Here is the format of your writing:
-    Use "#" Title " to indicate section title , "##" Title " to indicate
-    subsection title , "###" Title " to indicate subsubsection title , and so on. Do not include other information.\n\ndraft outline: {outline}\n\n"""
-        user_prompt = """learned information: {conversation}"""
+    Use "# Title" to indicate section title , "## Subsection Title" to indicate
+    subsection title , "### Sub-subsection title" to indicate sub-subsection title , and so on.
+    Do not include other information.\n\ndraft outline: {outline}\n\n"""
+        user_prompt = """Learned information: {conversation}"""
 
         flattened_list = [item for sublist in conversation for item in sublist]
         context: str = "".join(flattened_list)
@@ -129,7 +149,8 @@ class Storm:
         references = self.generate_references_string(search_result)
 
         system_prompt = """You are an expert in writing. I will give you an outline of
-        a section of a blog and several references. You will generate the article of the section using the provided refrences.
+        a section of a blog and several references. You will generate the article of the section using the provided references.
+        If the content can be represented in a table, you can use a table to represent the content.
         You MUST cite your writing using the given sources. Do not include other information. Include 'reference id' for each sentence in this format: [ref_id]. Your response MUST be in markdown format.\n\nREFERENCES: {references}\n\n"""
         user_prompt = """SECTION OUTLINE: {section}"""
         messages = [
@@ -153,7 +174,7 @@ class Storm:
         duplicate_references = set()
         total_questions = 3
 
-        for p in perspectives[:1]:
+        for p in perspectives:
             history = []
             for i in range(total_questions):
                 question = self.generate_question(topic, p, history)
@@ -171,7 +192,7 @@ class Storm:
                     duplicate_references.add(result.id)
                     references.append(
                         {
-                            "title": result.file_name,
+                            "id": result.id,
                             "source": result.file_name,
                             "content": result.content,
                         }
@@ -185,53 +206,66 @@ class Storm:
         return all_conversations
 
     def write_article(self, topic: str) -> str:
-        related_topics = self.generate_related_topics(topic)
-        print(f"STEP 1 - generate topics:\n {json.dumps(related_topics)}")
+        with get_openai_callback() as cb:
+            related_topics = self.generate_related_topics(topic)
+            print(f"STEP 1 - generate topics:\n {json.dumps(related_topics)}")
 
-        # Different perspectives on the topic
-        perspectives = self.generate_perspectives(topic, related_topics)
-        perspectives = perspectives.split("\n\n")
-        print(f"STEP 2 - generate perspectives:\n {perspectives}")
+            # Different perspectives on the topic
+            perspectives = self.generate_perspectives(topic, related_topics)
+            perspectives = perspectives.split("\n\n")
+            print(f"STEP 2 - generate perspectives:\n {perspectives}")
 
-        # The first outline
-        outline = self.generate_outline(topic)
-        print(f"STEP 3 - generate outline: \n {outline}")
+            # The first outline
+            outline = self.generate_outline(topic)
+            print(f"STEP 3 - generate outline: \n {outline}")
 
-        # Refine outline based on conversations
-        all_conversations = self.generate_conversations(topic, perspectives)
-        refined_outline = self.refine_outline(topic, outline, all_conversations)
-        print(f"STEP 4 - Refine outline: \n{refined_outline}")  # Claude
+            # Refine outline based on conversations
+            all_conversations = self.generate_conversations(topic, perspectives)
+            refined_outline = self.refine_outline(topic, outline, all_conversations)
+            print(f"STEP 4 - Refine outline: \n{refined_outline}")  # Claude
 
-        rr = refined_outline.split("\n\n")
-        print(f"{rr=}")
+            rr = refined_outline.split("\n\n")
+            print(f"{rr=}")
 
-        article = ""
-        all_search_results = []
-        for section_outline in tqdm(rr[1::]):
-            sec, search_result = self.write_section(section_outline)
-            all_search_results += search_result
-            article += sec + "\n\n"
+            article = ""
+            all_search_results: list[Source] = []
+
+            # First one is title so skip that
+            for section_outline in tqdm(rr[1:]):
+                sec, search_result = self.write_section(section_outline)
+                all_search_results += search_result
+                article += sec + "\n\n"
+
+            # Dedupe search results
+            deduped_search_results: list[Source] = []
+            deduped_ids = set()
+            for result in all_search_results:
+                if result.id not in deduped_ids:
+                    deduped_ids.add(result.id)
+                    deduped_search_results.append(result)
+
+            # Generate references
+            article += "\n\n## References\n\n"
+            for i, result in enumerate(deduped_search_results):
+                article = article.replace(f"[{result.id}]", f"[[{i + 1}]](#{i + 1})")
+                article += (
+                    '<a id="'
+                    + str(i + 1)
+                    + '"></a>'
+                    + f"[{i + 1}] {result.file_name.replace('.pdf', '')}, page {result.page}: {result.content}\n\n"
+                )
+
+            toc = generate_toc(article)
+            article = f"## Table of Contents\n\n{toc}\n\n{article}"
+
+            print("ARTICLE DONE!")
+            with open("article.md", "w") as f:
+                f.write(article)
+
+            print(cb)
             
-        # Dedupe search results
-        deduped_search_results: list[Source]= []
-        deduped_ids = set()
-        for result in all_search_results:
-            if result.id not in deduped_ids:
-                deduped_ids.add(result.id)
-                deduped_search_results.append(result)
-        
-        # Generate references
-        article += "\n\n#References\n\n"
-        for i, result in enumerate(deduped_search_results):
-            article = article.replace(f"[{result.id}]", f"[{i + 1}]")
-            article += f"[{i + 1}] {result.id} - {result.file_name}: {result.content}\n\n"
-
-        print("ARTICLE DONE!")
-        with open("article.md", "w") as f:
-            f.write(article)
+        md_to_pdf(article, "article.pdf")
         return article
 
 
-article = Storm().write_article(
-    "Mushroom as a diabetes treament"
-)
+article = Storm().write_article("Mushroom as a diabetes treament")
