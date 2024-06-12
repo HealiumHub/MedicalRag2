@@ -281,16 +281,14 @@ class Storm:
         cnt = 1
         for line in article.split("\n"):
             if line.startswith("## "):
-                if line.strip().endswith(":"):
-                    article = article.replace(line, line.replace(":", ""))
-
+                original_line = line
                 # Sometime it highlights the heading up. Remove it.
-                if "**" in line:
-                    article = article.replace(line, line.replace("**", ""))
+                line = line.replace(line, line.replace(":", ""))
+                line = line.replace(line, line.replace("**", ""))
 
                 # Add numbers to the main headings.
                 line = line.replace("## ", "")
-                article = article.replace(line, f"{cnt}. {line}")
+                article = article.replace(original_line, f"## {cnt}. {line}")
                 cnt += 1
 
         return article
