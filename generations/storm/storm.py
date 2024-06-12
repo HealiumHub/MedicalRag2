@@ -12,21 +12,8 @@ from models.enum import RetrievalApiEnum
 from models.types import Source
 from langchain.callbacks import get_openai_callback
 
-
-def generate_toc(markdown_text: str):
-    toc = []
-    headings = re.findall(r"^(#+) (.*)$", markdown_text, re.MULTILINE)
-    
-    heading: str
-    text: str
-    for heading, text in headings:
-        number_of_hashtags = len(heading) - len(heading.replace("#", ""))
-
-        # With more 1 hashtag, add 2 spaces for each hashtag
-        toc.append(
-            f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{text.replace('#', '').replace(' ', '-').lower()})"
-        )
-    return "\n".join(toc)
+TOTAL_QUESTIONS = 3
+SEARCH_TOP_K = 50
 
 
 class Storm:
@@ -162,7 +149,7 @@ class Storm:
     def search(self, query: str) -> list[Source]:
         retriever = RetrievalApiEnum.get_retrieval(
             RetrievalApiEnum.CHROMA_RETRIEVAL,
-            similarity_top_k=50,
+            similarity_top_k=SEARCH_TOP_K,
         )
         return retriever.search([query])
 
@@ -172,11 +159,10 @@ class Storm:
         all_conversations = []
         references = []
         duplicate_references = set()
-        total_questions = 3
 
         for p in perspectives:
             history = []
-            for i in range(total_questions):
+            for i in range(TOTAL_QUESTIONS):
                 question = self.generate_question(topic, p, history)
                 print(f"QUESTION {i}: {question}")
 
@@ -204,6 +190,110 @@ class Storm:
             all_conversations.append(history)
         print("DONE CONVERSATION.")
         return all_conversations
+
+    def refine_references_in_answer(self, answer: str, references: list[Source]) -> str:
+        # Find all references in the answer. It should be in the form of [ref_id] i.e. [fiejwofij1-foijow2]
+        references_in_answer = re.findall(r"\[.*?\]", answer)
+
+        # For each of them, if inside is not a number, replace it with the correct reference.
+        for ref in references_in_answer:
+            ref_id = ref[1:-1]
+            print(f"{ref_id=}")
+
+            # # If it's a number already, skip it
+            # try:
+            #     _ = int(ref_id)
+            #     # If it's not found, remove the reference.
+            #     answer = answer.replace(ref, "")
+            #     print(f"Removed {ref}")
+
+            #     continue
+            # except ValueError:
+            #     pass
+
+            for reference_number, reference in enumerate(references):
+                if reference.id == ref_id or (
+                    reference.id.startswith(ref_id) and len(ref_id) > 4
+                ):
+                    answer = answer.replace(
+                        ref, f"[[{reference_number + 1}]](#{reference_number + 1})"
+                    )
+                    print(f"Replaced {ref} with {reference_number + 1}")
+                    break
+            else:
+                # If it's not found, remove the reference.
+                answer = answer.replace(ref, "")
+                print(f"Removed {ref}")
+
+        return answer
+
+    def write_lead_paragraph(self, topic: str, article: str) -> str:
+        model = get_model(self.model_name, 0.5, streaming=False)
+        system_prompt = """Write a lead section for the given Wikipedia page with the following guidelines:
+        1. The lead should stand on its own as a concise overview of the article's topic. It should identify the topic, establish context, explain why the topic is notable, and summarize the most important points, including any prominent controversies.
+        2. The lead section should be concise and contain no more than four well-composed paragraphs.
+        3. The lead section should be carefully sourced as appropriate. Add inline citations (e.g., "Washington, D.C., is the capital of the United States.[1][3].") where necessary."""
+        user_prompt = """TOPIC: {topic} \n\n ARTICLE: {article}"""
+        messages = [
+            SystemMessage(system_prompt),
+            HumanMessage(user_prompt.format(topic=topic, article=article)),
+        ]
+        return (model | StrOutputParser()).invoke(messages)
+
+    def write_title_for_article(self, topic: str) -> str:
+        model = get_model(self.model_name, 0.5, streaming=False)
+        system_prompt = """Write a title for a long-form article about a given topic. 
+        The title should be catchy and informative.
+        It should be able to grab the reader's attention and give them an idea of what the article is about.
+        """
+        user_prompt = """Here's the topic:\n\nTOPIC:{topic}"""
+        messages = [
+            SystemMessage(content=system_prompt),
+            HumanMessage(content=user_prompt.format(topic=topic)),
+        ]
+        title = (model | StrOutputParser()).invoke(messages)
+
+        if title.startswith('"'):
+            title = title[1:]
+        if title.endswith('"'):
+            title = title[:-1]
+
+        return title
+
+    def _generate_toc(self, markdown_text: str):
+        toc = []
+        headings = re.findall(r"^(#+) (.*)$", markdown_text, re.MULTILINE)
+
+        heading: str
+        text: str
+        for heading, text in headings:
+            number_of_hashtags = len(heading) - len(heading.replace("#", ""))
+
+            # With more 1 hashtag, add 2 spaces for each hashtag
+            toc.append(
+                f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{text.replace('#', '').replace(' ', '-').lower()})"
+            )
+        return "\n".join(toc)
+
+    def _refine_headings(self, article: str):
+        # Clean the headings. Some of the headings have ":" at the end -> remove them
+        # Also add numbers to the main headings ("##") only.
+        cnt = 1
+        for line in article.split("\n"):
+            if line.startswith("## "):
+                if line.strip().endswith(":"):
+                    article = article.replace(line, line.replace(":", ""))
+
+                # Sometime it highlights the heading up. Remove it.
+                if "**" in line:
+                    article = article.replace(line, line.replace("**", ""))
+
+                # Add numbers to the main headings.
+                line = line.replace("## ", "")
+                article = article.replace(line, f"{cnt}. {line}")
+                cnt += 1
+
+        return article
 
     def write_article(self, topic: str) -> str:
         with get_openai_callback() as cb:
@@ -236,6 +326,9 @@ class Storm:
                 all_search_results += search_result
                 article += sec + "\n\n"
 
+            with open("raw_article.md", "w") as f:
+                f.write(article)
+
             # Dedupe search results
             deduped_search_results: list[Source] = []
             deduped_ids = set()
@@ -246,6 +339,10 @@ class Storm:
 
             # Generate references
             article += "\n\n## References\n\n"
+
+            # Sometimes the reference is wrong or is incomplete, so we need to refine it.
+            article = self.refine_references_in_answer(article, deduped_search_results)
+
             for i, result in enumerate(deduped_search_results):
                 article = article.replace(f"[{result.id}]", f"[[{i + 1}]](#{i + 1})")
                 article += (
@@ -255,15 +352,27 @@ class Storm:
                     + f"[{i + 1}] {result.file_name.replace('.pdf', '')}, page {result.page}: {result.content}\n\n"
                 )
 
-            toc = generate_toc(article)
-            article = f"## Table of Contents\n\n{toc}\n\n{article}"
+            # Find all references in the article
+            references = re.findall(r"\[.*?\)", article)
+            print(f"{references=}")
+
+            lead_paragraph = self.write_lead_paragraph(topic, article)
+            article = f"## Abstract\n\n{lead_paragraph}\n\n{article}"
+
+            # TOC is here to not contain title, Table of Contents.
+            article = self._refine_headings(article)
+            toc = self._generate_toc(article)
+            article = f"## 0. Table of Contents\n\n{toc}\n\n{article}"
+
+            title = self.write_title_for_article(topic)
+            article = f"# {title}\n\n{article}"
 
             print("ARTICLE DONE!")
             with open("article.md", "w") as f:
                 f.write(article)
 
             print(cb)
-            
+
         md_to_pdf(article, "article.pdf")
         return article
 
