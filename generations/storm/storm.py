@@ -12,8 +12,9 @@ from models.enum import RetrievalApiEnum
 from models.types import Source
 from langchain.callbacks import get_openai_callback
 
-TOTAL_QUESTIONS = 3
-SEARCH_TOP_K = 50
+TOTAL_QUESTIONS = 1
+SEARCH_TOP_K = 30
+NUM_PERSPECTIVES = 1
 
 
 class Storm:
@@ -34,7 +35,7 @@ class Storm:
 
     def generate_perspectives(self, topic: str, related_topics: str) -> list[str]:
         model = get_model(self.model_name, 0.5, streaming=False)
-        system_prompt = """You need to select a group of 3 writers who will work together to write a comprehensive article on the topic. Each of them represents a different perspective , role , or affiliation related to this topic .
+        system_prompt = f"""You need to select a group of {NUM_PERSPECTIVES} writers who will work together to write a comprehensive article on the topic. Each of them represents a different perspective , role , or affiliation related to this topic .
         You can use other related topics for inspiration. For each role, add description of what they will focus on. Give your answer strictly in the following format without adding anything additional:1. short summary of writer one: description \n 2. short summary of writer two: description \n...\n\n"""
         user_prompt = (
             """Here's the topic:\n\nTOPIC:{topic}\n\nRelated topics: {related_topics}"""
@@ -259,7 +260,10 @@ class Storm:
             title = title[:-1]
 
         return title
-
+    
+    def __encode_heading_to_url(self, heading: str) -> str:
+        return heading.replace("#", "").strip().replace(" ", "-").lower()
+    
     def _generate_toc(self, markdown_text: str):
         toc = []
         headings = re.findall(r"^(#+) (.*)$", markdown_text, re.MULTILINE)
@@ -270,8 +274,10 @@ class Storm:
             number_of_hashtags = len(heading) - len(heading.replace("#", ""))
 
             # With more 1 hashtag, add 2 spaces for each hashtag
+            # By here, text is "1. Introduction" -> "Introduction" when used to encode to url.
+            text_to_encode = ". ".join(text.split(". ")[1:]) if ". " in text else text
             toc.append(
-                f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{text.replace('#', '').replace(' ', '-').lower()})"
+                f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{self.__encode_heading_to_url(text_to_encode)})"
             )
         return "\n".join(toc)
 
@@ -288,8 +294,18 @@ class Storm:
 
                 # Add numbers to the main headings.
                 line = line.replace("## ", "")
-                article = article.replace(original_line, f"## {cnt}. {line}")
+                
+                # Clean it & add marker so it works on pdfs.
+                article = article.replace(original_line, f"<a id='{self.__encode_heading_to_url(line)}'></a>\n## {cnt}. {line}")
                 cnt += 1
+            # This applies to h3++ headings.
+            elif line.startswith("###"):
+                # Only add number to the main headings. Subheadings are not numbered, we only clean and add links.
+                original_line = line
+                # Sometime it highlights the heading up. Remove it.
+                line = line.replace(line, line.replace(":", ""))
+                line = line.replace(line, line.replace("**", ""))
+                article = article.replace(original_line, f"<a id='{self.__encode_heading_to_url(line)}'></a>\n{line}")
 
         return article
 
@@ -363,7 +379,13 @@ class Storm:
             article = f"## 0. Table of Contents\n\n{toc}\n\n{article}"
 
             title = self.write_title_for_article(topic)
-            article = f"# {title}\n\n{article}"
+            article = f"""
+<div style="text-align: right; margin: 0px">
+    <img src="assets/rmit-university-logo.png" alt="Logo" style="height:100px;">
+</div>
+
+# {title}\n\n{article}
+            """
 
             print("ARTICLE DONE!")
             with open("article.md", "w") as f:
