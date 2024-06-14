@@ -268,6 +268,8 @@ class Storm:
         regex = r"(^\d+(\.\d+){0,4}\.)"
         if re.match(regex, heading):
             heading = re.sub(regex, "", heading)
+            
+        heading = heading.strip()
 
         return heading.replace(" ", "-").lower()
     
