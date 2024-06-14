@@ -262,7 +262,14 @@ class Storm:
         return title
     
     def __encode_heading_to_url(self, heading: str) -> str:
-        return heading.replace("#", "").strip().replace(" ", "-").lower()
+        heading = heading.replace("#", "").strip()
+        
+        # if it starts with 1. or 1.1. or 1.1.1. etc, remove it.
+        regex = r"(^\d+(\.\d+){0,4}\.)"
+        if re.match(regex, heading):
+            heading = re.sub(regex, "", heading)
+
+        return heading.replace(" ", "-").lower()
     
     def _generate_toc(self, markdown_text: str):
         toc = []
@@ -274,10 +281,8 @@ class Storm:
             number_of_hashtags = len(heading) - len(heading.replace("#", ""))
 
             # With more 1 hashtag, add 2 spaces for each hashtag
-            # By here, text is "1. Introduction" -> "Introduction" when used to encode to url.
-            text_to_encode = ". ".join(text.split(". ")[1:]) if ". " in text else text
             toc.append(
-                f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{self.__encode_heading_to_url(text_to_encode)})"
+                f"{'  ' * (number_of_hashtags - 1)}- [{text}](#{self.__encode_heading_to_url(text)})"
             )
         return "\n".join(toc)
 
@@ -309,7 +314,7 @@ class Storm:
 
         return article
 
-    def write_article(self, topic: str) -> str:
+    def write_article(self, topic: str, outline: str = None) -> str:
         with get_openai_callback() as cb:
             related_topics = self.generate_related_topics(topic)
             print(f"STEP 1 - generate topics:\n {json.dumps(related_topics)}")
@@ -320,8 +325,9 @@ class Storm:
             print(f"STEP 2 - generate perspectives:\n {perspectives}")
 
             # The first outline
-            outline = self.generate_outline(topic)
-            print(f"STEP 3 - generate outline: \n {outline}")
+            if outline is None:
+                outline = self.generate_outline(topic)
+                print(f"STEP 3 - generate outline: \n {outline}")
 
             # Refine outline based on conversations
             all_conversations = self.generate_conversations(topic, perspectives)
@@ -397,4 +403,4 @@ class Storm:
         return article
 
 
-article = Storm().write_article("Mushroom as a diabetes treament")
+# article = Storm().write_article("Mushroom as a diabetes treatment")
