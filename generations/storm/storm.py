@@ -12,9 +12,9 @@ from models.enum import RetrievalApiEnum
 from models.types import Source
 from langchain.callbacks import get_openai_callback
 
-TOTAL_QUESTIONS = 1
+TOTAL_QUESTIONS = 3
 SEARCH_TOP_K = 30
-NUM_PERSPECTIVES = 1
+NUM_PERSPECTIVES = 3
 
 
 class Storm:
@@ -260,19 +260,19 @@ class Storm:
             title = title[:-1]
 
         return title
-    
+
     def __encode_heading_to_url(self, heading: str) -> str:
         heading = heading.replace("#", "").strip()
-        
+
         # if it starts with 1. or 1.1. or 1.1.1. etc, remove it.
         regex = r"(^\d+(\.\d+){0,4}\.)"
         if re.match(regex, heading):
             heading = re.sub(regex, "", heading)
-            
+
         heading = heading.strip()
 
         return heading.replace(" ", "-").lower()
-    
+
     def _generate_toc(self, markdown_text: str):
         toc = []
         headings = re.findall(r"^(#+) (.*)$", markdown_text, re.MULTILINE)
@@ -301,9 +301,12 @@ class Storm:
 
                 # Add numbers to the main headings.
                 line = line.replace("## ", "")
-                
+
                 # Clean it & add marker so it works on pdfs.
-                article = article.replace(original_line, f"<a id='{self.__encode_heading_to_url(line)}'></a>\n## {cnt}. {line}")
+                article = article.replace(
+                    original_line,
+                    f"<a id='{self.__encode_heading_to_url(line)}'></a>\n## {cnt}. {line}",
+                )
                 cnt += 1
             # This applies to h3++ headings.
             elif line.startswith("###"):
@@ -312,14 +315,17 @@ class Storm:
                 # Sometime it highlights the heading up. Remove it.
                 line = line.replace(line, line.replace(":", ""))
                 line = line.replace(line, line.replace("**", ""))
-                article = article.replace(original_line, f"<a id='{self.__encode_heading_to_url(line)}'></a>\n{line}")
+                article = article.replace(
+                    original_line,
+                    f"<a id='{self.__encode_heading_to_url(line)}'></a>\n{line}",
+                )
 
         return article
 
     def write_article(self, topic: str, outline: str = None) -> str:
         with get_openai_callback() as cb:
             related_topics = self.generate_related_topics(topic)
-            print(f"STEP 1 - generate topics:\n {json.dumps(related_topics)}")
+            print(f"STEP 1 - generate topics:\n {json.dumps(related_topics, ensure_ascii=False)}")
 
             # Different perspectives on the topic
             perspectives = self.generate_perspectives(topic, related_topics)
@@ -336,7 +342,14 @@ class Storm:
             refined_outline = self.refine_outline(topic, outline, all_conversations)
             print(f"STEP 4 - Refine outline: \n{refined_outline}")  # Claude
 
-            rr = refined_outline.split("\n\n")
+            # Split to new line if it starts with #
+            rr = []
+            for line in refined_outline.split("\n"):
+                if line.startswith("#"):
+                    rr.append(line)
+                else:
+                    rr[-1] += "\n" + line
+            # rr = refined_outline.split("\n")
             print(f"{rr=}")
 
             article = ""
