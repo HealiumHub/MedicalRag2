@@ -14,11 +14,14 @@ from preretrieve.expansion.langchain.expansion import QueryExpansion
 from preretrieve.hyde import HyDE
 
 from .utilities import ReturnValueThread, StreamHandler
+from generations.translate.detect import LanguageEnum, get_language_of_text
+from generations.translate.translate import Translator
 
 logger = logging.getLogger(__name__)
 
 # Cache it so model don't get loaded again
 reranker = Reranker()
+translator = Translator()
 
 
 class AppController:
@@ -93,6 +96,11 @@ class AppController:
                 with st.spinner(
                     "Please wait, I'm analyzing your questions... :mag_right:"
                 ):
+                    query_language = get_language_of_text(user_query)
+                    if query_language == LanguageEnum.VIETNAMESE.value:
+                        user_query = translator.translate(user_query)
+                        logger.info(f"Translated query: {user_query}")
+
                     queryExpansion = QueryExpansion(with_openAI=True)
 
                     # Default is only user query
@@ -111,7 +119,8 @@ class AppController:
                     if (
                         st.session_state.use_query_expansion
                         or st.session_state.use_hyde
-                    ):
+                    ) and query_language == LanguageEnum.ENGLISH.value:
+                        # NOTE: we hide it if the query is in Vietnamese. We don't want to show the user the translated version.
                         self.__render_expended_queries(expanded_queries, hyde_passages)
 
                 st.session_state.chats[
@@ -174,6 +183,7 @@ class AppController:
                     chat_box = st.markdown("")
                     stream_handler = StreamHandler(chat_box)
 
+                    # If it's Vietnamese, first get the translation, then translate and stream it back.
                     try:
                         stop_event = threading.Event()
                         thread = ReturnValueThread(
@@ -184,7 +194,9 @@ class AppController:
                                 related_articles,
                                 st.session_state.custom_instruction,
                                 st.session_state.temperature,
-                                stream_handler,
+                                stream_handler
+                                if query_language == LanguageEnum.ENGLISH.value
+                                else None,
                             ),
                         )
                         add_script_run_ctx(thread)
@@ -193,6 +205,16 @@ class AppController:
                         stop_event.set()
 
                         completion = thread.result
+
+                        # Translate and stream back the completion.
+                        if query_language == LanguageEnum.VIETNAMESE.value:
+                            logger.info(f"Streaming translated response: {completion}")
+                            # Translate it back to Vietnamese.
+                            completion = translator.translate(
+                                completion,
+                                target_language=LanguageEnum.VIETNAMESE.value,
+                                stream_handler=stream_handler,
+                            )
 
                         self.__render_references(related_articles, reranked_articles)
 
@@ -237,18 +259,18 @@ class AppController:
     def __render_references(
         self, related_articles: list[Source], reranked_articles: list[Source] = []
     ):
-        for article in related_articles:
-            with st.expander(f"Article {article.id}"):
-                st.markdown(
-                    f"""
-                                    **id**: {article.id}  
-                                    **DOI**: {article.doi}  
-                                    **File Name**: {article.file_name}  
-                                    **Page**: {article.page}  
-                                    **Content**: {article.content}  
-                                    **Score**: {article.score}  
-                                            """
-                )
+        # for article in related_articles:
+        #     with st.expander(f"Article {article.id}"):
+        #         st.markdown(
+        #             f"""
+        #                             **id**: {article.id}
+        #                             **DOI**: {article.doi}
+        #                             **File Name**: {article.file_name}
+        #                             **Page**: {article.page}
+        #                             **Content**: {article.content}
+        #                             **Score**: {article.score}
+        #                                     """
+        #         )
 
         for article in reranked_articles:
             with st.expander(f"Reranked Article {article.id}"):
