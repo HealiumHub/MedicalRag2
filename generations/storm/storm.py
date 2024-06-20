@@ -224,10 +224,9 @@ class Storm:
 
     def write_lead_paragraph(self, topic: str, article: str) -> str:
         model = get_model(self.model_name, 0.5, streaming=False)
-        system_prompt = """Write a lead section for the given Wikipedia page with the following guidelines:
-        1. The lead should stand on its own as a concise overview of the article's topic. It should identify the topic, establish context, explain why the topic is notable, and summarize the most important points, including any prominent controversies.
-        2. The lead section should be concise and contain no more than four well-composed paragraphs.
-        3. The lead section should be carefully sourced as appropriate. Add inline citations (e.g., "Washington, D.C., is the capital of the United States.[1][3].") where necessary."""
+        system_prompt = """Write an abstract section for the following article. 
+It should capture the main idea of the article and provide a brief overview of the content. 
+The abstract should be concise and engaging, encouraging the reader to continue reading."""
         user_prompt = """TOPIC: {topic} \n\n ARTICLE: {article}"""
         messages = [
             SystemMessage(system_prompt),
@@ -238,8 +237,8 @@ class Storm:
     def write_title_for_article(self, topic: str) -> str:
         model = get_model(self.model_name, 0.5, streaming=False)
         system_prompt = """Write a title for a long-form article about a given topic. 
-        The title should be catchy and informative.
-        It should be able to grab the reader's attention and give them an idea of what the article is about.
+The title should be catchy and informative.
+It should be able to grab the reader's attention and give them an idea of what the article is about.
         """
         user_prompt = """Here's the topic:\n\nTOPIC:{topic}"""
         messages = [
@@ -350,6 +349,13 @@ class Storm:
                     + '"></a>'
                     + f"[{reference_order + 1}] {result.file_name.replace('.pdf', '')}, page {result.page}: {result.content}\n\n"
                 )
+
+        debug_references = re.findall(r"\[.*?\)", article)
+        print(f"{debug_references=}")
+
+        # Delete all empty references. NOTE: notice the space.
+        empty_reference_regex = r"( \[\]\(#.*\))"
+        article = re.sub(empty_reference_regex, "", article)
 
         debug_references = re.findall(r"\[.*?\)", article)
         print(f"{debug_references=}")
