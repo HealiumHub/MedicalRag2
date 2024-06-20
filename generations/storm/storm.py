@@ -12,9 +12,9 @@ from models.enum import RetrievalApiEnum
 from models.types import Source
 from langchain.callbacks import get_openai_callback
 
-TOTAL_QUESTIONS = 3
+TOTAL_QUESTIONS = 1
 SEARCH_TOP_K = 30
-NUM_PERSPECTIVES = 3
+NUM_PERSPECTIVES = 1
 
 
 class Storm:
@@ -192,41 +192,35 @@ class Storm:
         print("DONE CONVERSATION.")
         return all_conversations
 
-    def refine_references_in_answer(self, answer: str, references: list[Source]) -> str:
+    def add_references_in_body_and_remove_invalid_ones(
+        self, answer: str, references: list[Source]
+    ) -> str:
         # Find all references in the answer. It should be in the form of [ref_id] i.e. [fiejwofij1-foijow2]
         references_in_answer = re.findall(r"\[.*?\]", answer)
 
         # For each of them, if inside is not a number, replace it with the correct reference.
+        reference_id_used = []  # use list to keep the order
         for ref in references_in_answer:
             ref_id = ref[1:-1]
-            print(f"{ref_id=}")
 
-            # # If it's a number already, skip it
-            # try:
-            #     _ = int(ref_id)
-            #     # If it's not found, remove the reference.
-            #     answer = answer.replace(ref, "")
-            #     print(f"Removed {ref}")
-
-            #     continue
-            # except ValueError:
-            #     pass
-
-            for reference_number, reference in enumerate(references):
+            for reference in references:
                 if reference.id == ref_id or (
                     reference.id.startswith(ref_id) and len(ref_id) > 4
                 ):
+                    if reference.id not in reference_id_used:
+                        reference_id_used.append(reference.id)
+
                     answer = answer.replace(
-                        ref, f"[[{reference_number + 1}]](#{reference_number + 1})"
+                        ref, f"[[{len(reference_id_used)}]](#{len(reference_id_used)})"
                     )
-                    print(f"Replaced {ref} with {reference_number + 1}")
+                    print(f"Replaced {ref} with {len(reference_id_used)}")
                     break
             else:
                 # If it's not found, remove the reference.
                 answer = answer.replace(ref, "")
                 print(f"Removed {ref}")
 
-        return answer
+        return answer, reference_id_used
 
     def write_lead_paragraph(self, topic: str, article: str) -> str:
         model = get_model(self.model_name, 0.5, streaming=False)
@@ -322,10 +316,52 @@ class Storm:
 
         return article
 
+    def add_references_section_and_annotate(
+        self, article: str, all_search_results: list[Source]
+    ) -> str:
+        # Generate references
+        article += "\n\n## References\n\n"
+
+        # Dedupe search results
+        deduped_search_results: list[Source] = []
+        deduped_ids = set()
+        for result in all_search_results:
+            if result.id not in deduped_ids:
+                deduped_ids.add(result.id)
+                deduped_search_results.append(result)
+
+        # Sometimes the reference is wrong or is incomplete, so we need to refine it.
+        article, reference_id_used = (
+            self.add_references_in_body_and_remove_invalid_ones(
+                article, deduped_search_results
+            )
+        )
+
+        # Add the references to the end of the article.
+        # ONLY add the references that are used in the article.
+        for reference_order, reference_id in enumerate(reference_id_used):
+            for result in deduped_search_results:
+                if result.id != reference_id:
+                    continue
+
+                article += (
+                    '<a id="'
+                    + str(reference_order + 1)
+                    + '"></a>'
+                    + f"[{reference_order + 1}] {result.file_name.replace('.pdf', '')}, page {result.page}: {result.content}\n\n"
+                )
+
+        debug_references = re.findall(r"\[.*?\)", article)
+        print(f"{debug_references=}")
+
+        return article
+
     def write_article(self, topic: str, outline: str = None) -> str:
         with get_openai_callback() as cb:
             related_topics = self.generate_related_topics(topic)
-            print(f"STEP 1 - generate topics:\n {json.dumps(related_topics, ensure_ascii=False)}")
+            print(
+                f"STEP 1 - generate topics:\n {json.dumps(related_topics, ensure_ascii=False)}"
+            )
 
             # Different perspectives on the topic
             perspectives = self.generate_perspectives(topic, related_topics)
@@ -356,7 +392,7 @@ class Storm:
             all_search_results: list[Source] = []
 
             # First one is title so skip that
-            for section_outline in tqdm(rr[1:]):
+            for section_outline in tqdm(rr[1:4]):
                 sec, search_result = self.write_section(section_outline)
                 all_search_results += search_result
                 article += sec + "\n\n"
@@ -364,32 +400,9 @@ class Storm:
             with open("raw_article.md", "w") as f:
                 f.write(article)
 
-            # Dedupe search results
-            deduped_search_results: list[Source] = []
-            deduped_ids = set()
-            for result in all_search_results:
-                if result.id not in deduped_ids:
-                    deduped_ids.add(result.id)
-                    deduped_search_results.append(result)
-
-            # Generate references
-            article += "\n\n## References\n\n"
-
-            # Sometimes the reference is wrong or is incomplete, so we need to refine it.
-            article = self.refine_references_in_answer(article, deduped_search_results)
-
-            for i, result in enumerate(deduped_search_results):
-                article = article.replace(f"[{result.id}]", f"[[{i + 1}]](#{i + 1})")
-                article += (
-                    '<a id="'
-                    + str(i + 1)
-                    + '"></a>'
-                    + f"[{i + 1}] {result.file_name.replace('.pdf', '')}, page {result.page}: {result.content}\n\n"
-                )
-
-            # Find all references in the article
-            references = re.findall(r"\[.*?\)", article)
-            print(f"{references=}")
+            article = self.add_references_section_and_annotate(
+                article, all_search_results
+            )
 
             lead_paragraph = self.write_lead_paragraph(topic, article)
             article = f"## Abstract\n\n{lead_paragraph}\n\n{article}"
