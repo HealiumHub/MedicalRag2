@@ -200,7 +200,7 @@ class AppController:
                         thread.join()
                         stop_event.set()
 
-                        completion = translator.translateToVi(thread.result)
+                        completion = translator.refineVi(translator.translateToVi(thread.result))
                         chat_box.write(completion)
 
                         self.__render_references(related_articles, reranked_articles)
