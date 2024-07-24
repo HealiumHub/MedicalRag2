@@ -23,6 +23,7 @@ Do not use research papers if they are irrelevant to the question."""
 
 
 MODELS = [
+    "gpt-4o-mini",
     "gpt-3.5-turbo-0125",
     "phi3:latest",
     "llama3:8b",

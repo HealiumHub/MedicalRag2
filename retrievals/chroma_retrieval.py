@@ -33,7 +33,7 @@ class DeepRetrievalApi:
 
         for q in queries:
             response: List[NodeWithScore] = self.retriever.retrieve(q)
-            response = Reranker().get_top_k(q, response, k=5)
+            # response = Reranker().get_top_k(q, response, k=5)
             processor = MetadataReplacementPostProcessor(target_metadata_key="window")
             response = processor.postprocess_nodes(response)
 

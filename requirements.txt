@@ -17,8 +17,9 @@ langchain
 streamlit
 graphviz
 pypdf
-pydantic
+pydantic==2.7.4
 watchdog
 torch
 transformers
 faiss-cpu
+llama-index-vector-stores-faiss

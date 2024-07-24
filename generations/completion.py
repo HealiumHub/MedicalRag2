@@ -44,7 +44,7 @@ def get_answer_with_context(
     related_articles: str | list[dict],
     custom_instruction: str,
     temperature: float,
-    stream_handler,
+    stream_handler = None
 ) -> str:
     # Initialize models & context length.
     model = get_model(model_name, temperature)
@@ -72,7 +72,10 @@ def get_answer_with_context(
     # RAW OUTPUT
     chain = model | StrOutputParser()
 
-    answer = chain.invoke(messages, config={"callbacks": [stream_handler]})
+    if stream_handler is not None:
+        answer = chain.invoke(messages, config={"callbacks": [stream_handler]})
+    else:
+        answer = chain.invoke(messages)
 
     # Suffix disclaimer, this saves token and we don't have to prompt it.
     answer += PromptConfig.DISCLAIMER

@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import threading
 
@@ -93,7 +94,7 @@ class AppController:
 
                 # Preretrieval = Query Expansion + HyDE
                 with st.spinner("Vui lòng đợi, tôi đang xử lí :mag_right:"):
-                    translator = TranslationEngine()
+                    translator = TranslationEngine(key=os.getenv("GOOGLE_API_KEY"))
 
                     en_user_query = translator.translateToEn(user_query)
 
@@ -167,14 +168,14 @@ class AppController:
                     reranked_articles = []
                     if st.session_state.use_rerank:
                         # Rerank the articles
-
+                        print(f"{en_user_query=}, {related_articles=}")
                         # TODO: Cache the reranker?
-                        reranked_articles = reranker.get_top_k(
-                            en_user_query,
-                            related_articles,
-                            st.session_state.rerank_top_k,
-                        )
-                        related_articles = reranked_articles
+                        # reranked_articles = reranker.get_top_k(
+                        #     en_user_query,
+                        #     related_articles,
+                        #     st.session_state.rerank_top_k,
+                        # )
+                        # related_articles = reranked_articles
 
                 with st.spinner("Tôi đang xử lí..."):
                     # Temp chatbox for streaming outputs
@@ -191,7 +192,7 @@ class AppController:
                                 related_articles,
                                 st.session_state.custom_instruction,
                                 st.session_state.temperature,
-                                stream_handler,
+                                # stream_handler,
                             ),
                         )
                         add_script_run_ctx(thread)
@@ -200,6 +201,7 @@ class AppController:
                         stop_event.set()
 
                         completion = translator.translateToVi(thread.result)
+                        chat_box.write(completion)
 
                         self.__render_references(related_articles, reranked_articles)
 
