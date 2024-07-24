@@ -13,6 +13,8 @@ from postretrieve.rerank import Reranker
 from preretrieve.expansion.langchain.expansion import QueryExpansion
 from preretrieve.hyde import HyDE
 
+from translator import TranslationEngine
+
 from .utilities import ReturnValueThread, StreamHandler
 
 logger = logging.getLogger(__name__)
@@ -83,22 +85,24 @@ class AppController:
                 self.__render_references(message.related_articles)
 
     def __render_chat(self):
-        if user_query := st.chat_input("Enter your question here ✍️"):
+        if user_query := st.chat_input("Nhập câu hỏi của bạn ✍️"):
             with st.chat_message(
                 RoleEnum.user, avatar=self.__get_avatar_for_role(RoleEnum.user)
             ):
                 st.markdown(user_query)
 
                 # Preretrieval = Query Expansion + HyDE
-                with st.spinner(
-                    "Please wait, I'm analyzing your questions... :mag_right:"
-                ):
+                with st.spinner("Vui lòng đợi, tôi đang xử lí :mag_right:"):
+                    translator = TranslationEngine()
+
+                    en_user_query = translator.translateToEn(user_query)
+
                     queryExpansion = QueryExpansion(with_openAI=True)
 
                     # Default is only user query
-                    expanded_queries = [user_query]
+                    expanded_queries = [en_user_query]
                     if st.session_state.use_query_expansion:
-                        expanded_queries = queryExpansion.paraphase_query(user_query)
+                        expanded_queries = queryExpansion.paraphase_query(en_user_query)
 
                     # Default is no hyde_passages
                     hyde_passages = expanded_queries
@@ -125,7 +129,7 @@ class AppController:
                         )
                         + 1,
                         role=RoleEnum.user,
-                        content=user_query,
+                        content=en_user_query,
                         expanded_queries=expanded_queries,
                         hyde_passages=hyde_passages,
                         related_articles=[],
@@ -136,7 +140,7 @@ class AppController:
                 RoleEnum.assistant,
                 avatar=self.__get_avatar_for_role(RoleEnum.assistant),
             ):
-                with st.spinner("Please wait, I'm searching for references... :eyes:"):
+                with st.spinner("Vui lòng đợi, tôi đang tìm dẫn chứng... :eyes:"):
                     stop_event = threading.Event()
                     thread = ReturnValueThread(
                         target=RetrievalApiEnum.get_retrieval(
@@ -156,21 +160,23 @@ class AppController:
                         print(related_articles)
                     except Exception as e:
                         related_articles = []
-                        st.error("Error happened when searching for docs.", icon="🚨")
+                        st.error("Có vấn đề khi xử lí dữ liệu.", icon="🚨")
 
                 # Post retrieval steps
-                with st.spinner("I'm organizing the articles..."):
+                with st.spinner("Tôi đang tổng hợp dữ liệu..."):
                     reranked_articles = []
                     if st.session_state.use_rerank:
                         # Rerank the articles
 
                         # TODO: Cache the reranker?
                         reranked_articles = reranker.get_top_k(
-                            user_query, related_articles, st.session_state.rerank_top_k
+                            en_user_query,
+                            related_articles,
+                            st.session_state.rerank_top_k,
                         )
                         related_articles = reranked_articles
 
-                with st.spinner("I'm thinking..."):
+                with st.spinner("Tôi đang xử lí..."):
                     # Temp chatbox for streaming outputs
                     chat_box = st.markdown("")
                     stream_handler = StreamHandler(chat_box)
@@ -180,7 +186,7 @@ class AppController:
                         thread = ReturnValueThread(
                             target=get_answer_with_context,
                             args=(
-                                user_query,
+                                en_user_query,
                                 st.session_state.selected_model,
                                 related_articles,
                                 st.session_state.custom_instruction,
@@ -193,7 +199,7 @@ class AppController:
                         thread.join()
                         stop_event.set()
 
-                        completion = thread.result
+                        completion = translator.translateToVi(thread.result)
 
                         self.__render_references(related_articles, reranked_articles)
 
@@ -219,7 +225,7 @@ class AppController:
                         st.balloons()
                     except Exception as e:
                         logger.exception(e)
-                        completion = "Error happened when generating completion."
+                        completion = "Gặp vấn đề khi xử lí"
                         st.error(completion, icon="🚨")
 
     def __render_expended_queries(
