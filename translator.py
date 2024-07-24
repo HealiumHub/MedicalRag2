@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+from llama_index.core.llms import ChatMessage
+from llama_index.llms.openai import OpenAI
+
 """
 Translation engine using Google Cloud Translation API
 Docs: https://cloud.google.com/translate/docs/reference/rest/v2/translate
@@ -45,6 +48,21 @@ class TranslationEngine:
 
     def translateToVi(self, q):
         return self.translate(q, target="vi")
+
+    def refineVi(self, q):
+        messages = [
+            ChatMessage(
+                role="system",
+                content="""
+                Bạn là một trợ lý y tế sức khoẻ. Bạn nhận vào một đoạn thông tin y tế bằng tiếng việt, 
+                hãy viết lại nó một cách tự nhiên và dễ hiểu nhất với đại chúng.
+                """,
+            ),
+            ChatMessage(role="user", content=q),
+        ]
+
+        resp = OpenAI(model="gpt-4o-mini").chat(messages)
+        return resp.choices[0].message.content.strip()
 
 
 if __name__ == "__main__":
