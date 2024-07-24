@@ -1,4 +1,8 @@
+import os
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 """
 Translation engine using Google Cloud Translation API
@@ -13,7 +17,7 @@ class TranslationEngine:
         self.format = format
         self.key = key
 
-    def translate(self, q, target="en", source="vi"):
+    def translate(self, q, target, source=""):
         payload = {
             "q": q,
             "target": target,
@@ -23,19 +27,30 @@ class TranslationEngine:
         }
 
         response = requests.post(self.translationUrl, data=payload)
-        return response.text
+        try:
+            return (
+                response.json().get("data").get("translations")[0].get("translatedText")
+            )
+        except:
+            return "Error"
 
-    def translateViToEn(self, q, target="en", source="vi"):
-        return self.translate(q, target, source)
+    def translateViToEn(self, q):
+        return self.translate(q, target="en", source="vi")
 
-    def translateEnToVi(self, q, target="vi", source="en"):
-        payload = {
-            "q": q,
-            "target": target,
-            "format": self.format,
-            "source": source,
-            "key": self.key,
-        }
+    def translateEnToVi(self, q):
+        return self.translate(q, target="vi", source="en")
 
-        response = requests.post(self.translationUrl, data=payload)
-        return response.text
+    def translateToEn(self, q):
+        return self.translate(q, target="en")
+
+    def translateToVi(self, q):
+        return self.translate(q, target="vi")
+
+
+if __name__ == "__main__":
+    t = TranslationEngine(key=os.getenv(key="GOOGLE_API_KEY"))
+    res = t.translateToVi("I'm stuyding at RMIT University")
+    print(res)
+
+    res2 = t.translateToEn("Tôi đang học tại Đại học RMIT")
+    print(res2)
