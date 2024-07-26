@@ -158,7 +158,6 @@ class AppController:
 
                     try:
                         related_articles: list[Source] = thread.result
-                        print(related_articles)
                     except Exception as e:
                         related_articles = []
                         st.error("Có vấn đề khi xử lí dữ liệu.", icon="🚨")
@@ -170,12 +169,12 @@ class AppController:
                         # Rerank the articles
                         print(f"{en_user_query=}, {related_articles=}")
                         # TODO: Cache the reranker?
-                        # reranked_articles = reranker.get_top_k(
-                        #     en_user_query,
-                        #     related_articles,
-                        #     st.session_state.rerank_top_k,
-                        # )
-                        # related_articles = reranked_articles
+                        reranked_articles = reranker.get_top_k(
+                            en_user_query,
+                            related_articles,
+                            st.session_state.rerank_top_k,
+                        )
+                        related_articles = reranked_articles
 
                 with st.spinner("Tôi đang xử lí..."):
                     # Temp chatbox for streaming outputs
@@ -199,9 +198,12 @@ class AppController:
                         thread.start()
                         thread.join()
                         stop_event.set()
+                        completion_en = thread.result
+                        completion_vn = translator.translateToVi(completion_en)
+                        
+                        chat_box.write(completion_en + "\n" + completion_vn)
 
-                        completion = translator.refineVi(translator.translateToVi(thread.result))
-                        chat_box.write(completion)
+                        print(completion_en, completion_vn)
 
                         self.__render_references(related_articles, reranked_articles)
 
@@ -217,7 +219,7 @@ class AppController:
                                 )
                                 + 1,
                                 role=RoleEnum.assistant,
-                                content=completion,
+                                content=completion_en + "\n" + completion_vn,
                                 expanded_queries=[],
                                 hyde_passages=[],
                                 related_articles=related_articles,

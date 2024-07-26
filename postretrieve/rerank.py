@@ -54,5 +54,6 @@ class Reranker:
         self, query: str, chunks: list[Source | NodeWithScore], k: int = 5
     ) -> list[Source | NodeWithScore]:
         # Avoid modifying the original list
+        print(f"Hello {chunks}")
         chunks = chunks.copy()
         return self.rerank(query, chunks)[: min(k, len(chunks))]

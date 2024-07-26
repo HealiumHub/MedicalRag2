@@ -3,7 +3,7 @@ import logging
 import math
 import os
 import shutil
-from typing import Sequence
+from typing import List, Sequence
 
 import chromadb
 
@@ -16,6 +16,7 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core.node_parser import SentenceWindowNodeParser
 from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
+from langchain.schema import Document as LangChainDocument
 
 from llama_index.core.ingestion import IngestionPipeline
 from llama_index.extractors.entity import EntityExtractor
@@ -37,6 +38,8 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from llmsherpa.readers import LayoutPDFReader
 from llmsherpa.readers.layout_reader import Block
 
+from langchain_community.document_loaders.llmsherpa import LLMSherpaFileLoader
+
 from dotenv import load_dotenv
 
 from const import EmbeddingConfig
@@ -50,9 +53,10 @@ logger = logging.getLogger(__name__)
 
 
 class Ingestion:
-    DATA_PATH = "./ingestion/pdf/diabetes"
+    DATA_PATH = "./ingestion/pdf_new"
     CHROMA_PATH = "chroma"
-    LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
+    # LLM_SHERPA_API_URL = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
+    LLM_SHERPA_API_URL = "http://localhost:5010/api/parseDocument?renderFormat=all"
 
     def __init__(
         self,
@@ -82,24 +86,38 @@ class Ingestion:
             raise ValueError(f"Unknown embedding model: {embedding_model_name}")
 
     def load_documents(self, k=math.inf):
-        pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
+        # pdf_reader = LayoutPDFReader(self.LLM_SHERPA_API_URL)
         documents = []
         i = 0
         for file in glob.glob(self.DATA_PATH + "/*.pdf"):
+            print(file)
             if i >= k:
                 break
             i += 1
             logger.info(f"{file=}, {i=}")
-            doc = pdf_reader.read_pdf(file)
-            block: Block
-            for block in doc.chunks():
-                metadata = {
-                    "page": block.page_idx,
-                    "file_name": os.path.basename(file),
-                    "tag": block.tag,
-                }
-                document = Document(text=block.to_context_text(), metadata=metadata)
+            loader = LLMSherpaFileLoader(
+                file_path="https://arxiv.org/pdf/2402.14207.pdf",
+                new_indent_parser=True,
+                apply_ocr=True,
+                strategy="chunks",
+                llmsherpa_api_url="http://localhost:5010/api/parseDocument?renderFormat=all",
+            )
+            docs: List[LangChainDocument] = loader.load()
+            # doc = pdf_reader.read_pdf(file)
+
+            for doc in docs:
+                document = Document(text=doc.page_content, metadata=doc.metadata)
                 documents.append(document)
+
+            # block: Block
+            # for block in doc.chunks():
+            #     metadata = {
+            #         "page": block.page_idx,
+            #         "file_name": os.path.basename(file),
+            #         "tag": block.tag,
+            #     }
+            #     document = Document(text=block.to_context_text(), metadata=metadata)
+            #     documents.append(document)
         # self.print_documents(documents)
         return documents
 

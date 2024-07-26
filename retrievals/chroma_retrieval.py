@@ -33,9 +33,12 @@ class DeepRetrievalApi:
 
         for q in queries:
             response: List[NodeWithScore] = self.retriever.retrieve(q)
-            # response = Reranker().get_top_k(q, response, k=5)
+            print(f"chroma_retrieval | query {q} | response {response}")
+            response = Reranker().get_top_k(q, response, k=5)
             processor = MetadataReplacementPostProcessor(target_metadata_key="window")
             response = processor.postprocess_nodes(response)
+
+            # print(f"chroma_retrieval | query {q} | response {response}")
 
             for x in response:
                 if x.node_id not in documentIdSet:
@@ -44,7 +47,7 @@ class DeepRetrievalApi:
                         id=x.node_id,
                         doi=x.metadata.get("doi", ""),
                         file_name=x.metadata.get("file_name", ""),
-                        page=x.metadata.get("page", ""),
+                        page=x.metadata.get("page", 1),
                         content=x.get_content(),
                         score=round(x.get_score(), 2),
                     )
