@@ -96,7 +96,7 @@ class Ingestion:
             i += 1
             logger.info(f"{file=}, {i=}")
             loader = LLMSherpaFileLoader(
-                file_path="https://arxiv.org/pdf/2402.14207.pdf",
+                file_path=file,
                 new_indent_parser=True,
                 apply_ocr=True,
                 strategy="chunks",
